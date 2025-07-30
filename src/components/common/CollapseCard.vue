@@ -4,11 +4,11 @@
       class="collapse-title cursor-pointer pr-4 select-none"
       @click="showCollapse = !showCollapse"
     >
-      <slot name="title"></slot>
+      <slot name="title" />
       <slot
         v-if="!showCollapse"
         name="preview"
-      ></slot>
+      />
     </div>
     <div
       class="collapse-content max-sm:px-2"
@@ -16,13 +16,13 @@
     >
       <div
         class="max-h-108 overflow-y-auto"
-        :class="SCROLLABLE_PARENT_CLASS"
+        :class="[SCROLLABLE_PARENT_CLASS, !showCollapse && 'opacity-0']"
       >
         <slot
           v-if="showContent"
           :show-full-content="showFullContent"
           name="content"
-        ></slot>
+        />
       </div>
     </div>
   </div>
