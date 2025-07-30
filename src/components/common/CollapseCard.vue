@@ -11,20 +11,26 @@
       ></slot>
     </div>
     <div
-      class="collapse-content flex flex-col gap-2 max-sm:px-2"
+      class="collapse-content max-sm:px-2"
       @transitionend="handlerTransitionEnd"
     >
-      <slot
-        v-if="showContent"
-        :show-full-content="showFullContent"
-        name="content"
-      ></slot>
+      <div
+        class="max-h-108 overflow-y-auto"
+        :class="SCROLLABLE_PARENT_CLASS"
+      >
+        <slot
+          v-if="showContent"
+          :show-full-content="showFullContent"
+          name="content"
+        ></slot>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { collapsedBus } from '@/composables/bus'
+import { SCROLLABLE_PARENT_CLASS } from '@/helper/utils'
 import { collapseGroupMap } from '@/store/settings'
 import { computed, onUnmounted, ref } from 'vue'
 
