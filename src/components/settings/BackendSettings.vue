@@ -100,8 +100,8 @@
         <template v-if="!isSingBox || displayAllFeatures">
           <button
             v-if="!activeBackend?.disableUpgradeCore"
-            :class="twMerge('btn btn-primary btn-sm', isCoreUpgrading ? 'animate-pulse' : '')"
-            @click="handlerClickUpgradeCore"
+            class="btn btn-primary btn-sm"
+            @click="showUpgradeCoreModal = true"
           >
             {{ $t('upgradeCore') }}
           </button>
@@ -147,6 +147,7 @@
       <div class="divider"></div>
       <DnsQuery />
     </div>
+    <UpgradeCoreModal v-model="showUpgradeCoreModal" />
   </div>
 </template>
 
@@ -160,13 +161,11 @@ import {
   reloadConfigsAPI,
   restartCoreAPI,
   updateGeoDataAPI,
-  upgradeCoreAPI,
   version,
 } from '@/api'
 import BackendVersion from '@/components/common/BackendVersion.vue'
 import BackendSwitch from '@/components/settings/BackendSwitch.vue'
 import DnsQuery from '@/components/settings/DnsQuery.vue'
-import { handlerUpgradeSuccess } from '@/helper'
 import { configs, fetchConfigs, updateConfigs } from '@/store/config'
 import { fetchProxies, hasSmartGroup } from '@/store/proxies'
 import { fetchRules } from '@/store/rules'
@@ -175,6 +174,7 @@ import { activeBackend } from '@/store/setup'
 import type { Config } from '@/types'
 import { twMerge } from 'tailwind-merge'
 import { ref } from 'vue'
+import UpgradeCoreModal from './UpgradeCoreModal.vue'
 
 const portList = [
   {
@@ -205,6 +205,8 @@ const reloadAll = () => {
   fetchProxies()
 }
 
+const showUpgradeCoreModal = ref(false)
+
 const isCoreRestarting = ref(false)
 const handlerClickRestartCore = async () => {
   if (isCoreRestarting.value) return
@@ -217,21 +219,6 @@ const handlerClickRestartCore = async () => {
     isCoreRestarting.value = false
   } catch {
     isCoreRestarting.value = false
-  }
-}
-
-const isCoreUpgrading = ref(false)
-const handlerClickUpgradeCore = async () => {
-  if (isCoreUpgrading.value) return
-  isCoreUpgrading.value = true
-  try {
-    await upgradeCoreAPI()
-    reloadAll()
-    handlerUpgradeSuccess()
-    isCoreUpgrading.value = false
-  } catch (e) {
-    console.error(e)
-    isCoreUpgrading.value = false
   }
 }
 
