@@ -27,7 +27,7 @@
     <div class="card-body gap-4">
       <BackendSwitch />
 
-      <template v-if="(!isSingBox || displayAllFeatures) && configs">
+      <template v-if="!isSingBox && configs">
         <div class="divider"></div>
         <div class="grid max-w-3xl grid-cols-2 gap-2 lg:grid-cols-3">
           <div
