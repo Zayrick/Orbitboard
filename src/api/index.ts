@@ -317,10 +317,7 @@ export const fetchIsUIUpdateAvailable = async () => {
 }
 
 const check = async (url: string, versionNumber: string) => {
-  const { assets } = await fetchWithLocalCache<{ assets: { name: string }[] }>(
-    url,
-    versionNumber,
-  )
+  const { assets } = await fetchWithLocalCache<{ assets: { name: string }[] }>(url, versionNumber)
   const alreadyLatest = assets.some(({ name }) => name.includes(versionNumber))
 
   return !alreadyLatest
@@ -341,9 +338,21 @@ export const fetchBackendUpdateAvailableAPI = async () => {
   const channel = match[1],
     versionNumber = match[2]
 
-  if (channel === 'meta') return await check('https://api.github.com/repos/MetaCubeX/mihomo/releases/latest', versionNumber)
-  if (channel === 'alpha') return await check('https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha', versionNumber)
-  if (channel === 'alpha-smart') return await check('https://api.github.com/repos/vernesong/mihomo/releases/tags/Prerelease-Alpha', versionNumber)
+  if (channel === 'meta')
+    return await check(
+      'https://api.github.com/repos/MetaCubeX/mihomo/releases/latest',
+      versionNumber,
+    )
+  if (channel === 'alpha')
+    return await check(
+      'https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha',
+      versionNumber,
+    )
+  if (channel === 'alpha-smart')
+    return await check(
+      'https://api.github.com/repos/vernesong/mihomo/releases/tags/Prerelease-Alpha',
+      versionNumber,
+    )
 
   return false
 }
