@@ -224,7 +224,7 @@ const ru: LANG_MESSAGE = {
   copySuccess: 'Копирование успешно',
   importFromBackend: 'Импортировать из бэкенда',
   importFromBackendTip:
-    'По умолчанию ./zashboard-settings.json будет импортировать настройки из папки ui бэкенда, пожалуйста, убедитесь, что файл zashboard-settings.json существует в папке ui, в противном случае импорт не будет выполнен',
+    'По умолчанию ./zashboard-settings.json находится в папке ui. Пожалуйста, убедитесь, что папка ui существует и содержит файл конфигурации.',
   importFailed: 'Импорт не выполнен, проверьте url {url}',
   autoImportFromUrl: 'Автоматический импорт',
   autoImportFromUrlTip:

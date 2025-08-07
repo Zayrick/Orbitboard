@@ -222,7 +222,7 @@ const en = {
   copySuccess: 'Copied successfully',
   importFromBackend: 'Import from Backend',
   importFromBackendTip:
-    'The default ./zashboard-settings.json will import settings from the backend ui folder. Please ensure the zashboard-settings.json file exists in the ui folder, otherwise the import will fail.',
+    'The default ./zashboard-settings.json is located in the ui folder. Please ensure the ui folder exists and contains the configuration file.',
   importFailed: 'Import failed, please check the URL: {url}',
   autoImportFromUrl: 'Auto Import',
   autoImportFromUrlTip:

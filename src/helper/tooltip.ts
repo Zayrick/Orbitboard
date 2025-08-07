@@ -27,6 +27,23 @@ export const useTooltip = () => {
         tippyInstance = null
         currentTarget = null
       },
+      popperOptions: {
+        modifiers: [
+          {
+            name: 'preventOverflow',
+            options: {
+              boundary: 'clippingParents',
+              padding: 8,
+            },
+          },
+          {
+            name: 'flip',
+            options: {
+              fallbackPlacements: ['top', 'bottom', 'right', 'left'],
+            },
+          },
+        ],
+      },
       ...config,
     })
 

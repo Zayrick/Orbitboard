@@ -221,7 +221,7 @@ const zh: LANG_MESSAGE = {
   copySuccess: '复制成功',
   importFromBackend: '从后端导入',
   importFromBackendTip:
-    '默认的./zashboard-settings.json会从后端ui文件夹导入设置，请确保ui文件夹下存在zashboard-settings.json文件，否则会导入失败',
+    '默认的./zashboard-settings.json位于ui文件夹下，导入前请确保ui文件夹下存在配置文件。',
   importFailed: '导入失败，请检查url {url}',
   autoImportFromUrl: '自动导入',
   autoImportFromUrlTip:

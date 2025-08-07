@@ -37,7 +37,6 @@
           @mouseenter="
             showTip($event, $t('importFromBackendTip'), {
               appendTo: 'parent',
-              placement: 'left',
             })
           "
         />
