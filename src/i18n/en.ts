@@ -227,6 +227,7 @@ const en = {
   autoImportFromUrl: 'Auto Import',
   autoImportFromUrlTip:
     'When enabled, settings will be automatically imported from the URL when opening zashboard. If the hash differs from the last imported hash, settings will be re-imported and the page will be refreshed.',
+  getting: 'Getting...',
 }
 
 export type LANG_MESSAGE = typeof en

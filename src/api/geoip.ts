@@ -12,7 +12,7 @@ export interface IPInfo {
 
 // china
 export const getIPFromIpipnetAPI = async () => {
-  const response = await fetch('https://myip.ipip.net/json')
+  const response = await fetch('https://myip.ipip.net/json?t=' + Date.now())
 
   return (await response.json()) as {
     data: {
@@ -24,7 +24,9 @@ export const getIPFromIpipnetAPI = async () => {
 
 // global
 const getIPFromIpsbAPI = async (ip = '') => {
-  const response = await fetch('https://api.ip.sb/geoip' + (ip ? `/${ip}` : ''))
+  const response = await fetch(
+    'https://api.ip.sb/geoip' + (ip ? `/${ip}` : '') + '?t=' + Date.now(),
+  )
 
   return (await response.json()) as {
     organization: string
@@ -47,7 +49,7 @@ const getIPFromIpsbAPI = async (ip = '') => {
 }
 
 const getIPFromIPWhoisAPI = async (ip = '') => {
-  const response = await fetch('https://ipwho.is' + (ip ? `/${ip}` : ''))
+  const response = await fetch('https://ipwho.is' + (ip ? `/${ip}` : '') + '?t=' + Date.now())
 
   return (await response.json()) as {
     ip: string
@@ -90,7 +92,9 @@ const getIPFromIPWhoisAPI = async (ip = '') => {
 }
 
 const getIPFromIPapiisAPI = async (ip = '') => {
-  const response = await fetch('https://api.ipapi.is' + (ip ? `/?q=${ip}` : ''))
+  const response = await fetch(
+    'https://api.ipapi.is' + (ip ? `/?q=${ip}` : '') + (ip ? '&' : '?') + 't=' + Date.now(),
+  )
 
   return (await response.json()) as {
     ip: string
