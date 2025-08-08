@@ -14,6 +14,11 @@
         class="badge badge-sm bg-base-200 ml-2"
       >
         {{ size }}
+        <QuestionMarkCircleIcon
+          v-if="size === 0"
+          class="ml-1 h-4 w-4"
+          @mouseenter="showMMDBSizeTip"
+        />
       </span>
       <button
         v-if="isUpdateableRuleSet"
@@ -51,13 +56,19 @@ import { updateRuleProviderAPI } from '@/api'
 import { useBounceOnVisible } from '@/composables/bouncein'
 import { NOT_CONNECTED } from '@/constant'
 import { getColorForLatency } from '@/helper'
+import { useTooltip } from '@/helper/tooltip'
 import { getLatencyByName, getNowProxyNodeName, proxyMap } from '@/store/proxies'
 import { fetchRules, ruleProviderList } from '@/store/rules'
 import { displayLatencyInRule, displayNowNodeInRule } from '@/store/settings'
 import type { Rule } from '@/types'
-import { ArrowPathIcon, ArrowRightCircleIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowPathIcon,
+  ArrowRightCircleIcon,
+  QuestionMarkCircleIcon,
+} from '@heroicons/vue/24/outline'
 import { twMerge } from 'tailwind-merge'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import ProxyName from '../proxies/ProxyName.vue'
 
 const props = defineProps<{
@@ -65,6 +76,8 @@ const props = defineProps<{
   index: number
 }>()
 
+const { t } = useI18n()
+const { showTip } = useTooltip()
 const proxyNode = computed(() => proxyMap.value[props.rule.proxy])
 const latency = computed(() => getLatencyByName(props.rule.proxy, props.rule.proxy))
 const latencyColor = computed(() => getColorForLatency(Number(latency.value)))
@@ -99,6 +112,10 @@ const updateRuleProviderClickHandler = async () => {
   await updateRuleProviderAPI(props.rule.payload)
   fetchRules()
   isUpdating.value = false
+}
+
+const showMMDBSizeTip = (e: Event) => {
+  showTip(e, t('mmdbSizeTip'))
 }
 
 useBounceOnVisible()

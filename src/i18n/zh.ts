@@ -227,6 +227,7 @@ const zh: LANG_MESSAGE = {
   autoImportFromUrlTip:
     '启用后，每次打开zashboard时会自动从url设置导入并计算hash，如果hash与上次导入的hash不同，则重新导入并刷新页面。',
   getting: '获取中...',
+  mmdbSizeTip: 'mmdb等格式的geo文件无法统计数量，因此数量为0',
 }
 
 export default zh

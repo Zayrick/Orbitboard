@@ -228,6 +228,7 @@ const en = {
   autoImportFromUrlTip:
     'When enabled, settings will be automatically imported from the URL when opening zashboard. If the hash differs from the last imported hash, settings will be re-imported and the page will be refreshed.',
   getting: 'Getting...',
+  mmdbSizeTip: 'If you are using mmdb format geo files, the number will be 0',
 }
 
 export type LANG_MESSAGE = typeof en
