@@ -135,13 +135,13 @@
             ></span>
             {{ $t('updateGeoDatabase') }}
           </button>
-          <button
-            class="btn btn-sm"
-            @click="flushDNSCacheAPI"
-          >
-            {{ $t('flushDNSCache') }}
-          </button>
         </template>
+        <button
+          class="btn btn-sm"
+          @click="flushDNSCacheAPI"
+        >
+          {{ $t('flushDNSCache') }}
+        </button>
         <button
           class="btn btn-sm"
           @click="flushFakeIPAPI"
