@@ -26,6 +26,15 @@ body:
       required: true
 
   - type: input
+    id: zashboard-usage
+    attributes:
+      label: zashboard Usage
+      description: How you are using zashboard (e.g., sing-box cli, mihomo cli, openwrt plugin like Nikki, Docker)
+      placeholder: 'e.g., sing-box cli, mihomo cli, openwrt plugin like Nikki, Docker'
+    validations:
+      required: true
+
+  - type: input
     id: browser-info
     attributes:
       label: Browser Information

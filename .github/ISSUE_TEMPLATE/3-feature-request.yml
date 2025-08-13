@@ -15,33 +15,3 @@ body:
       placeholder: 'Please describe the feature you want in detail'
     validations:
       required: true
-
-  - type: textarea
-    id: why-needed
-    attributes:
-      label: Why is this feature needed?
-      description: Explain why this feature is important and how it will improve the project or user experience
-      placeholder: 'Explain the importance and value of this feature'
-    validations:
-      required: true
-
-  - type: textarea
-    id: use-cases
-    attributes:
-      label: Use Cases
-      description: List the scenarios or use cases where this feature will be applied
-      placeholder: |
-        Use case 1:
-        Use case 2:
-        Use case 3:
-    validations:
-      required: true
-
-  - type: textarea
-    id: additional-context
-    attributes:
-      label: Additional Context
-      description: Any other context, examples, or references that would help understand the feature request
-      placeholder: 'Other relevant information, examples, or references'
-    validations:
-      required: false
