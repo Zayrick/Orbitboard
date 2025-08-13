@@ -12,12 +12,15 @@
 
     <ProxyName
       :name="proxyGroup.now"
+      class="badge badge-sm gap-0 md:p-2.5"
       @mouseenter="tipForNow"
     />
   </template>
   <template v-else-if="proxyGroup.type.toLowerCase() === PROXY_TYPE.LoadBalance">
     <CheckCircleIcon class="h-4 w-4 shrink-0" />
-    {{ $t('loadBalance') }}
+    <span class="badge badge-sm">
+      {{ $t('loadBalance') }}
+    </span>
   </template>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative h-20 cursor-pointer"
+    class="relative h-22 cursor-pointer"
     ref="cardWrapperRef"
     @click="handlerGroupClick"
     @touchmove="preventDefault"
@@ -18,18 +18,15 @@
       @transitionend="handlerTransitionEnd"
       ref="cardRef"
     >
-      <div class="flex h-20 shrink-0 flex-col p-2 pb-1">
+      <div class="flex h-22 shrink-0 flex-col p-2">
         <div class="flex flex-1">
-          <div class="flex flex-1 flex-col gap-0.5 overflow-hidden">
+          <div class="flex flex-1 flex-col gap-1 overflow-hidden">
             <div class="text-md truncate">
               {{ proxyGroup.name }}
             </div>
-            <div class="text-base-content/80 flex items-center gap-1 truncate text-sm">
-              <ProxyGroupNow
-                :name="proxyGroup.name"
-                :mobile="true"
-              />
-            </div>
+            <span class="text-base-content/60 shrink-0 text-xs">
+              {{ proxyGroup.type }} ({{ proxiesCount }})
+            </span>
           </div>
           <ProxyIcon
             v-if="proxyGroup?.icon"
@@ -42,9 +39,10 @@
 
         <div class="flex items-center">
           <div class="flex flex-1 items-center gap-1 truncate">
-            <span class="text-base-content/60 shrink-0 text-xs">
-              {{ proxyGroup.type }} ({{ proxiesCount }})
-            </span>
+            <ProxyGroupNow
+              :name="proxyGroup.name"
+              :mobile="true"
+            />
             <button
               v-if="manageHiddenGroup"
               class="btn btn-circle btn-xs z-10"

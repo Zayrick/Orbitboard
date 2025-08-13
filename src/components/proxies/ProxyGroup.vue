@@ -7,8 +7,9 @@
       >
         <div class="flex flex-1 items-center gap-1">
           <ProxyName
-            :name="proxyGroup.name"
-            size="large"
+            :name="name"
+            :icon-size="proxyGroupIconSize"
+            :icon-margin="proxyGroupIconMargin"
           />
           <span class="text-base-content/60 text-xs">
             : {{ proxyGroup.type }} ({{ proxiesCount }})
@@ -37,7 +38,7 @@
         />
       </div>
       <div
-        class="text-base-content/80 mt-1 flex items-center gap-2"
+        class="text-base-content/80 mt-1.5 flex items-center gap-2"
         @contextmenu.prevent.stop="handlerLatencyTest"
       >
         <div class="flex flex-1 items-center gap-1 text-sm">
@@ -80,7 +81,12 @@ import {
   proxyGroupLatencyTest,
   proxyMap,
 } from '@/store/proxies'
-import { groupProxiesByProvider, manageHiddenGroup } from '@/store/settings'
+import {
+  groupProxiesByProvider,
+  manageHiddenGroup,
+  proxyGroupIconMargin,
+  proxyGroupIconSize,
+} from '@/store/settings'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import { twMerge } from 'tailwind-merge'
 import { computed, ref } from 'vue'

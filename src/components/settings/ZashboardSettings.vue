@@ -76,7 +76,7 @@
           </select>
         </div>
         <div class="flex items-center gap-2">
-          emoji
+          Emoji
           <select
             class="select select-sm w-48"
             v-model="emoji"

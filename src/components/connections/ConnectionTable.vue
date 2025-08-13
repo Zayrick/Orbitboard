@@ -339,7 +339,7 @@ const columns: ColumnDef<Connection>[] = [
       const originChains = row.original.chains
 
       originChains.forEach((chain, index) => {
-        chains.unshift(h(ProxyName, { name: chain, size: 'small', key: chain }))
+        chains.unshift(h(ProxyName, { name: chain, key: chain }))
 
         if (index < originChains.length - 1) {
           chains.unshift(
@@ -354,7 +354,7 @@ const columns: ColumnDef<Connection>[] = [
       return h(
         'div',
         {
-          class: `inline-flex items-center ${proxyChainDirection.value === PROXY_CHAIN_DIRECTION.REVERSE && 'flex-row-reverse justify-end'} gap-1`,
+          class: `flex items-center ${proxyChainDirection.value === PROXY_CHAIN_DIRECTION.REVERSE && 'flex-row-reverse justify-end'} gap-1`,
         },
         chains,
       )
@@ -365,7 +365,7 @@ const columns: ColumnDef<Connection>[] = [
     id: CONNECTIONS_TABLE_ACCESSOR_KEY.Outbound,
     accessorFn: (original) => original.chains[0],
     cell: ({ row }) => {
-      return h(ProxyName, { name: row.original.chains[0], size: 'small' })
+      return h(ProxyName, { name: row.original.chains[0] })
     },
   },
   {

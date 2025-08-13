@@ -48,6 +48,10 @@
   @apply bg-transparent! shadow-none! backdrop-blur-none!;
 }
 
+@utility badge {
+  @apply bg-base-200/75;
+}
+
 @utility select {
   @apply w-auto;
 }
@@ -100,6 +104,10 @@
     .toggle,
     .tabs {
       @apply bg-base-100/$(i);
+    }
+
+    .badge {
+      @apply bg-base-200/$(i) border-base-200/$(i);
     }
 
     option,

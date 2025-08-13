@@ -3,13 +3,11 @@
     <div class="flex flex-1 items-center gap-2">
       <span>{{ index }}.</span>
       <span class="text-main">{{ ruleProvider.name }}</span>
-      <span class="badge badge-sm bg-base-200">
-        {{ ruleProvider.ruleCount }}
-      </span>
+      <span class="text-base-content/80 text-xs"> ({{ ruleProvider.ruleCount }}) </span>
     </div>
     <div class="text-base-content/80 flex h-4 items-center gap-2 text-xs">
-      <span>{{ ruleProvider.behavior }}</span>
-      <span>{{ ruleProvider.vehicleType }}</span>
+      <span class="min-w-12">{{ ruleProvider.behavior }}</span>
+      <span class="min-w-8">{{ ruleProvider.vehicleType }}</span>
       <span>{{ $t('updated') }} {{ fromNow(ruleProvider.updatedAt) }}</span>
       <button
         v-if="ruleProvider.vehicleType !== 'Inline'"

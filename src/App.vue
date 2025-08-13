@@ -114,20 +114,7 @@ useKeyboard()
     <RouterView />
     <div
       ref="toast"
-      class="toast-sm toast toast-end toast-top z-9999 max-w-64 text-sm md:max-w-96 md:translate-y-8"
-    >
-      <!-- <div
-        class="alert flex p-2 pr-5 break-all whitespace-normal"
-        :class="tipType"
-      >
-        {{ tipContent }}
-        <button
-          class="btn btn-circle btn-ghost btn-xs absolute top-0 right-0"
-          @click="tipShowModel = false"
-        >
-          <XMarkIcon class="size-3 cursor-pointer" />
-        </button>
-      </div> -->
-    </div>
+      class="toast-sm toast toast-end toast-top z-9999 max-w-96 text-sm md:translate-y-8"
+    />
   </div>
 </template>

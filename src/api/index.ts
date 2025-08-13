@@ -34,9 +34,11 @@ axios.interceptors.response.use(
         showNotification({ content: 'unauthorizedTip' })
       })
     } else if (!error.config?.url?.endsWith('/delay')) {
+      const errorMessage = error.response?.data?.message || error.message
+
       showNotification({
-        key: 'backend-error',
-        content: error.response?.data?.message || error.message,
+        key: errorMessage,
+        content: errorMessage,
         type: 'alert-error',
       })
       return Promise.reject(error)

@@ -6,11 +6,11 @@
     >
       {{ seqWithPadding }}.
     </span>
-    <span class="badge badge-sm bg-base-200/70 text-main ml-2 inline-block min-w-14">
+    <span class="badge badge-sm text-main ml-2 inline-block min-w-14">
       {{ log.time }}
     </span>
     <span
-      class="badge badge-sm bg-base-200/70 ml-2 inline-block min-w-17 text-center"
+      class="badge badge-sm ml-2 inline-block min-w-17 text-center"
       :class="textColorMapForType[log.type as keyof typeof textColorMapForType]"
     >
       {{ log.type }}

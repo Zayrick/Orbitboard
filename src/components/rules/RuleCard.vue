@@ -11,9 +11,9 @@
       </span>
       <span
         v-if="typeof size === 'number' && size !== -1"
-        class="badge badge-sm bg-base-200 ml-2"
+        class="text-base-content/80 ml-1 text-xs"
       >
-        {{ size }}
+        ({{ size }})
         <QuestionMarkCircleIcon
           v-if="size === 0"
           class="ml-1 h-4 w-4"
@@ -22,23 +22,19 @@
       </span>
       <button
         v-if="isUpdateableRuleSet"
-        :class="twMerge('btn btn-circle btn-xs ml-2', isUpdating ? 'animate-spin' : '')"
+        :class="
+          twMerge('btn btn-circle btn-ghost btn-xs -mb-1 ml-1', isUpdating ? 'animate-spin' : '')
+        "
         @click="updateRuleProviderClickHandler"
       >
         <ArrowPathIcon class="h-4 w-4" />
       </button>
     </div>
-    <div class="text-base-content/80 badge badge-sm bg-base-200/80 flex items-center gap-1 p-3">
-      <ProxyName
-        :name="rule.proxy"
-        class="text-xs"
-      />
+    <div class="badge badge-sm flex items-center gap-1 p-2.5">
+      <ProxyName :name="rule.proxy" />
       <template v-if="proxyNode?.now && displayNowNodeInRule">
         <ArrowRightCircleIcon class="h-4 w-4" />
-        <ProxyName
-          :name="getNowProxyNodeName(rule.proxy)"
-          class="text-xs"
-        />
+        <ProxyName :name="getNowProxyNodeName(rule.proxy)" />
       </template>
       <span
         v-if="latency !== NOT_CONNECTED && displayLatencyInRule"
