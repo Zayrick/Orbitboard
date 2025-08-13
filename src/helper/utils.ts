@@ -88,5 +88,3 @@ const findScrollableParent = (el: HTMLElement | null): HTMLElement | null => {
 
   return parent ? findScrollableParent(parent) : null
 }
-
-export const isAppleDevice = /Mac|iPod|iPhone|iPad/.test(navigator.platform)

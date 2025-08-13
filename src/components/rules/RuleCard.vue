@@ -1,5 +1,5 @@
 <template>
-  <div class="card hover:bg-base-200 gap-2 p-2 text-sm">
+  <div class="card hover:bg-base-200 gap-1 p-2 text-sm">
     <div class="min-h-6">
       <span>{{ index }}.</span>
       <span class="ml-2">{{ rule.type }}</span>
@@ -28,7 +28,7 @@
         <ArrowPathIcon class="h-4 w-4" />
       </button>
     </div>
-    <div class="text-base-content/80 flex items-center gap-1">
+    <div class="text-base-content/80 badge badge-sm bg-base-200/80 flex items-center gap-1 p-3">
       <ProxyName
         :name="rule.proxy"
         class="text-xs"
