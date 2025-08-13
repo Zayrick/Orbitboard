@@ -44,6 +44,27 @@ jobs:
           github_token: ${{ secrets.PAT }}
           publish_dir: ./dist
 
+  build-and-deploy-cdn-fonts:
+    needs: release-please
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v4
+
+      - name: Install and Build cdn-fonts 🔧
+        run: |
+          pnpm i
+          pnpm run build:cdn-fonts
+          echo 'board.zash.run.place' > ./dist/CNAME
+
+      - name: Deploy to gh-pages-cdn-fonts 🚀
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.PAT }}
+          publish_dir: ./dist
+          publish_branch: gh-pages-cdn-fonts
+
   release-dist:
     needs: release-please
     runs-on: ubuntu-latest
