@@ -7,11 +7,17 @@
 }
 
 @theme {
-  --font-MiSans: 'MiSans-VF', 'NotoEmoji', system-ui;
-  --font-SarasaUI: 'SarasaUiSC-Regular', 'NotoEmoji', system-ui;
-  --font-PingFang: 'PingFangSC-Regular', 'NotoEmoji', system-ui;
-  --font-FiraSans: 'Fira Sans', 'NotoEmoji', system-ui;
-  --font-SystemUI: 'NotoEmoji', system-ui;
+  --font-MiSans-NotoEmoji: 'NotoEmoji', 'MiSans-VF', system-ui;
+  --font-SarasaUI-NotoEmoji: 'NotoEmoji', 'SarasaUiSC-Regular', system-ui;
+  --font-PingFang-NotoEmoji: 'NotoEmoji', 'PingFangSC-Regular', system-ui;
+  --font-FiraSans-NotoEmoji: 'NotoEmoji', 'Fira Sans', system-ui;
+  --font-SystemUI-NotoEmoji: 'NotoEmoji', system-ui;
+
+  --font-MiSans-Twemoji: 'Twemoji', 'MiSans-VF', system-ui;
+  --font-SarasaUI-Twemoji: 'Twemoji', 'SarasaUiSC-Regular', system-ui;
+  --font-PingFang-Twemoji: 'Twemoji', 'PingFangSC-Regular', system-ui;
+  --font-FiraSans-Twemoji: 'Twemoji', 'Fira Sans', system-ui;
+  --font-SystemUI-Twemoji: 'Twemoji', 'NotoEmoji', system-ui;
 }
 
 @layer utilities {
@@ -21,6 +27,12 @@
   }
 }
 
+@layer utilities {
+  @font-face {
+    font-family: 'Twemoji';
+    src: url('./TwemojiMozilla-flags.woff2') format('woff2');
+  }
+}
 @utility card {
   @apply bg-base-100 rounded-lg shadow-md;
   .card-body {

@@ -25,6 +25,11 @@ export enum FONTS {
   SYSTEM_UI = 'SystemUI',
 }
 
+export enum EMOJIS {
+  TWEMOJI = 'twemoji',
+  NOTO_COLOR_EMOJI = 'noto-color-emoji',
+}
+
 export enum CONNECTIONS_TABLE_ACCESSOR_KEY {
   Close = 'close',
   Type = 'type',

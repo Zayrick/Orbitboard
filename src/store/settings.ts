@@ -1,6 +1,7 @@
 import {
   CONNECTIONS_TABLE_ACCESSOR_KEY,
   DETAILED_CARD_STYLE,
+  EMOJIS,
   FONTS,
   GLOBAL,
   IP_INFO_API,
@@ -15,7 +16,7 @@ import {
   TEST_URL,
   type THEME,
 } from '@/constant'
-import { getMinCardWidth, isMiddleScreen, isPreferredDark } from '@/helper/utils'
+import { getMinCardWidth, isAppleDevice, isMiddleScreen, isPreferredDark } from '@/helper/utils'
 import type { SourceIPLabel } from '@/types'
 import { useStorage } from '@vueuse/core'
 import { computed } from 'vue'
@@ -53,6 +54,10 @@ export const isSidebarCollapsed = computed({
   },
 })
 export const font = useStorage<FONTS>('config/font', FONTS.MI_SANS)
+export const emoji = useStorage<EMOJIS>(
+  'config/emoji',
+  isAppleDevice ? EMOJIS.TWEMOJI : EMOJIS.NOTO_COLOR_EMOJI,
+)
 export const customBackgroundURL = useStorage('config/custom-background-image', '')
 export const dashboardTransparent = useStorage('config/dashboard-transparent', 90)
 export const autoUpgrade = useStorage('config/auto-upgrade', false)

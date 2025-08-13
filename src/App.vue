@@ -4,7 +4,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { RouterView } from 'vue-router'
 import { useKeyboard } from './composables/keyboard'
 import { useNotification } from './composables/notification'
-import { FONTS } from './constant'
+import { EMOJIS, FONTS } from './constant'
 import { autoImportSettings, importSettingsFromUrl } from './helper/autoImportSettings'
 import { backgroundImage } from './helper/indexeddb'
 import { isPreferredDark } from './helper/utils'
@@ -12,20 +12,37 @@ import {
   blurIntensity,
   dashboardTransparent,
   disablePullToRefresh,
+  emoji,
   font,
   theme,
 } from './store/settings'
 
 const app = ref<HTMLElement>()
 const { tipContent, tipShowModel, tipType } = useNotification()
-const fontClassMap = {
-  [FONTS.MI_SANS]: 'font-MiSans',
-  [FONTS.SARASA_UI]: 'font-SarasaUI',
-  [FONTS.PING_FANG]: 'font-PingFang',
-  [FONTS.FIRA_SANS]: 'font-FiraSans',
-  [FONTS.SYSTEM_UI]: 'font-SystemUI',
-}
-const fontClassName = computed(() => fontClassMap[font.value])
+
+// 字体类名映射表
+const FONT_CLASS_MAP = {
+  [EMOJIS.TWEMOJI]: {
+    [FONTS.MI_SANS]: 'font-MiSans-Twemoji',
+    [FONTS.SARASA_UI]: 'font-SarasaUI-Twemoji',
+    [FONTS.PING_FANG]: 'font-PingFang-Twemoji',
+    [FONTS.FIRA_SANS]: 'font-FiraSans-Twemoji',
+    [FONTS.SYSTEM_UI]: 'font-SystemUI-Twemoji',
+  },
+  [EMOJIS.NOTO_COLOR_EMOJI]: {
+    [FONTS.MI_SANS]: 'font-MiSans-NotoEmoji',
+    [FONTS.SARASA_UI]: 'font-SarasaUI-NotoEmoji',
+    [FONTS.PING_FANG]: 'font-PingFang-NotoEmoji',
+    [FONTS.FIRA_SANS]: 'font-FiraSans-NotoEmoji',
+    [FONTS.SYSTEM_UI]: 'font-SystemUI-NotoEmoji',
+  },
+} as const
+
+const fontClassName = computed(() => {
+  return (
+    FONT_CLASS_MAP[emoji.value]?.[font.value] || FONT_CLASS_MAP[EMOJIS.TWEMOJI][FONTS.SYSTEM_UI]
+  )
+})
 
 const setThemeColor = () => {
   const themeColor = getComputedStyle(app.value!).getPropertyValue('background-color').trim()
