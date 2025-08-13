@@ -138,8 +138,8 @@ import ImportSettings from '@/components/common/ImportSettings.vue'
 import TextInput from '@/components/common/TextInput.vue'
 import EditBackendModal from '@/components/settings/EditBackendModal.vue'
 import LanguageSelect from '@/components/settings/LanguageSelect.vue'
-import { useNotification } from '@/composables/notification'
 import { ROUTE_NAME } from '@/constant'
+import { showNotification } from '@/helper/notification'
 import { getLabelFromBackend, getUrlFromBackend } from '@/helper/utils'
 import router from '@/router'
 import { activeUuid, addBackend, backendList, removeBackend } from '@/store/setup'
@@ -161,8 +161,6 @@ const form = reactive({
   password: '',
   label: '',
 })
-
-const { showNotification } = useNotification()
 
 const showEditModal = ref(false)
 const editingBackendUuid = ref<string>('')

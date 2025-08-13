@@ -1,6 +1,6 @@
 import { updateRuleProviderAPI } from '@/api'
-import { useNotification } from '@/composables/notification'
 import { RULE_TAB_TYPE } from '@/constant'
+import { showNotification } from '@/helper/notification'
 import { fetchRules, ruleProviderList, rules, rulesFilter, rulesTabShow } from '@/store/rules'
 import { displayLatencyInRule, displayNowNodeInRule } from '@/store/settings'
 import { ArrowPathIcon, WrenchScrewdriverIcon } from '@heroicons/vue/24/outline'
@@ -24,7 +24,7 @@ export default defineComponent({
     const hasProviders = computed(() => {
       return ruleProviderList.value.length > 0
     })
-    const { showNotification } = useNotification()
+
     const handlerClickUpgradeAllProviders = async () => {
       if (isUpgrading.value) return
       isUpgrading.value = true
@@ -39,6 +39,7 @@ export default defineComponent({
               const isFinished = updateCount === ruleProviderList.value.length
 
               showNotification({
+                key: 'updateFinishedTip',
                 content: 'updateFinishedTip',
                 params: {
                   number: `${updateCount}/${ruleProviderList.value.length}`,

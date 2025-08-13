@@ -1,5 +1,5 @@
-import { useNotification } from '@/composables/notification'
 import { NOT_CONNECTED, PROXY_CHAIN_DIRECTION, PROXY_TYPE, ROUTE_NAME } from '@/constant'
+import { showNotification } from '@/helper/notification'
 import { timeSaved } from '@/store/overview'
 import { hiddenGroupMap, proxyMap } from '@/store/proxies'
 import {
@@ -171,8 +171,6 @@ export const isHiddenGroup = (group: string) => {
 }
 
 export const handlerUpgradeSuccess = () => {
-  const { showNotification } = useNotification()
-
   showNotification({
     content: 'upgradeSuccess',
     type: 'alert-success',

@@ -191,7 +191,6 @@
 <script setup lang="ts">
 import { disconnectByIdAPI } from '@/api'
 import { useConnections } from '@/composables/connections'
-import { useNotification } from '@/composables/notification'
 import {
   CONNECTION_TAB_TYPE,
   CONNECTIONS_TABLE_ACCESSOR_KEY,
@@ -207,6 +206,7 @@ import {
   getNetworkTypeFromConnection,
   getProcessFromConnection,
 } from '@/helper'
+import { showNotification } from '@/helper/notification'
 import { getIPLabelFromMap } from '@/helper/sourceip'
 import { fromNow, prettyBytesHelper } from '@/helper/utils'
 import { connectionTabShow, renderConnections } from '@/store/connections'
@@ -251,7 +251,7 @@ import { useI18n } from 'vue-i18n'
 import ProxyName from '../proxies/ProxyName.vue'
 
 const { handlerInfo } = useConnections()
-const { showNotification } = useNotification()
+
 const columnWidthMap = useStorage('config/table-column-width', {
   [CONNECTIONS_TABLE_ACCESSOR_KEY.Close]: 50,
   [CONNECTIONS_TABLE_ACCESSOR_KEY.Host]: 320,

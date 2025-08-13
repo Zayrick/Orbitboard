@@ -87,11 +87,11 @@ import LogsCtrl from '@/components/sidebar/LogsCtrl.tsx'
 import ProxiesCtrl from '@/components/sidebar/ProxiesCtrl.tsx'
 import RulesCtrl from '@/components/sidebar/RulesCtrl.tsx'
 import SideBar from '@/components/sidebar/SideBar.vue'
-import { useNotification } from '@/composables/notification'
 import { useSettings } from '@/composables/settings'
 import { useSwipeRouter } from '@/composables/swipe'
 import { PROXY_TAB_TYPE, ROUTE_ICON_MAP, ROUTE_NAME, RULE_TAB_TYPE } from '@/constant'
 import { renderRoutes } from '@/helper'
+import { showNotification } from '@/helper/notification'
 import { getLabelFromBackend, isMiddleScreen } from '@/helper/utils'
 import { fetchConfigs } from '@/store/config'
 import { initConnections } from '@/store/connections'
@@ -145,7 +145,7 @@ watch(
 )
 
 const autoSwitchBackendDialog = ref(false)
-const { showNotification } = useNotification()
+
 const autoSwitchBackend = async () => {
   const otherEnds = backendList.value.filter((end) => end.uuid !== activeUuid.value)
 

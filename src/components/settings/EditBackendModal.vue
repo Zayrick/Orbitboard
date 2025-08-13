@@ -113,7 +113,7 @@
 import { isBackendAvailable } from '@/api'
 import DialogWrapper from '@/components/common/DialogWrapper.vue'
 import TextInput from '@/components/common/TextInput.vue'
-import { useNotification } from '@/composables/notification'
+import { showNotification } from '@/helper/notification'
 import { getLabelFromBackend } from '@/helper/utils'
 import { activeBackend, backendList, updateBackend } from '@/store/setup'
 import type { Backend } from '@/types'
@@ -133,7 +133,6 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
-const { showNotification } = useNotification()
 const { t } = useI18n()
 
 const isVisible = computed({

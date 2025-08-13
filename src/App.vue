@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { XMarkIcon } from '@heroicons/vue/24/outline'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, type Ref, watch } from 'vue'
 import { RouterView } from 'vue-router'
 import { useKeyboard } from './composables/keyboard'
-import { useNotification } from './composables/notification'
 import { EMOJIS, FONTS } from './constant'
 import { autoImportSettings, importSettingsFromUrl } from './helper/autoImportSettings'
 import { backgroundImage } from './helper/indexeddb'
+import { initNotification } from './helper/notification'
 import { isPreferredDark } from './helper/utils'
 import {
   blurIntensity,
@@ -18,7 +17,9 @@ import {
 } from './store/settings'
 
 const app = ref<HTMLElement>()
-const { tipContent, tipShowModel, tipType } = useNotification()
+const toast = ref<HTMLElement>()
+
+initNotification(toast as Ref<HTMLElement>)
 
 // 字体类名映射表
 const FONT_CLASS_MAP = {
@@ -112,10 +113,10 @@ useKeyboard()
   >
     <RouterView />
     <div
-      class="toast-sm toast toast-end toast-top z-9999 max-w-64 text-sm md:translate-y-8"
-      v-if="tipShowModel"
+      ref="toast"
+      class="toast-sm toast toast-end toast-top z-9999 max-w-64 text-sm md:max-w-96 md:translate-y-8"
     >
-      <div
+      <!-- <div
         class="alert flex p-2 pr-5 break-all whitespace-normal"
         :class="tipType"
       >
@@ -126,7 +127,7 @@ useKeyboard()
         >
           <XMarkIcon class="size-3 cursor-pointer" />
         </button>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

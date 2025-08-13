@@ -1,7 +1,5 @@
-import { useNotification } from '@/composables/notification'
+import { showNotification } from '@/helper/notification'
 import { useStorage } from '@vueuse/core'
-
-const { showNotification } = useNotification()
 const IMPORT_SETTINGS_URL_KEY = 'config/import-settings-url'
 
 export const DEFAULT_SETTINGS_URL = './zashboard-settings.json'

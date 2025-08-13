@@ -1,5 +1,5 @@
-import { useNotification } from '@/composables/notification'
 import { ROUTE_NAME } from '@/constant'
+import { showNotification } from '@/helper/notification'
 import { getUrlFromBackend } from '@/helper/utils'
 import router from '@/router'
 import { autoUpgradeCore, checkUpgradeCore } from '@/store/settings'
@@ -23,8 +23,6 @@ axios.interceptors.response.use(
       message: string
     }>,
   ) => {
-    const { showNotification } = useNotification()
-
     if (error.status === 401 && activeUuid.value) {
       const currentBackendUuid = activeUuid.value
       activeUuid.value = null
@@ -37,6 +35,7 @@ axios.interceptors.response.use(
       })
     } else if (!error.config?.url?.endsWith('/delay')) {
       showNotification({
+        key: 'backend-error',
         content: error.response?.data?.message || error.message,
         type: 'alert-error',
       })

@@ -8,7 +8,6 @@ import {
   isSingBox,
   selectProxyAPI,
 } from '@/api'
-import { useNotification } from '@/composables/notification'
 import {
   GLOBAL,
   IPV6_TEST_URL,
@@ -18,6 +17,7 @@ import {
   TEST_URL,
 } from '@/constant'
 import { isProxyGroup } from '@/helper'
+import { showNotification } from '@/helper/notification'
 import type { Proxy, ProxyProvider } from '@/types'
 import { useStorage } from '@vueuse/core'
 import { debounce, last } from 'lodash'
@@ -181,7 +181,6 @@ const latencyTestForSingle = async (proxyName: string, url: string, timeout: num
 
   return await fetchProxyLatencyAPI(independentLatencyTest.value ? proxyName : now, url, timeout)
 }
-const { showNotification } = useNotification()
 
 export const proxyLatencyTest = async (
   proxyName: string,
@@ -206,6 +205,7 @@ const latencyTip = (finished: number, total: number, failed: number) => {
   if (isFinished) {
     showNotification({
       content: 'testFinishedResultTip',
+      key: 'latencyTestResult',
       params: {
         success: `${total - failed}`,
         failed: `${failed}`,
@@ -216,6 +216,7 @@ const latencyTip = (finished: number, total: number, failed: number) => {
   } else {
     showNotification({
       content: 'testFinishedTip',
+      key: 'latencyTestResult',
       params: {
         number: `${finished}/${total}`,
       },
