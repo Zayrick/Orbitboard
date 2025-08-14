@@ -7,18 +7,18 @@
     />
     <ArrowRightCircleIcon
       class="h-4 w-4 shrink-0"
-      v-else-if="!mobile"
+      v-else-if="!mobile || !manageHiddenGroup"
     />
 
     <ProxyName
       :name="proxyGroup.now"
-      class="badge badge-sm gap-0 md:p-2.5"
+      class="text-base-content/80 text-xs md:text-sm"
       @mouseenter="tipForNow"
     />
   </template>
   <template v-else-if="proxyGroup.type.toLowerCase() === PROXY_TYPE.LoadBalance">
     <CheckCircleIcon class="h-4 w-4 shrink-0" />
-    <span class="badge badge-sm">
+    <span class="text-base-content/80 text-xs md:text-sm">
       {{ $t('loadBalance') }}
     </span>
   </template>
@@ -28,6 +28,7 @@
 import { PROXY_TYPE } from '@/constant'
 import { useTooltip } from '@/helper/tooltip'
 import { getNowProxyNodeName, proxyMap } from '@/store/proxies'
+import { manageHiddenGroup } from '@/store/settings'
 import { ArrowRightCircleIcon, CheckCircleIcon, LockClosedIcon } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'

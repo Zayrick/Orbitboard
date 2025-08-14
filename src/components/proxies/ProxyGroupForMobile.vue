@@ -11,7 +11,7 @@
       class="bg-base-300/50 fixed inset-0 z-40 overflow-hidden"
     ></div>
     <div
-      class="card absolute overflow-hidden transition-[max-height,width,transform] duration-250 ease-in-out will-change-[max-height,width,transform]"
+      class="card absolute overflow-hidden transition-[width,transform,max-height] duration-200 ease-out will-change-transform"
       :class="modalMode && blurIntensity < 5 && 'backdrop-blur-sm!'"
       :style="cardStyle"
       @contextmenu.prevent.stop="handlerLatencyTest"
@@ -21,10 +21,10 @@
       <div class="flex h-22 shrink-0 flex-col p-2">
         <div class="flex flex-1">
           <div class="flex flex-1 flex-col gap-1 overflow-hidden">
-            <div class="text-md truncate">
+            <div class="text-md flex-1 truncate">
               {{ proxyGroup.name }}
             </div>
-            <span class="text-base-content/60 shrink-0 text-xs">
+            <span class="text-base-content/60 flex-1 shrink-0 text-xs">
               {{ proxyGroup.type }} ({{ proxiesCount }})
             </span>
           </div>
@@ -39,10 +39,6 @@
 
         <div class="flex items-center">
           <div class="flex flex-1 items-center gap-1 truncate">
-            <ProxyGroupNow
-              :name="proxyGroup.name"
-              :mobile="true"
-            />
             <button
               v-if="manageHiddenGroup"
               class="btn btn-circle btn-xs z-10"
@@ -57,6 +53,10 @@
                 class="h-3 w-3"
               />
             </button>
+            <ProxyGroupNow
+              :name="proxyGroup.name"
+              :mobile="true"
+            />
           </div>
           <LatencyTag
             :class="twMerge('bg-base-200/50 z-10 hover:shadow-sm')"
@@ -69,10 +69,14 @@
       </div>
 
       <div
-        v-if="displayContent"
-        class="overflow-x-hidden overflow-y-auto overscroll-contain p-2"
-        :class="SCROLLABLE_PARENT_CLASS"
-        style="width: calc(100vw - 1rem)"
+        v-show="displayContent"
+        class="overflow-x-hidden overflow-y-auto overscroll-contain p-2 transition-opacity duration-200 ease-out"
+        :class="[SCROLLABLE_PARENT_CLASS, 'will-change-opacity']"
+        :style="{
+          width: 'calc(100vw - 1rem)',
+          opacity: contentOpacity,
+          contain: 'layout style paint',
+        }"
         ref="cardContentRef"
         @touchmove.stop="preventDefaultForContent"
         @wheel.stop="preventDefaultForContent"
@@ -83,7 +87,6 @@
           :now="proxyGroup.now"
           :render-proxies="renderProxies"
           :show-full-content="showAllContent"
-          style="max-height: unset !important"
         />
       </div>
     </div>
@@ -117,6 +120,7 @@ const isLatencyTesting = ref(false)
 const modalMode = ref(false)
 const displayContent = ref(false)
 const showAllContent = ref(modalMode.value)
+const contentOpacity = ref(0)
 
 const cardWrapperRef = ref()
 const cardRef = ref()
@@ -125,102 +129,114 @@ const overflowY = ref(false)
 
 const INIT_STYLE = {
   width: '100%',
-  maxHeight: '100%',
+  maxHeight: '5.5rem',
   top: 0,
   left: 0,
   right: 0,
   bottom: 0,
-  zIndex: 10,
+  zIndex: 1,
+  transform: 'translate3d(0, 0, 0) scale(1)',
 }
 const cardStyle = ref<Record<string, string | number>>({
   ...INIT_STYLE,
 })
+
 const calcCardStyle = () => {
-  if (!cardWrapperRef.value) return
-  if (!modalMode.value) {
+  requestAnimationFrame(() => {
+    if (!cardWrapperRef.value) return
+
+    if (!modalMode.value) {
+      cardStyle.value = {
+        ...cardStyle.value,
+        width: '100%',
+        maxHeight: '5.5rem',
+        transform: 'translate3d(0, 0, 0) scale(1)',
+        zIndex: 50,
+      }
+      return
+    }
+
+    const manyProxies = renderProxies.value.length > 4
+    const { left, top, bottom } = cardWrapperRef.value.getBoundingClientRect()
+    const { innerHeight, innerWidth } = window
+
+    const minSafeArea = innerHeight * 0.15
+    const baseLine = innerHeight * 0.2
+    const maxSafeArea = innerHeight * 0.3
+
+    const isLeft = left < innerWidth / 3
+    const isTop = (top + bottom) * 0.5 < innerHeight * (manyProxies ? 0.7 : 0.5)
+    const transformOrigin = isLeft
+      ? isTop
+        ? 'top left'
+        : 'bottom left'
+      : isTop
+        ? 'top right'
+        : 'bottom right'
+    const positionKeyX = isLeft ? 'left' : 'right'
+    const positionKeyY = isTop ? 'top' : 'bottom'
+
+    let transformValueY = 0
+    let verticalOffset = 0
+
+    if (isTop) {
+      if (top < minSafeArea || (top > maxSafeArea && manyProxies)) {
+        transformValueY = baseLine - top
+      }
+      verticalOffset = top + transformValueY
+    } else {
+      const minSafeBottom = innerHeight - minSafeArea
+      const maxSafeBottom = innerHeight - maxSafeArea
+      const baseLineBottom = innerHeight - baseLine
+
+      if (bottom > minSafeBottom || (bottom < maxSafeBottom && manyProxies)) {
+        transformValueY = baseLineBottom - bottom
+      }
+      verticalOffset = innerHeight - bottom - transformValueY
+    }
+
     cardStyle.value = {
-      ...cardStyle.value,
-      width: '100%',
-      maxHeight: '100%',
-      transform: 'translateY(0)',
-      transition:
-        'width 0.25s ease-in-out,transform 0.25s ease-in-out,max-height 0.18s ease-in-out!important',
+      width: 'calc(100vw - 1rem)',
+      maxHeight: `${innerHeight - verticalOffset - 112}px`,
+      transform: `translate3d(0, ${transformValueY}px, 0) scale(1)`,
+      transformOrigin,
+      zIndex: 50,
+      [positionKeyY]: 0,
+      [positionKeyX]: 0,
     }
-    return
-  }
-  const manyProxies = renderProxies.value.length > 4
-
-  const { left, top, bottom } = cardWrapperRef.value.getBoundingClientRect()
-  const { innerHeight, innerWidth } = window
-
-  const minSafeArea = innerHeight * 0.15
-  const baseLine = innerHeight * 0.2
-  const maxSafeArea = innerHeight * 0.3
-
-  const isLeft = left < innerWidth / 3
-  const isTop = (top + bottom) * 0.5 < innerHeight * (manyProxies ? 0.7 : 0.5)
-  const transformOrigin = isLeft
-    ? isTop
-      ? 'top left'
-      : 'bottom left'
-    : isTop
-      ? 'top right'
-      : 'bottom right'
-  const positionKeyX = isLeft ? 'left' : 'right'
-  const positionKeyY = isTop ? 'top' : 'bottom'
-
-  let transformValueY = 0
-  let verticalOffset = 0
-
-  if (isTop) {
-    if (top < minSafeArea || (top > maxSafeArea && manyProxies)) {
-      transformValueY = baseLine - top
-    }
-    verticalOffset = top + transformValueY
-  } else {
-    const minSafeBottom = innerHeight - minSafeArea
-    const maxSafeBottom = innerHeight - maxSafeArea
-    const baseLineBottom = innerHeight - baseLine
-
-    if (bottom > minSafeBottom || (bottom < maxSafeBottom && manyProxies)) {
-      transformValueY = baseLineBottom - bottom
-    }
-    verticalOffset = innerHeight - bottom - transformValueY
-  }
-
-  cardStyle.value = {
-    width: 'calc(100vw - 1rem)',
-    maxHeight: `calc(100dvh - ${verticalOffset}px - 7rem)`,
-    transform: `translateY(${transformValueY}px)`,
-    transformOrigin,
-    zIndex: 50,
-    [positionKeyY]: 0,
-    [positionKeyX]: 0,
-  }
+  })
 }
 
 const handlerTransitionEnd = (e: TransitionEvent) => {
   if (e.propertyName !== 'width') return
-  showAllContent.value = modalMode.value
-  if (!modalMode.value) {
-    cardStyle.value = {
-      ...INIT_STYLE,
-    }
-    displayContent.value = false
-    return
-  }
 
-  nextTick(() => {
-    if (!cardContentRef.value) return
-    overflowY.value = cardContentRef.value.scrollHeight > cardContentRef.value.clientHeight
-  })
+  if (modalMode.value) {
+    contentOpacity.value = 1
+    showAllContent.value = true
+    nextTick(() => {
+      if (!cardContentRef.value) return
+      overflowY.value = cardContentRef.value.scrollHeight > cardContentRef.value.clientHeight
+    })
+  } else {
+    displayContent.value = false
+
+    nextTick(() => {
+      cardStyle.value = {
+        ...INIT_STYLE,
+      }
+    })
+  }
 }
 
 const handlerGroupClick = async () => {
   modalMode.value = !modalMode.value
+
   if (modalMode.value) {
     displayContent.value = true
   }
+  showAllContent.value = false
+  contentOpacity.value = 0
+
   calcCardStyle()
 }
 
