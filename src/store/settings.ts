@@ -54,7 +54,19 @@ export const isSidebarCollapsed = computed({
     isSidebarCollapsedConfig.value = value
   },
 })
-export const font = useStorage<FONTS>('config/font', FONTS.MI_SANS)
+const fontConfig = useStorage<FONTS>('config/font', FONTS.MI_SANS)
+export const font = computed({
+  get: () => {
+    const mode = import.meta.env.MODE
+    if (Object.values(FONTS).includes(mode as FONTS)) {
+      return mode as FONTS
+    }
+    return fontConfig.value
+  },
+  set: (val) => {
+    fontConfig.value = val
+  },
+})
 export const emoji = useStorage<EMOJIS>(
   'config/emoji',
   IS_APPLE_DEVICE ? EMOJIS.TWEMOJI : EMOJIS.NOTO_COLOR_EMOJI,
