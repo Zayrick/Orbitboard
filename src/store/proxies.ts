@@ -42,17 +42,19 @@ export const IPv6Map = useStorage<Record<string, boolean>>('config/ipv6-map', {}
 export const hiddenGroupMap = useStorage<Record<string, boolean>>('config/hidden-group-map', {})
 export const proxyProviederList = ref<ProxyProvider[]>([])
 
-export const getTestUrl = (groupName?: string) => {
-  const defaultUrl = speedtestUrl.value || TEST_URL
+const speedtestUrlWithDefault = computed(() => {
+  return speedtestUrl.value || TEST_URL
+})
 
+export const getTestUrl = (groupName?: string) => {
   if (!groupName || !independentLatencyTest.value) {
-    return defaultUrl
+    return speedtestUrlWithDefault.value
   }
 
   const proxyNode =
     proxyMap.value[groupName] || proxyProviederList.value.find((p) => p.name === groupName)
 
-  return proxyNode?.testUrl || defaultUrl
+  return proxyNode?.testUrl || speedtestUrlWithDefault.value
 }
 
 export const getLatencyByName = (proxyName: string, groupName?: string) => {
@@ -184,7 +186,7 @@ const latencyTestForSingle = async (proxyName: string, url: string, timeout: num
 
 export const proxyLatencyTest = async (
   proxyName: string,
-  url = speedtestUrl.value,
+  url = speedtestUrlWithDefault.value,
   timeout = speedtestTimeout.value,
 ) => {
   const res = await latencyTestForSingle(proxyName, url, timeout)
@@ -229,7 +231,7 @@ const latencyTip = (finished: number, total: number, failed: number) => {
 const fetchProxiesDebounced = debounce(fetchProxies, 800)
 const proxyLatencyTestDebounced = async (
   proxyName: string,
-  url = speedtestUrl.value,
+  url = speedtestUrlWithDefault.value,
   timeout = speedtestTimeout.value,
 ) => {
   const res = await latencyTestForSingle(proxyName, url, timeout)
@@ -237,7 +239,7 @@ const proxyLatencyTestDebounced = async (
   return res
 }
 
-const testLatencyOneByOneWithTip = async (nodes: string[], url = speedtestUrl.value) => {
+const testLatencyOneByOneWithTip = async (nodes: string[], url = speedtestUrlWithDefault.value) => {
   let testDone = 0
   let testFailed = 0
 
