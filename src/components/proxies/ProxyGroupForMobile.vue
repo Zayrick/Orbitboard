@@ -9,7 +9,7 @@
     <div
       v-if="modalMode"
       class="bg-base-300/50 fixed inset-0 z-40 overflow-hidden"
-    ></div>
+    />
     <div
       class="card absolute overflow-hidden transition-[width,transform,max-height] duration-200 ease-out will-change-transform"
       :class="modalMode && blurIntensity < 5 && 'backdrop-blur-sm!'"
@@ -18,25 +18,19 @@
       @transitionend="handlerTransitionEnd"
       ref="cardRef"
     >
-      <div class="flex h-22 shrink-0 flex-col p-2">
-        <div class="flex flex-1">
-          <div class="flex flex-1 flex-col gap-1 overflow-hidden">
-            <div class="text-md flex-1 truncate">
-              {{ proxyGroup.name }}
-            </div>
-            <span class="text-base-content/60 flex-1 shrink-0 text-xs">
-              {{ proxyGroup.type }} ({{ proxiesCount }})
-            </span>
-          </div>
-          <ProxyIcon
-            v-if="proxyGroup?.icon"
-            :icon="proxyGroup.icon"
-            :size="40"
-            :margin="0"
-            class="shrink-0"
-          />
+      <div class="relative flex h-22 shrink-0 flex-col justify-between p-2">
+        <div
+          class="text-md truncate"
+          :class="proxyGroup.icon && 'pr-10'"
+        >
+          {{ proxyGroup.name }}
         </div>
-
+        <div
+          class="text-base-content/60 truncate text-xs"
+          :class="proxyGroup.icon && 'pr-10'"
+        >
+          {{ proxyGroup.type }} ({{ proxiesCount }})
+        </div>
         <div class="flex items-center">
           <div class="flex flex-1 items-center gap-1 truncate">
             <button
@@ -66,6 +60,13 @@
             @click.stop="handlerLatencyTest"
           />
         </div>
+        <ProxyIcon
+          v-if="proxyGroup?.icon"
+          :icon="proxyGroup.icon"
+          :size="40"
+          :margin="0"
+          class="absolute top-2 right-2"
+        />
       </div>
 
       <div
@@ -129,7 +130,7 @@ const overflowY = ref(false)
 
 const INIT_STYLE = {
   width: '100%',
-  maxHeight: '5.5rem',
+  maxHeight: '100%',
   top: 0,
   left: 0,
   right: 0,
@@ -149,7 +150,7 @@ const calcCardStyle = () => {
       cardStyle.value = {
         ...cardStyle.value,
         width: '100%',
-        maxHeight: '5.5rem',
+        maxHeight: '100%',
         transform: 'translate3d(0, 0, 0) scale(1)',
         zIndex: 50,
       }

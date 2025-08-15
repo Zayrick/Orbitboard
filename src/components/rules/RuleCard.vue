@@ -1,6 +1,6 @@
 <template>
-  <div class="card hover:bg-base-200 gap-1 p-2 text-sm">
-    <div class="min-h-6">
+  <div class="card hover:bg-base-200 gap-2 p-2 text-sm">
+    <div class="min-h-5 leading-5">
       <span>{{ index }}.</span>
       <span class="ml-2">{{ rule.type }}</span>
       <span
@@ -30,11 +30,17 @@
         <ArrowPathIcon class="h-4 w-4" />
       </button>
     </div>
-    <div class="badge badge-sm flex items-center gap-1 p-2.5">
-      <ProxyName :name="rule.proxy" />
+    <div class="flex items-center gap-1">
+      <ProxyName
+        :name="rule.proxy"
+        class="badge badge-sm gap-0"
+      />
       <template v-if="proxyNode?.now && displayNowNodeInRule">
         <ArrowRightCircleIcon class="h-4 w-4" />
-        <ProxyName :name="getNowProxyNodeName(rule.proxy)" />
+        <ProxyName
+          :name="getNowProxyNodeName(rule.proxy)"
+          class="badge badge-sm gap-0"
+        />
       </template>
       <span
         v-if="latency !== NOT_CONNECTED && displayLatencyInRule"
