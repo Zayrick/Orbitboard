@@ -30,7 +30,7 @@
           </button>
         </div>
         <LatencyTag
-          :class="twMerge('bg-base-200/50 z-10 hover:shadow-sm')"
+          :class="twMerge('bg-base-200/50 hover:bg-base-200 z-10')"
           :loading="isLatencyTesting"
           :name="proxyGroup.now"
           :group-name="proxyGroup.name"

@@ -71,6 +71,11 @@ const QUERYING_IP_INFO = {
   ipWithPrivacy: [t('getting'), ''],
 }
 
+const FAILED_IP_INFO = {
+  ip: [t('testFailedTip'), ''],
+  ipWithPrivacy: [t('testFailedTip'), ''],
+}
+
 const getIPs = () => {
   ipForChina.value = {
     ...QUERYING_IP_INFO,
@@ -78,18 +83,30 @@ const getIPs = () => {
   ipForGlobal.value = {
     ...QUERYING_IP_INFO,
   }
-  getIPInfo().then((res) => {
-    ipForGlobal.value = {
-      ipWithPrivacy: [`${res.country} ${res.organization}`, res.ip],
-      ip: [`${res.country} ${res.organization}`, '***.***.***.***'],
-    }
-  })
-  getIPFromIpipnetAPI().then((res) => {
-    ipForChina.value = {
-      ipWithPrivacy: [res.data.location.join(' '), res.data.ip],
-      ip: [`${res.data.location[0]} ** ** **`, '***.***.***.***'],
-    }
-  })
+  getIPInfo()
+    .then((res) => {
+      ipForGlobal.value = {
+        ipWithPrivacy: [`${res.country} ${res.organization}`, res.ip],
+        ip: [`${res.country} ${res.organization}`, '***.***.***.***'],
+      }
+    })
+    .catch(() => {
+      ipForGlobal.value = {
+        ...FAILED_IP_INFO,
+      }
+    })
+  getIPFromIpipnetAPI()
+    .then((res) => {
+      ipForChina.value = {
+        ipWithPrivacy: [res.data.location.join(' '), res.data.ip],
+        ip: [`${res.data.location[0]} ** ** **`, '***.***.***.***'],
+      }
+    })
+    .catch(() => {
+      ipForChina.value = {
+        ...FAILED_IP_INFO,
+      }
+    })
 }
 
 watch(IPInfoAPI, () => {
