@@ -49,7 +49,7 @@
 }
 
 @utility badge {
-  @apply bg-base-200/75;
+  @apply bg-base-200/80;
 }
 
 @utility select {

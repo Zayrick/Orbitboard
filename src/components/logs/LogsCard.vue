@@ -1,21 +1,21 @@
 <template>
   <div class="card hover:bg-base-200 mb-1 block p-2 text-sm break-all">
-    <span
-      class="inline-block text-left"
-      :style="{ minWidth: `${(seqWithPadding.length + 1) * 0.62}em` }"
-    >
-      {{ seqWithPadding }}.
-    </span>
-    <span class="badge badge-sm text-main ml-2 inline-block min-w-14">
-      {{ log.time }}
-    </span>
-    <span
-      class="badge badge-sm ml-2 inline-block min-w-17 text-center"
-      :class="textColorMapForType[log.type as keyof typeof textColorMapForType]"
-    >
-      {{ log.type }}
-    </span>
-    <span class="max-md:mt-2 max-md:block md:ml-2">{{ log.payload }}</span>
+    <div class="inline-flex items-center gap-2">
+      <div :style="{ minWidth: `${(seqWithPadding.length + 1) * 0.62}em` }">
+        {{ seqWithPadding }}.
+      </div>
+      <span class="badge badge-sm text-main min-w-14">
+        {{ log.time }}
+      </span>
+      <span
+        class="badge badge-sm min-w-17"
+        :class="textColorMapForType[log.type as keyof typeof textColorMapForType]"
+      >
+        {{ log.type }}
+      </span>
+    </div>
+
+    <span class="leading-6 max-md:mt-2 max-md:block md:ml-2">{{ log.payload }}</span>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
-  <div class="card hover:bg-base-200 w-full gap-3 p-2 text-sm">
-    <div class="flex h-5 items-center gap-2 leading-5">
+  <div class="card hover:bg-base-200 w-full gap-2 p-2 text-sm">
+    <div class="flex h-6 items-center gap-2 leading-6">
       <span>{{ index }}.</span>
       <span class="text-main">{{ ruleProvider.name }}</span>
       <span class="text-base-content/80 text-xs"> ({{ ruleProvider.ruleCount }}) </span>
@@ -12,9 +12,19 @@
         <ArrowPathIcon class="h-4 w-4" />
       </button>
     </div>
-    <div class="text-base-content/80 flex h-4 items-center gap-2 text-xs">
-      <span class="badge badge-sm min-w-16">{{ ruleProvider.behavior }}</span>
-      <span class="badge badge-sm min-w-12">{{ ruleProvider.vehicleType }}</span>
+    <div class="text-base-content/80 flex h-5 items-center gap-2 text-xs">
+      <span
+        v-if="ruleProvider.behavior"
+        class="badge badge-sm min-w-16"
+      >
+        {{ ruleProvider.behavior }}
+      </span>
+      <span
+        v-if="ruleProvider.vehicleType"
+        class="badge badge-sm min-w-12"
+      >
+        {{ ruleProvider.vehicleType }}
+      </span>
       <span>{{ $t('updated') }} {{ fromNow(ruleProvider.updatedAt) }}</span>
     </div>
   </div>

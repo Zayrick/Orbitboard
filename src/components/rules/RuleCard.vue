@@ -1,6 +1,6 @@
 <template>
   <div class="card hover:bg-base-200 gap-2 p-2 text-sm">
-    <div class="min-h-5 leading-5">
+    <div class="min-h-6 leading-6">
       <span>{{ index }}.</span>
       <span class="ml-2">{{ rule.type }}</span>
       <span
@@ -23,14 +23,14 @@
       <button
         v-if="isUpdateableRuleSet"
         :class="
-          twMerge('btn btn-circle btn-ghost btn-xs -mb-1 ml-1', isUpdating ? 'animate-spin' : '')
+          twMerge('btn btn-circle btn-ghost btn-xs -mt-1 ml-1', isUpdating ? 'animate-spin' : '')
         "
         @click="updateRuleProviderClickHandler"
       >
         <ArrowPathIcon class="h-4 w-4" />
       </button>
     </div>
-    <div class="flex items-center gap-1">
+    <div class="flex items-center gap-2">
       <ProxyName
         :name="rule.proxy"
         class="badge badge-sm gap-0"
