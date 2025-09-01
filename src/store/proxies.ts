@@ -31,7 +31,7 @@ import {
   speedtestTimeout,
   speedtestUrl,
 } from './settings'
-import { fetchSmartGroupWeights } from './smart'
+import { initSmartWeights } from './smart'
 
 export const proxiesFilter = ref('')
 export const proxiesTabShow = ref(PROXY_TAB_TYPE.PROXIES)
@@ -132,6 +132,8 @@ export const fetchProxies = async () => {
 
   proxyProviederList.value = providers
 
+  const smartGroups: string[] = []
+
   Object.entries(proxyMap.value).forEach(([name, proxy]) => {
     const iconReflect = iconReflectList.value.find((icon) => icon.name === name)
 
@@ -143,9 +145,13 @@ export const fetchProxies = async () => {
     }
 
     if (proxy.type.toLowerCase() === PROXY_TYPE.Smart) {
-      fetchSmartGroupWeights(name)
+      smartGroups.push(name)
     }
   })
+
+  if (smartGroups.length > 0) {
+    initSmartWeights(smartGroups)
+  }
 }
 
 export const handlerProxySelect = async (proxyGroupName: string, proxyName: string) => {

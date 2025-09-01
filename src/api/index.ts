@@ -16,6 +16,8 @@ axios.interceptors.request.use((config) => {
   return config
 })
 
+const ignoreNotificationUrls = ['/delay', '/weights']
+
 axios.interceptors.response.use(
   null,
   (
@@ -33,7 +35,7 @@ axios.interceptors.response.use(
       nextTick(() => {
         showNotification({ content: 'unauthorizedTip' })
       })
-    } else if (!error.config?.url?.endsWith('/delay')) {
+    } else if (!ignoreNotificationUrls.some((url) => error.config?.url?.endsWith(url))) {
       const errorMessage = error.response?.data?.message || error.message
 
       showNotification({
@@ -105,6 +107,14 @@ export const fetchProxyGroupLatencyAPI = (proxyName: string, url: string, timeou
   })
 }
 
+export const fetchSmartWeightsAPI = () => {
+  return axios.get<{
+    message: string
+    weights: Record<string, Record<string, string>>
+  }>(`/group/weights`)
+}
+
+// deprecated
 export const fetchSmartGroupWeightsAPI = (proxyName: string) => {
   return axios.get<{
     message: string
