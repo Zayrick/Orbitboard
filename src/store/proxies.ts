@@ -66,8 +66,20 @@ export const getLatencyByName = (proxyName: string, groupName?: string) => {
 export const getHistoryByName = (proxyName: string, groupName?: string) => {
   if (independentLatencyTest.value && !isSingBox.value) {
     const proxyNode = proxyMap.value[proxyName]
+    const url = getTestUrl(groupName)
 
-    return proxyNode?.extra?.[getTestUrl(groupName)]?.history
+    if (!proxyNode?.extra) {
+      proxyNode.extra = {}
+    }
+
+    if (!proxyNode.extra?.[url]) {
+      proxyNode.extra[url] = {
+        history: [],
+        alive: true,
+      }
+    }
+
+    return proxyNode?.extra?.[url]?.history
   }
 
   const nowNode = proxyMap.value[getNowProxyNodeName(proxyName)]
@@ -207,33 +219,6 @@ export const proxyLatencyTest = async (
   }
 }
 
-const latencyTip = (finished: number, total: number, failed: number) => {
-  const isFinished = finished === total
-
-  if (isFinished) {
-    showNotification({
-      content: 'testFinishedResultTip',
-      key: 'latencyTestResult',
-      params: {
-        success: `${total - failed}`,
-        failed: `${failed}`,
-      },
-      type: failed ? 'alert-warning' : 'alert-success',
-      timeout: 2000,
-    })
-  } else {
-    showNotification({
-      content: 'testFinishedTip',
-      key: 'latencyTestResult',
-      params: {
-        number: `${finished}/${total}`,
-      },
-      type: 'alert-info',
-      timeout: 0,
-    })
-  }
-}
-
 const setHistory = (proxyName: string, delay: number) => {
   const history = getHistoryByName(proxyName)
   const now = new Date()
@@ -244,31 +229,44 @@ const setHistory = (proxyName: string, delay: number) => {
   })
 }
 
+const TIP_KEY = 'testLatencyOneByOneWithTip'
 const testLatencyOneByOneWithTip = async (nodes: string[], url = speedtestUrlWithDefault.value) => {
+  const total = nodes.length
   let testDone = 0
   let testFailed = 0
 
   await Promise.allSettled(
     nodes.map(async (name) => {
-      try {
-        const res = await latencyTestForSingle(name, url, Math.min(3000, speedtestTimeout.value))
-        testDone++
-        if (res.status !== 200) {
-          testFailed++
-          setHistory(name, NOT_CONNECTED)
-        } else {
-          setHistory(name, res.data.delay)
-        }
-        latencyTip(testDone, nodes.length, testFailed)
-        return res
-      } catch (error) {
-        testDone++
+      const res = await latencyTestForSingle(name, url, Math.min(3000, speedtestTimeout.value))
+
+      if (res.status !== 200) {
         testFailed++
-        latencyTip(testDone, nodes.length, testFailed)
-        throw error
+        setHistory(name, NOT_CONNECTED)
+      } else {
+        setHistory(name, res.data.delay)
       }
+      testDone++
+      showNotification({
+        content: 'testFinishedTip',
+        key: TIP_KEY,
+        params: {
+          number: `${testDone}/${total}`,
+        },
+        type: 'alert-info',
+        timeout: 0,
+      })
     }),
   )
+  showNotification({
+    content: 'testFinishedResultTip',
+    key: TIP_KEY,
+    params: {
+      success: `${total - testFailed}`,
+      failed: `${testFailed}`,
+    },
+    type: testFailed ? 'alert-warning' : 'alert-success',
+    timeout: 2000,
+  })
   await fetchProxies()
 }
 
