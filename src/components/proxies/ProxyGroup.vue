@@ -57,13 +57,12 @@
         @nodeclick="handlerProxySelect(name, $event)"
       />
     </template>
-    <template v-slot:content="{ showFullContent }">
+    <template v-slot:content>
       <Component
         :is="groupProxiesByProvider ? ProxiesByProvider : ProxiesContent"
         :name="name"
         :now="proxyGroup.now"
         :render-proxies="renderProxies"
-        :show-full-content="showFullContent"
       />
     </template>
   </CollapseCard>

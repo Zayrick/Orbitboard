@@ -1,6 +1,7 @@
 <template>
   <div
-    class="max-sm:scrollbar-hidden h-full overflow-y-scroll p-2 sm:pr-1"
+    class="max-sm:scrollbar-hidden h-full p-2 sm:pr-1"
+    :class="disableProxiesPageScroll ? 'overflow-y-hidden' : 'overflow-y-scroll'"
     ref="proxiesRef"
     @scroll.passive="handleScroll"
   >
@@ -38,7 +39,7 @@
 import ProxyGroup from '@/components/proxies/ProxyGroup.vue'
 import ProxyGroupForMobile from '@/components/proxies/ProxyGroupForMobile.vue'
 import ProxyProvider from '@/components/proxies/ProxyProvider.vue'
-import { renderGroups } from '@/composables/proxies'
+import { disableProxiesPageScroll, isProxiesPageMounted, renderGroups } from '@/composables/proxies'
 import { PROXY_TAB_TYPE } from '@/constant'
 import { isMiddleScreen } from '@/helper/utils'
 import { fetchProxies, proxiesTabShow } from '@/store/proxies'
@@ -62,7 +63,10 @@ const waitTickUntilReady = (startTime = performance.now()) => {
     performance.now() - startTime > 300 ||
     proxiesRef.value.scrollHeight > scrollStatus.value[proxiesTabShow.value]
   ) {
-    proxiesRef.value.scrollTop = scrollStatus.value[proxiesTabShow.value]
+    proxiesRef.value.scrollTo({
+      top: scrollStatus.value[proxiesTabShow.value],
+      behavior: 'smooth',
+    })
   } else {
     requestAnimationFrame(() => {
       waitTickUntilReady(startTime)
@@ -76,8 +80,16 @@ watch(proxiesTabShow, () =>
   }),
 )
 
+isProxiesPageMounted.value = false
+
 onMounted(() => {
-  waitTickUntilReady()
+  setTimeout(() => {
+    isProxiesPageMounted.value = true
+    nextTick(() => {
+      waitTickUntilReady()
+      fetchProxies()
+    })
+  })
 })
 
 const isSmallScreen = computed(() => {
@@ -111,6 +123,4 @@ const displayTwoColumns = computed(() => {
 const filterContent: <T>(all: T[], target: number) => T[] = (all, target) => {
   return all.filter((_, index: number) => index % 2 === target)
 }
-
-fetchProxies()
 </script>

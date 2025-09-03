@@ -76,7 +76,7 @@ export const scrollIntoCenter = (el: HTMLElement) => {
   })
 }
 
-const findScrollableParent = (el: HTMLElement | null): HTMLElement | null => {
+export const findScrollableParent = (el: HTMLElement | null): HTMLElement | null => {
   const parent = el?.parentElement
 
   if (

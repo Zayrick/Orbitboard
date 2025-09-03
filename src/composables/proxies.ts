@@ -5,7 +5,7 @@ import { configs } from '@/store/config'
 import { proxiesTabShow, proxyGroupList, proxyMap, proxyProviederList } from '@/store/proxies'
 import { customGlobalNode, displayGlobalByMode, manageHiddenGroup } from '@/store/settings'
 import { isEmpty } from 'lodash'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const filterGroups = (all: string[]) => {
   if (manageHiddenGroup.value) {
@@ -15,7 +15,7 @@ const filterGroups = (all: string[]) => {
   return all.filter((name) => !isHiddenGroup(name))
 }
 
-export const renderGroups = computed(() => {
+const getRenderGroups = () => {
   if (isEmpty(proxyMap.value)) {
     return []
   }
@@ -35,4 +35,16 @@ export const renderGroups = computed(() => {
   }
 
   return filterGroups([...proxyGroupList.value, GLOBAL])
+}
+
+export const disableProxiesPageScroll = ref(false)
+export const isProxiesPageMounted = ref(false)
+export const renderGroups = computed(() => {
+  const groups = getRenderGroups()
+
+  if (isProxiesPageMounted.value) {
+    return groups
+  }
+
+  return groups.slice(0, 16)
 })

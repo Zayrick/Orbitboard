@@ -3,8 +3,6 @@
     class="relative h-22 cursor-pointer"
     ref="cardWrapperRef"
     @click="handlerGroupClick"
-    @touchmove="preventDefault"
-    @wheel="preventDefault"
   >
     <div
       v-if="modalMode"
@@ -70,24 +68,20 @@
       </div>
 
       <div
-        v-show="displayContent"
-        class="overflow-x-hidden overflow-y-auto overscroll-contain p-2 transition-opacity duration-200 ease-out"
-        :class="[SCROLLABLE_PARENT_CLASS, 'will-change-opacity']"
+        v-if="displayContent"
+        class="will-change-opacity max-h-108 overflow-y-auto overscroll-contain p-2 transition-opacity duration-200 ease-out"
+        :class="[SCROLLABLE_PARENT_CLASS]"
         :style="{
           width: 'calc(100vw - 1rem)',
           opacity: contentOpacity,
           contain: 'layout style paint',
         }"
-        ref="cardContentRef"
-        @touchmove.stop="preventDefaultForContent"
-        @wheel.stop="preventDefaultForContent"
       >
         <Component
           :is="groupProxiesByProvider ? ProxiesByProvider : ProxiesContent"
           :name="name"
           :now="proxyGroup.now"
           :render-proxies="renderProxies"
-          :show-full-content="showAllContent"
         />
       </div>
     </div>
@@ -96,6 +90,7 @@
 
 <script setup lang="ts">
 import { useBounceOnVisible } from '@/composables/bouncein'
+import { disableProxiesPageScroll } from '@/composables/proxies'
 import { useRenderProxies } from '@/composables/renderProxies'
 import { isHiddenGroup } from '@/helper'
 import { SCROLLABLE_PARENT_CLASS } from '@/helper/utils'
@@ -125,8 +120,6 @@ const contentOpacity = ref(0)
 
 const cardWrapperRef = ref()
 const cardRef = ref()
-const cardContentRef = ref()
-const overflowY = ref(false)
 
 const INIT_STYLE = {
   width: '100%',
@@ -214,10 +207,6 @@ const handlerTransitionEnd = (e: TransitionEvent) => {
   if (modalMode.value) {
     contentOpacity.value = 1
     showAllContent.value = true
-    nextTick(() => {
-      if (!cardContentRef.value) return
-      overflowY.value = cardContentRef.value.scrollHeight > cardContentRef.value.clientHeight
-    })
   } else {
     displayContent.value = false
 
@@ -231,6 +220,7 @@ const handlerTransitionEnd = (e: TransitionEvent) => {
 
 const handlerGroupClick = async () => {
   modalMode.value = !modalMode.value
+  disableProxiesPageScroll.value = modalMode.value
 
   if (modalMode.value) {
     displayContent.value = true
@@ -261,18 +251,6 @@ const hiddenGroup = computed({
 
 const handlerGroupToggle = () => {
   hiddenGroup.value = !hiddenGroup.value
-}
-
-const preventDefault = (e: Event) => {
-  if (modalMode.value) {
-    e.preventDefault()
-  }
-}
-
-const preventDefaultForContent = (e: Event) => {
-  if (!overflowY.value) {
-    e.preventDefault()
-  }
 }
 
 useBounceOnVisible(cardRef)

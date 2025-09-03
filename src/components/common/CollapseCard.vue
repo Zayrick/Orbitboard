@@ -15,14 +15,11 @@
       @transitionend="handlerTransitionEnd"
     >
       <div
+        v-if="showContent"
         class="max-h-108 overflow-y-auto"
         :class="[SCROLLABLE_PARENT_CLASS, !showCollapse && 'opacity-0']"
       >
-        <slot
-          v-if="showContent"
-          :show-full-content="showFullContent"
-          name="content"
-        />
+        <slot name="content" />
       </div>
     </div>
   </div>
@@ -32,7 +29,7 @@
 import { collapsedBus } from '@/composables/bus'
 import { SCROLLABLE_PARENT_CLASS } from '@/helper/utils'
 import { collapseGroupMap } from '@/store/settings'
-import { computed, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 
 const props = defineProps<{
   name: string
@@ -44,7 +41,6 @@ const showCollapse = computed({
   },
   set(value) {
     if (value) {
-      showFullContent.value = false
       showContent.value = true
     }
 
@@ -53,12 +49,9 @@ const showCollapse = computed({
 })
 
 const showContent = ref(showCollapse.value)
-const showFullContent = ref(showCollapse.value)
 
 const handlerTransitionEnd = () => {
-  if (showCollapse.value) {
-    showFullContent.value = true
-  } else {
+  if (!showCollapse.value) {
     showContent.value = false
   }
 }
@@ -67,7 +60,9 @@ const busHandler = ({ open }: { open: boolean }) => {
   showCollapse.value = open
 }
 
-collapsedBus.on(busHandler)
+onMounted(() => {
+  collapsedBus.on(busHandler)
+})
 
 onUnmounted(() => {
   collapsedBus.off(busHandler)

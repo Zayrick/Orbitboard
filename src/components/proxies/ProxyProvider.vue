@@ -46,17 +46,11 @@
     <template v-slot:preview>
       <ProxyPreview :nodes="renderProxies" />
     </template>
-    <template v-slot:content="{ showFullContent }">
-      <ProxyNodeGrid>
-        <ProxyNodeCard
-          v-for="node in showFullContent
-            ? renderProxies
-            : renderProxies.slice(0, twoColumnProxyGroup ? 48 : 96)"
-          :key="node"
-          :name="node"
-          :group-name="name"
-        />
-      </ProxyNodeGrid>
+    <template v-slot:content>
+      <ProxiesContent
+        :name="name"
+        :render-proxies="renderProxies"
+      />
     </template>
   </CollapseCard>
 </template>
@@ -67,7 +61,6 @@ import { useBounceOnVisible } from '@/composables/bouncein'
 import { useRenderProxies } from '@/composables/renderProxies'
 import { fromNow, prettyBytesHelper } from '@/helper/utils'
 import { fetchProxies, proxyProviederList } from '@/store/proxies'
-import { twoColumnProxyGroup } from '@/store/settings'
 import { ArrowPathIcon, BoltIcon } from '@heroicons/vue/24/outline'
 import dayjs from 'dayjs'
 import { toFinite } from 'lodash'
@@ -75,8 +68,7 @@ import { twMerge } from 'tailwind-merge'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import CollapseCard from '../common/CollapseCard.vue'
-import ProxyNodeCard from './ProxyNodeCard.vue'
-import ProxyNodeGrid from './ProxyNodeGrid.vue'
+import ProxiesContent from './ProxiesContent.vue'
 import ProxyPreview from './ProxyPreview.vue'
 
 const props = defineProps<{
