@@ -26,10 +26,9 @@
 </template>
 
 <script setup lang="ts">
-import { collapsedBus } from '@/composables/bus'
 import { SCROLLABLE_PARENT_CLASS } from '@/helper/utils'
 import { collapseGroupMap } from '@/store/settings'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const props = defineProps<{
   name: string
@@ -40,12 +39,14 @@ const showCollapse = computed({
     return collapseGroupMap.value[props.name]
   },
   set(value) {
-    if (value) {
-      showContent.value = true
-    }
-
     collapseGroupMap.value[props.name] = value
   },
+})
+
+watch(showCollapse, (value) => {
+  if (value) {
+    showContent.value = true
+  }
 })
 
 const showContent = ref(showCollapse.value)
@@ -55,16 +56,4 @@ const handlerTransitionEnd = () => {
     showContent.value = false
   }
 }
-
-const busHandler = ({ open }: { open: boolean }) => {
-  showCollapse.value = open
-}
-
-onMounted(() => {
-  collapsedBus.on(busHandler)
-})
-
-onUnmounted(() => {
-  collapsedBus.off(busHandler)
-})
 </script>

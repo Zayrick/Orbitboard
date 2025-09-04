@@ -1,5 +1,4 @@
 import { updateProxyProviderAPI } from '@/api'
-import { collapsedBus } from '@/composables/bus'
 import { renderGroups } from '@/composables/proxies'
 import { PROXY_SORT_TYPE, PROXY_TAB_TYPE } from '@/constant'
 import { getMinCardWidth } from '@/helper/utils'
@@ -100,9 +99,9 @@ export default defineComponent({
     })
 
     const handlerClickToggleCollapse = () => {
-      collapsedBus.emit({
-        open: !hasNotCollapsed.value,
-      })
+      collapseGroupMap.value = Object.fromEntries(
+        renderGroups.value.map((name) => [name, !hasNotCollapsed.value]),
+      )
     }
 
     const handlerResetProxyCardWidth = () => {

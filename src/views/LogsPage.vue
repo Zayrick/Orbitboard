@@ -9,7 +9,6 @@
       v-else
       :data="renderLogs"
       :size="isMiddleScreen ? 96 : 64"
-      class="p-2"
     >
       <template v-slot="{ item }: { item: LogWithSeq }">
         <LogsCard :log="item"></LogsCard>

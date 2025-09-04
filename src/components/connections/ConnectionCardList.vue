@@ -10,10 +10,7 @@
     :size="size"
   >
     <template v-slot="{ item }: { item: Connection }">
-      <ConnectionCard
-        class="mb-1"
-        :conn="item"
-      ></ConnectionCard>
+      <ConnectionCard :conn="item" />
     </template>
   </VirtualScroller>
 </template>

@@ -23,11 +23,9 @@
       v-else
       :data="renderRules"
       :size="64"
-      class="p-2"
     >
       <template v-slot="{ item: rule }: { item: Rule }">
         <RuleCard
-          class="mb-1"
           :key="rule.payload"
           :rule="rule"
           :index="rules.indexOf(rule) + 1"
