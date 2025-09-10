@@ -21,6 +21,7 @@ import { showNotification } from '@/helper/notification'
 import type { Proxy, ProxyProvider } from '@/types'
 import { useStorage } from '@vueuse/core'
 import { last } from 'lodash'
+import pLimit from 'p-limit'
 import { computed, ref } from 'vue'
 import { activeConnections } from './connections'
 import {
@@ -67,6 +68,10 @@ export const getHistoryByName = (proxyName: string, groupName?: string) => {
   if (independentLatencyTest.value && !isSingBox.value) {
     const proxyNode = proxyMap.value[proxyName]
     const url = getTestUrl(groupName)
+
+    if (!proxyNode) {
+      return []
+    }
 
     if (!proxyNode?.extra) {
       proxyNode.extra = {}
@@ -230,32 +235,35 @@ const setHistory = (proxyName: string, delay: number) => {
 }
 
 const TIP_KEY = 'testLatencyOneByOneWithTip'
+const limiter = pLimit(5)
 const testLatencyOneByOneWithTip = async (nodes: string[], url = speedtestUrlWithDefault.value) => {
   const total = nodes.length
   let testDone = 0
   let testFailed = 0
 
   await Promise.allSettled(
-    nodes.map(async (name) => {
-      const res = await latencyTestForSingle(name, url, Math.min(3000, speedtestTimeout.value))
+    nodes.map((name) =>
+      limiter(async () => {
+        const res = await latencyTestForSingle(name, url, Math.min(1500, speedtestTimeout.value))
 
-      if (res.status !== 200) {
-        testFailed++
-        setHistory(name, NOT_CONNECTED)
-      } else {
-        setHistory(name, res.data.delay)
-      }
-      testDone++
-      showNotification({
-        content: 'testFinishedTip',
-        key: TIP_KEY,
-        params: {
-          number: `${testDone}/${total}`,
-        },
-        type: 'alert-info',
-        timeout: 0,
-      })
-    }),
+        if (res.status !== 200) {
+          testFailed++
+          setHistory(name, NOT_CONNECTED)
+        } else {
+          setHistory(name, res.data.delay)
+        }
+        testDone++
+        showNotification({
+          content: 'testFinishedTip',
+          key: TIP_KEY,
+          params: {
+            number: `${testDone}/${total}`,
+          },
+          type: 'alert-info',
+          timeout: 0,
+        })
+      }),
+    ),
   )
   showNotification({
     content: 'testFinishedResultTip',
