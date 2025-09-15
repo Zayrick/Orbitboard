@@ -147,9 +147,10 @@ const en = {
   mostUploadProxy: 'Most Uploaded Proxy',
   manual: 'Manual',
   tableWidthMode: 'Table Width Mode',
-  testFinishedTip: '{number} Test(s) Finished',
-  testFinishedResultTip: 'Test Finished: {success} Success, {failed} Timeout',
-  testFailedTip: 'Latency Test Timeout',
+  testFailed: 'Test Failed',
+  testFinishedTip: "{name}{'@'}{url} \n{number}/{total} Test Finished",
+  testFinishedResultTip: "{name}{'@'}{url} \nTest Finished: {success} Success, {failed} Timeout",
+  testFailedTip: "{name}{'@'}{url} \nTest Failed",
   updateFinishedTip: '{number} Update(s) Finished',
   independentLatencyTest: 'Independent Latency Test',
   independentLatencyTestTip:
