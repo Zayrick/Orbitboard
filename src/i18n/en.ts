@@ -235,6 +235,10 @@ const en = {
   getting: 'Getting...',
   mmdbSizeTip: 'If you are using mmdb format geo files, the number will be 0',
   displayFinalOutbound: 'Show Final Outbound Node',
+  groupTestUrls: 'Group Test URLs',
+  groupTestUrlsTip:
+    'For manual tests triggered from the panel, set test URLs here > URLs in configuration > Global test URLs, but for groups with UrlTest/Fallback, etc., the URLs in the configuration still need to be modified, So this is only recommended for Selector scenes',
+  groupName: 'Group Name',
 }
 
 export type LANG_MESSAGE = typeof en

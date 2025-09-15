@@ -26,6 +26,7 @@ import { computed, ref } from 'vue'
 import { activeConnections } from './connections'
 import {
   automaticDisconnection,
+  groupTestUrls,
   iconReflectList,
   independentLatencyTest,
   IPv6test,
@@ -50,6 +51,12 @@ const speedtestUrlWithDefault = computed(() => {
 export const getTestUrl = (groupName?: string) => {
   if (!groupName || !independentLatencyTest.value) {
     return speedtestUrlWithDefault.value
+  }
+
+  const groupTestUrl = groupTestUrls.value.find((item) => item.name === groupName)
+
+  if (groupTestUrl) {
+    return groupTestUrl.url
   }
 
   const proxyNode =
