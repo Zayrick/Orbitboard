@@ -192,7 +192,7 @@
 </template>
 
 <script setup lang="ts">
-import { disconnectByIdAPI } from '@/api'
+import { blockconnectByIdAPI, disconnectByIdAPI } from '@/api'
 import { useConnections } from '@/composables/connections'
 import {
   CONNECTION_TAB_TYPE,
@@ -227,6 +227,7 @@ import {
   MagnifyingGlassMinusIcon,
   MagnifyingGlassPlusIcon,
   MapPinIcon,
+  NoSymbolIcon,
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import {
@@ -282,7 +283,7 @@ const columns: ColumnDef<Connection>[] = [
     enableSorting: false,
     id: CONNECTIONS_TABLE_ACCESSOR_KEY.Close,
     cell: ({ row }) => {
-      return h(
+      const closeButton = h(
         'button',
         {
           class: 'btn btn-xs btn-circle',
@@ -299,6 +300,30 @@ const columns: ColumnDef<Connection>[] = [
           }),
         ],
       )
+
+      if (row.original.metadata.smartBlock === 'normal') {
+        const degradeButton = h(
+          'button',
+          {
+            class: 'btn btn-xs btn-circle',
+            onClick: (e) => {
+              const connection = row.original
+
+              e.stopPropagation()
+              blockconnectByIdAPI(connection.id)
+            },
+          },
+          [
+            h(NoSymbolIcon, {
+              class: 'h-4 w-4',
+            }),
+          ],
+        )
+
+        return h('div', { class: 'flex gap-1' }, [closeButton, degradeButton])
+      }
+
+      return closeButton
     },
   },
   {
