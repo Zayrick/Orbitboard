@@ -392,6 +392,26 @@ export const getNowProxyNodeName = (name: string) => {
   return node.name
 }
 
+export const getProxyGroupChains = (name: string) => {
+  let proxyNode = proxyMap.value[name]
+
+  if (!proxyNode) {
+    return []
+  }
+
+  const result = [name]
+
+  while (
+    proxyNode.now &&
+    proxyNode.now !== proxyNode.name &&
+    proxyGroupList.value.includes(proxyNode.now)
+  ) {
+    result.push(proxyNode.now)
+    proxyNode = proxyMap.value[proxyNode.now]
+  }
+  return result
+}
+
 export const hasSmartGroup = computed(() => {
   return Object.values(proxyMap.value).some(
     (proxy) => proxy.type.toLowerCase() === PROXY_TYPE.Smart,
