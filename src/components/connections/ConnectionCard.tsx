@@ -102,13 +102,13 @@ export default defineComponent<{
         [CONNECTIONS_TABLE_ACCESSOR_KEY.Download]: (
           <div class="flex items-center gap-1 whitespace-nowrap">
             {prettyBytesHelper(conn.download)}
-            <ArrowDownIcon class="text-success h-4 w-4" />
+            <ArrowDownIcon class="text-success h-3 w-3" />
           </div>
         ),
         [CONNECTIONS_TABLE_ACCESSOR_KEY.Upload]: (
           <div class="flex items-center gap-1 whitespace-nowrap">
             {prettyBytesHelper(conn.upload)}
-            <ArrowUpIcon class="text-info h-4 w-4" />
+            <ArrowUpIcon class="text-info h-3 w-3" />
           </div>
         ),
         [CONNECTIONS_TABLE_ACCESSOR_KEY.DlSpeed]: (
