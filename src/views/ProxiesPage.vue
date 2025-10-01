@@ -104,7 +104,7 @@ const renderComponent = computed(() => {
 })
 
 const displayTwoColumns = computed(() => {
-  return twoColumnProxyGroup.value && renderGroups.value.length > 1
+  return twoColumnProxyGroup.value && renderGroups.value.length > 1 && (proxiesTabShow.value !== PROXY_TAB_TYPE.PROVIDER || !isMiddleScreen.value)
 })
 
 const filterContent: <T>(all: T[], target: number) => T[] = (all, target) => {
