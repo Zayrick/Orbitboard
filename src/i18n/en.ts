@@ -148,9 +148,9 @@ const en = {
   manual: 'Manual',
   tableWidthMode: 'Table Width Mode',
   testFailed: 'Test Failed',
-  testFinishedTip: "{name}\n{'@'}{url} \n{number}/{total} Test Finished",
-  testFinishedResultTip: "{name}\n{'@'}{url} \nTest Finished: {success} Success, {failed} Timeout",
-  testFailedTip: "{name}\n{'@'}{url} \nTest Failed",
+  testFinishedTip: '{name}\n{number}/{total} Test Finished',
+  testFinishedResultTip: '{name}\nTest Finished: {success} Success, {failed} Timeout',
+  testFailedTip: '{name}\nTest Failed',
   updateFinishedTip: '{number} Update(s) Finished',
   independentLatencyTest: 'Independent Latency Test',
   independentLatencyTestTip:

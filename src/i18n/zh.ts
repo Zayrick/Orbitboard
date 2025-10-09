@@ -149,9 +149,9 @@ const zh: LANG_MESSAGE = {
   manual: '手动',
   tableWidthMode: '表格宽度模式',
   testFailed: '测速超时',
-  testFinishedTip: "{name}\n{'@'}{url} \n{number}/{total} 测试完成",
-  testFinishedResultTip: "{name}\n{'@'}{url} \n测试完成: {success} 成功，{failed} 超时",
-  testFailedTip: "{name}\n{'@'}{url} \n测速超时",
+  testFinishedTip: '{name}\n{number}/{total} 测试完成',
+  testFinishedResultTip: '{name}\n测试完成: {success} 成功，{failed} 超时',
+  testFailedTip: '{name}\n测速超时',
   updateFinishedTip: '{number} 更新完成',
   independentLatencyTest: '独立延迟测试',
   independentLatencyTestTip:
