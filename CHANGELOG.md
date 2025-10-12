@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [1.108.0](https://github.com/Zephyruso/zashboard/compare/v1.107.0...v1.108.0) (2025-10-12)
+
+
+### Features
+
+* add dark mode favicon and update asset inclusion in Vite configuration ([50a66c3](https://github.com/Zephyruso/zashboard/commit/50a66c3f478cf50942ba1d40751fa38e09fd8353))
+
 ## [1.107.0](https://github.com/Zephyruso/zashboard/compare/v1.106.1...v1.107.0) (2025-10-11)
 
 
