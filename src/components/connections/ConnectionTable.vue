@@ -192,7 +192,7 @@
 </template>
 
 <script setup lang="ts">
-import { blockconnectByIdAPI, disconnectByIdAPI } from '@/api'
+import { blockConnectionByIdAPI, disconnectByIdAPI } from '@/api'
 import { useConnections } from '@/composables/connections'
 import {
   CONNECTION_TAB_TYPE,
@@ -310,7 +310,7 @@ const columns: ColumnDef<Connection>[] = [
               const connection = row.original
 
               e.stopPropagation()
-              blockconnectByIdAPI(connection.id)
+              blockConnectionByIdAPI(connection.id)
             },
           },
           [

@@ -147,6 +147,10 @@ export const fetchRulesAPI = () => {
   return axios.get<{ rules: Rule[] }>('/rules')
 }
 
+export const toggleRuleDisabledAPI = (uuid: string) => {
+  return axios.put(`/rules/${encodeURIComponent(uuid)}`)
+}
+
 export const fetchRuleProvidersAPI = () => {
   return axios.get<{ providers: Record<string, RuleProvider> }>('/providers/rules')
 }
@@ -155,7 +159,7 @@ export const updateRuleProviderAPI = (name: string) => {
   return axios.put(`/providers/rules/${encodeURIComponent(name)}`)
 }
 
-export const blockconnectByIdAPI = (id: string) => {
+export const blockConnectionByIdAPI = (id: string) => {
   return axios.delete(`/connections/smart/${id}`)
 }
 
