@@ -7,7 +7,7 @@ import {
   proxySortType,
   useSmartGroupSort,
 } from '@/store/settings'
-import { smartWeightsMap } from '@/store/smart'
+import { smartOrderMap } from '@/store/smart'
 import { computed, type ComputedRef } from 'vue'
 
 export function useRenderProxies(proxies: ComputedRef<string[]>, proxyGroup?: string) {
@@ -63,14 +63,13 @@ const getRenderProxies = (proxies: string[], groupName?: string) => {
     })
   }
 
-  if (useSmartGroupSort.value && smartWeightsMap.value[groupName!]) {
-    const smartGroupSort = ['MostUsed', 'OccasionalUsed', 'RarelyUsed']
+  if (useSmartGroupSort.value && smartOrderMap.value[groupName!]) {
+    const orderMap = smartOrderMap.value[groupName!]
 
-    return proxies.sort((prev, next) => {
-      return (
-        smartGroupSort.indexOf(smartWeightsMap.value[groupName!]![prev]!) -
-        smartGroupSort.indexOf(smartWeightsMap.value[groupName!]![next]!)
-      )
+    return proxies.sort((a, b) => {
+      const ia = orderMap[a] ?? Number.MAX_SAFE_INTEGER
+      const ib = orderMap[b] ?? Number.MAX_SAFE_INTEGER
+      return ia - ib
     })
   }
 
