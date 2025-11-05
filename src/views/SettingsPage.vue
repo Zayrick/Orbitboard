@@ -1,42 +1,11 @@
 <template>
-  <div class="flex h-full flex-col overflow-hidden">
-    <!-- 左侧菜单 -->
-    <div
-      ref="menuRef"
-      class="scrollbar-hidden border-base-300 max-w-7xl border-b"
-      @touchstart.passive.stop
-      @touchmove.passive.stop
-      @touchend.passive.stop
-    >
-      <ul class="menu w-full flex-row">
-        <li
-          v-for="item in menuItems"
-          :key="item.key"
-          class="flex-1 flex-shrink-0 md:w-full"
-        >
-          <a
-            class="flex justify-center px-4 py-2 whitespace-nowrap"
-            :class="[activeMenuKey === item.key ? 'menu-active' : '']"
-            @click="handleMenuClick(item.key)"
-          >
-            <component
-              :is="item.icon"
-              class="h-5 w-5"
-            />
-            <span class="hidden md:block">
-              {{ $t(item.label) }}
-            </span>
-          </a>
-        </li>
-      </ul>
-    </div>
-
+  <div class="relative flex h-full flex-col overflow-hidden">
     <!-- 右侧内容区域 -->
     <div
       ref="scrollContainerRef"
       class="overflow-x-hidden overflow-y-auto"
     >
-      <div class="grid grid-cols-1 gap-2">
+      <div class="grid grid-cols-1 gap-2 max-md:pb-16 md:pt-16">
         <div class="flex flex-col gap-4 p-2">
           <div
             v-for="item in menuItems"
@@ -50,6 +19,15 @@
         </div>
       </div>
     </div>
+
+    <!-- 左侧菜单 -->
+    <SettingsMenu
+      ref="menuComponentRef"
+      class="absolute right-5 left-2 max-md:bottom-2 md:top-2"
+      :menu-items="menuItems"
+      :active-menu-key="activeMenuKey"
+      @menu-click="handleMenuClick"
+    />
   </div>
 </template>
 
@@ -59,8 +37,8 @@ import ConnectionsSettings from '@/components/settings/ConnectionsSettings.vue'
 import GeneralSettings from '@/components/settings/GeneralSettings.vue'
 import OverviewSettings from '@/components/settings/OverviewSettings.vue'
 import ProxiesSettings from '@/components/settings/ProxiesSettings.vue'
+import SettingsMenu from '@/components/settings/SettingsMenu.vue'
 import { SETTINGS_MENU_KEY } from '@/constant'
-import { isMiddleScreen } from '@/helper/utils'
 import { splitOverviewPage } from '@/store/settings'
 import {
   ArrowsRightLeftIcon,
@@ -69,7 +47,7 @@ import {
   HomeIcon,
   ServerIcon,
 } from '@heroicons/vue/24/outline'
-import { useIntersectionObserver, useSwipe } from '@vueuse/core'
+import { useIntersectionObserver } from '@vueuse/core'
 import type { Component } from 'vue'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
@@ -85,7 +63,7 @@ const route = useRoute()
 const activeMenuKey = ref(
   splitOverviewPage.value ? SETTINGS_MENU_KEY.general : SETTINGS_MENU_KEY.overview,
 )
-const menuRef = ref<HTMLDivElement>()
+const menuComponentRef = ref<InstanceType<typeof SettingsMenu> | null>(null)
 const scrollContainerRef = ref<HTMLDivElement>()
 const menuItems = computed<MenuItem[]>(() => {
   const overviewItem = {
@@ -138,51 +116,20 @@ const handleMenuClick = (key: SETTINGS_MENU_KEY) => {
 
   const index = menuItems.value.findIndex((item) => item.key === key)
   if (index !== -1) {
-    getItemRef(key)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    const element = getItemRef(key)
+    if (element && scrollContainerRef.value) {
+      const containerRect = scrollContainerRef.value.getBoundingClientRect()
+      const elementRect = element.getBoundingClientRect()
+      const scrollTop = scrollContainerRef.value.scrollTop
+      const targetScrollTop = scrollTop + elementRect.top - containerRect.top - 64
+
+      scrollContainerRef.value.scrollTo({
+        top: targetScrollTop,
+        behavior: 'smooth',
+      })
+    }
   }
 }
-// 滑动切换菜单功能
-const { direction } = useSwipe(menuRef, { threshold: 75 })
-
-const getCurrentMenuIndex = () => {
-  return menuItems.value.findIndex((item) => item.key === activeMenuKey.value)
-}
-
-const getNextMenuKey = () => {
-  const currentIndex = getCurrentMenuIndex()
-  if (currentIndex === -1) return
-  const nextIndex = (currentIndex + 1) % menuItems.value.length
-  handleMenuClick(menuItems.value[nextIndex].key)
-}
-
-const getPrevMenuKey = () => {
-  const currentIndex = getCurrentMenuIndex()
-  if (currentIndex === -1) return
-  const prevIndex = (currentIndex - 1 + menuItems.value.length) % menuItems.value.length
-  handleMenuClick(menuItems.value[prevIndex].key)
-}
-
-const isInputActive = () => {
-  const activeEl = document.activeElement
-  return activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')
-}
-
-watch(direction, () => {
-  if (!isMiddleScreen.value) return
-
-  if (
-    document.querySelector('dialog:modal') ||
-    isInputActive() ||
-    window.getSelection()?.toString()?.length
-  )
-    return
-
-  if (direction.value === 'right') {
-    getPrevMenuKey()
-  } else if (direction.value === 'left') {
-    getNextMenuKey()
-  }
-})
 
 // 移动端滚动时自动激活菜单
 const visibilityRatios = ref<Map<SETTINGS_MENU_KEY, number>>(new Map())
