@@ -4,6 +4,7 @@
     <div
       ref="scrollContainerRef"
       class="overflow-x-hidden overflow-y-auto"
+      @scroll.passive="handleScroll"
     >
       <div class="grid grid-cols-1 gap-2 max-md:pb-16 md:pt-16">
         <div class="flex flex-col gap-4 p-2">
@@ -47,9 +48,9 @@ import {
   HomeIcon,
   ServerIcon,
 } from '@heroicons/vue/24/outline'
-import { useIntersectionObserver } from '@vueuse/core'
+import { throttle } from 'lodash'
 import type { Component } from 'vue'
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 type MenuItem = {
@@ -121,7 +122,7 @@ const handleMenuClick = (key: SETTINGS_MENU_KEY) => {
       const containerRect = scrollContainerRef.value.getBoundingClientRect()
       const elementRect = element.getBoundingClientRect()
       const scrollTop = scrollContainerRef.value.scrollTop
-      const targetScrollTop = scrollTop + elementRect.top - containerRect.top - 64
+      const targetScrollTop = scrollTop + elementRect.top - containerRect.top - 128
 
       scrollContainerRef.value.scrollTo({
         top: targetScrollTop,
@@ -132,95 +133,39 @@ const handleMenuClick = (key: SETTINGS_MENU_KEY) => {
 }
 
 // 移动端滚动时自动激活菜单
-const visibilityRatios = ref<Map<SETTINGS_MENU_KEY, number>>(new Map())
-let updateTimer: ReturnType<typeof setTimeout> | null = null
-
-const updateActiveMenuByVisibility = () => {
+const updateActiveMenuByScroll = () => {
   if (!scrollContainerRef.value) return
 
-  // 找到最可见的元素
-  let maxRatio = 0
-  let mostVisibleKey: SETTINGS_MENU_KEY | null = null
+  const containerRect = scrollContainerRef.value.getBoundingClientRect()
+  const containerCenter = containerRect.top + containerRect.height / 2
 
-  visibilityRatios.value.forEach((ratio, key) => {
-    if (ratio > maxRatio) {
-      maxRatio = ratio
-      mostVisibleKey = key
+  // 找到距离屏幕中线最近的元素
+  let minDistance = Infinity
+  let closestKey: SETTINGS_MENU_KEY | null = null
+
+  menuItems.value.forEach((item) => {
+    const element = getItemRef(item.key)
+    if (!element) return
+
+    const elementRect = element.getBoundingClientRect()
+    const elementCenter = elementRect.top + elementRect.height / 2
+    const distance = Math.abs(elementCenter - containerCenter)
+
+    if (distance < minDistance) {
+      minDistance = distance
+      closestKey = item.key
     }
   })
 
-  // 如果找到了最可见的元素且可见度超过阈值（30%），更新激活菜单
-  if (mostVisibleKey && maxRatio >= 0.3) {
-    if (mostVisibleKey !== activeMenuKey.value) {
-      activeMenuKey.value = mostVisibleKey
-    }
+  // 如果找到了最近的元素，更新激活菜单
+  if (closestKey && closestKey !== activeMenuKey.value) {
+    activeMenuKey.value = closestKey
   }
 }
 
-// 使用防抖优化性能
-const debouncedUpdateActiveMenu = () => {
-  if (updateTimer) {
-    clearTimeout(updateTimer)
-  }
-  updateTimer = setTimeout(() => {
-    updateActiveMenuByVisibility()
-    updateTimer = null
-  }, 100)
-}
-
-// 存储 IntersectionObserver 的停止函数
-const intersectionObservers: Array<{ stop: () => void }> = []
-
-// 设置滚动监听和菜单自动激活
-const setupIntersectionObservers = () => {
-  // 清理旧的观察器
-  intersectionObservers.forEach((observer) => observer.stop())
-  intersectionObservers.length = 0
-  visibilityRatios.value.clear()
-
-  if (!scrollContainerRef.value) return
-
-  nextTick(() => {
-    menuItems.value.forEach((item) => {
-      const itemRef = getItemRef(item.key)
-      const itemKey = item.key
-      if (!itemRef || !itemKey) return
-
-      const { stop } = useIntersectionObserver(
-        itemRef,
-        ([entry]) => {
-          const ratio = entry.intersectionRatio
-          if (ratio > 0) {
-            visibilityRatios.value.set(itemKey, ratio)
-          } else {
-            visibilityRatios.value.delete(itemKey)
-          }
-          debouncedUpdateActiveMenu()
-        },
-        {
-          root: scrollContainerRef.value,
-          threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-        },
-      )
-      intersectionObservers.push({ stop })
-    })
-  })
-}
-
-// 监听菜单项变化和屏幕尺寸变化，重新设置观察器
-watch(
-  [menuItems],
-  () => {
-    nextTick(() => {
-      setupIntersectionObservers()
-    })
-  },
-  { flush: 'post' },
-)
+const handleScroll = throttle(updateActiveMenuByScroll, 100)
 
 onMounted(() => {
-  setupIntersectionObservers()
-
   requestAnimationFrame(async () => {
     const scrollTo = route.query.scrollTo as SETTINGS_MENU_KEY
     if (scrollTo) {
