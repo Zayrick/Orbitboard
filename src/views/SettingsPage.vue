@@ -24,7 +24,7 @@
     <!-- 左侧菜单 -->
     <SettingsMenu
       ref="menuComponentRef"
-      class="absolute right-5 left-2 max-md:bottom-2 md:top-2"
+      class="absolute right-5 left-2 z-[9999] max-md:bottom-2 md:top-2"
       :menu-items="menuItems"
       :active-menu-key="activeMenuKey"
       @menu-click="handleMenuClick"
@@ -112,11 +112,19 @@ const getItemRef = (key: SETTINGS_MENU_KEY) => {
   return document.getElementById(`item-${key}`)
 }
 
+const isTriggerByClick = ref(false)
+const timeoutId = ref<number>()
+
 const handleMenuClick = (key: SETTINGS_MENU_KEY) => {
   activeMenuKey.value = key
 
   const index = menuItems.value.findIndex((item) => item.key === key)
   if (index !== -1) {
+    isTriggerByClick.value = true
+    clearTimeout(timeoutId.value)
+    timeoutId.value = setTimeout(() => {
+      isTriggerByClick.value = false
+    }, 1000)
     const element = getItemRef(key)
     if (element && scrollContainerRef.value) {
       const containerRect = scrollContainerRef.value.getBoundingClientRect()
@@ -132,14 +140,12 @@ const handleMenuClick = (key: SETTINGS_MENU_KEY) => {
   }
 }
 
-// 移动端滚动时自动激活菜单
 const updateActiveMenuByScroll = () => {
-  if (!scrollContainerRef.value) return
+  if (!scrollContainerRef.value || isTriggerByClick.value) return
 
   const containerRect = scrollContainerRef.value.getBoundingClientRect()
   const containerCenter = containerRect.top + containerRect.height / 2
 
-  // 找到距离屏幕中线最近的元素
   let minDistance = Infinity
   let closestKey: SETTINGS_MENU_KEY | null = null
 

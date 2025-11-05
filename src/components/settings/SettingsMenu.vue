@@ -6,8 +6,6 @@
     @touchstart.passive.stop
     @touchmove.passive.stop
     @touchend.passive.stop
-    @mousedown="handleMouseDown"
-    @touchstart="handleTouchStart"
   >
     <ul class="menu w-full max-w-7xl flex-row">
       <li
@@ -36,8 +34,9 @@
 
 <script setup lang="ts">
 import { SETTINGS_MENU_KEY } from '@/constant'
+import { useSwipe } from '@vueuse/core'
 import type { Component } from 'vue'
-import { onBeforeUnmount, ref } from 'vue'
+import { ref } from 'vue'
 
 type MenuItem = {
   key: SETTINGS_MENU_KEY
@@ -58,8 +57,6 @@ const emit = defineEmits<{
 const menuRef = ref<HTMLDivElement>()
 const menuItemRefs = ref<Map<SETTINGS_MENU_KEY, HTMLLIElement>>(new Map())
 const isDragging = ref(false)
-const dragStartX = ref(0)
-const DRAG_THRESHOLD = 5
 
 const setMenuItemRef = (el: unknown, key: SETTINGS_MENU_KEY) => {
   if (el && el instanceof HTMLLIElement) {
@@ -81,7 +78,7 @@ const getMenuItemAtPosition = (x: number): SETTINGS_MENU_KEY | null => {
   const menuRect = menuRef.value.getBoundingClientRect()
   const relativeX = x - menuRect.left
 
-  // 找到鼠标位置对应的菜单项
+  // 找到触摸位置对应的菜单项
   for (const [key, itemEl] of menuItemRefs.value.entries()) {
     const itemRect = itemEl.getBoundingClientRect()
     const itemRelativeX = itemRect.left - menuRect.left
@@ -95,108 +92,14 @@ const getMenuItemAtPosition = (x: number): SETTINGS_MENU_KEY | null => {
   return null
 }
 
-const handleMouseMove = (e: MouseEvent) => {
-  if (!isDragging.value) return
-
-  const targetKey = getMenuItemAtPosition(e.clientX)
-  if (targetKey && targetKey !== props.activeMenuKey) {
-    emit('menu-click', targetKey)
-  }
-}
-
-const handleMouseUp = () => {
-  if (isDragging.value) {
-    // 延迟重置拖动状态，防止触发点击事件
-    setTimeout(() => {
-      isDragging.value = false
-    }, 100)
-  }
-  document.removeEventListener('mousemove', handleMouseMove)
-  document.removeEventListener('mouseup', handleMouseUp)
-}
-
-const handleMouseDown = (e: MouseEvent) => {
-  if (e.button !== 0) return // 只处理左键
-
-  isDragging.value = false
-  dragStartX.value = e.clientX
-
-  const handleMove = (moveEvent: MouseEvent) => {
-    const deltaX = Math.abs(moveEvent.clientX - dragStartX.value)
-    if (deltaX > DRAG_THRESHOLD && !isDragging.value) {
-      isDragging.value = true
-      e.preventDefault()
+useSwipe(menuRef, {
+  passive: false,
+  onSwipe(e: TouchEvent) {
+    const targetKey = getMenuItemAtPosition(e.touches[0].clientX)
+    if (targetKey && targetKey !== props.activeMenuKey) {
+      emit('menu-click', targetKey)
     }
-    if (isDragging.value) {
-      handleMouseMove(moveEvent)
-    }
-  }
-
-  const handleUp = () => {
-    handleMouseUp()
-    document.removeEventListener('mousemove', handleMove)
-    document.removeEventListener('mouseup', handleUp)
-  }
-
-  document.addEventListener('mousemove', handleMove)
-  document.addEventListener('mouseup', handleUp)
-}
-
-const handleTouchMove = (e: TouchEvent) => {
-  if (!isDragging.value || e.touches.length === 0) return
-
-  const touch = e.touches[0]
-  const targetKey = getMenuItemAtPosition(touch.clientX)
-  if (targetKey && targetKey !== props.activeMenuKey) {
-    emit('menu-click', targetKey)
-  }
-}
-
-const handleTouchEnd = () => {
-  if (isDragging.value) {
-    setTimeout(() => {
-      isDragging.value = false
-    }, 100)
-  }
-  document.removeEventListener('touchmove', handleTouchMove)
-  document.removeEventListener('touchend', handleTouchEnd)
-}
-
-const handleTouchStart = (e: TouchEvent) => {
-  if (e.touches.length === 0) return
-
-  const touch = e.touches[0]
-  isDragging.value = false
-  dragStartX.value = touch.clientX
-
-  const handleMove = (moveEvent: TouchEvent) => {
-    if (moveEvent.touches.length === 0) return
-    const moveTouch = moveEvent.touches[0]
-    const deltaX = Math.abs(moveTouch.clientX - dragStartX.value)
-    if (deltaX > DRAG_THRESHOLD && !isDragging.value) {
-      isDragging.value = true
-      moveEvent.preventDefault()
-    }
-    if (isDragging.value) {
-      handleTouchMove(moveEvent)
-    }
-  }
-
-  const handleEnd = () => {
-    handleTouchEnd()
-    document.removeEventListener('touchmove', handleMove)
-    document.removeEventListener('touchend', handleEnd)
-  }
-
-  document.addEventListener('touchmove', handleMove, { passive: false })
-  document.addEventListener('touchend', handleEnd)
-}
-
-onBeforeUnmount(() => {
-  document.removeEventListener('mousemove', handleMouseMove)
-  document.removeEventListener('mouseup', handleMouseUp)
-  document.removeEventListener('touchmove', handleTouchMove)
-  document.removeEventListener('touchend', handleTouchEnd)
+  },
 })
 
 defineExpose({
