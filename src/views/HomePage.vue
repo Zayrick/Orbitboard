@@ -6,20 +6,9 @@
     <SideBar v-if="!isMiddleScreen" />
     <RouterView v-slot="{ Component, route }">
       <div
-        class="flex flex-1 flex-col overflow-hidden"
+        class="relative flex flex-1 flex-col overflow-hidden"
         ref="swiperRef"
       >
-        <div
-          v-if="ctrlsMap[route.name as string]"
-          class="bg-base-100 ctrls-bar w-full"
-          ref="ctrlsBarRef"
-        >
-          <component
-            :is="ctrlsMap[route.name as string]"
-            :is-large-ctrls-bar="isLargeCtrlsBar"
-          />
-        </div>
-
         <div class="relative h-0 flex-1">
           <div class="absolute flex h-full w-full flex-col overflow-y-auto">
             <Transition
@@ -34,6 +23,18 @@
             />
           </div>
         </div>
+
+        <div
+          v-if="ctrlsMap[route.name as string]"
+          class="bg-base-100/50 ctrls-bar absolute top-2 right-2 left-2 z-[9999] rounded-xl shadow-md backdrop-blur-sm md:right-4"
+          ref="ctrlsBarRef"
+        >
+          <component
+            :is="ctrlsMap[route.name as string]"
+            :is-large-ctrls-bar="isLargeCtrlsBar"
+          />
+        </div>
+
         <template v-if="isMiddleScreen">
           <div
             class="nav-bar shrink-0"
@@ -92,6 +93,7 @@ import LogsCtrl from '@/components/sidebar/LogsCtrl.tsx'
 import ProxiesCtrl from '@/components/sidebar/ProxiesCtrl.tsx'
 import RulesCtrl from '@/components/sidebar/RulesCtrl.tsx'
 import SideBar from '@/components/sidebar/SideBar.vue'
+import { ctrlsHeight } from '@/composables/paddingForCtrls'
 import { useSettings } from '@/composables/settings'
 import { useSwipeRouter } from '@/composables/swipe'
 import { PROXY_TAB_TYPE, ROUTE_ICON_MAP, ROUTE_NAME, RULE_TAB_TYPE } from '@/constant'
@@ -127,12 +129,16 @@ const router = useRouter()
 const { swiperRef } = useSwipeRouter()
 
 const ctrlsBarRef = ref<HTMLDivElement>()
-const { width: ctrlsBarWidth } = useElementSize(ctrlsBarRef)
+const { width: ctrlsBarWidth, height: ctrlsBarHeight } = useElementSize(ctrlsBarRef)
 const isLargeCtrlsBar = computed(() => {
   if (router.currentRoute.value.name === ROUTE_NAME.connections && useConnectionCard.value) {
     return ctrlsBarWidth.value > 860
   }
   return ctrlsBarWidth.value > 720
+})
+
+watch(ctrlsBarHeight, () => {
+  ctrlsHeight.value = ctrlsBarHeight.value ?? 64
 })
 
 watch(

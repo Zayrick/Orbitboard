@@ -2,6 +2,7 @@
   <div
     ref="parentRef"
     class="flex h-full w-full overflow-y-auto p-2"
+    :style="padding"
   >
     <div
       :style="{
@@ -33,9 +34,11 @@
 </template>
 
 <script setup lang="ts">
+import { usePaddingForCtrls } from '@/composables/paddingForCtrls'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 import { computed, nextTick, ref } from 'vue'
 
+const { padding } = usePaddingForCtrls()
 const parentRef = ref<HTMLElement | null>(null)
 const props = withDefaults(
   defineProps<{

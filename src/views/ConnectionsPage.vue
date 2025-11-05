@@ -1,5 +1,8 @@
 <template>
-  <div class="size-full overflow-x-hidden">
+  <div
+    class="size-full overflow-x-hidden"
+    :style="!useConnectionCard && padding"
+  >
     <ConnectionCardList v-if="useConnectionCard" />
     <ConnectionTable v-else />
     <ConnectionDetails />
@@ -10,7 +13,9 @@
 import ConnectionCardList from '@/components/connections/ConnectionCardList.vue'
 import ConnectionDetails from '@/components/connections/ConnectionDetails.vue'
 import ConnectionTable from '@/components/connections/ConnectionTable.vue'
+import { usePaddingForCtrls } from '@/composables/paddingForCtrls'
 import { useConnectionCard } from '@/store/settings'
+const { padding } = usePaddingForCtrls(4)
 </script>
 
 <style>

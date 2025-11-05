@@ -1,6 +1,7 @@
 <template>
   <div
     class="max-md:scrollbar-hidden h-full p-2 md:pr-1"
+    :style="padding"
     :class="disableProxiesPageScroll ? 'overflow-y-hidden' : 'overflow-y-scroll'"
     ref="proxiesRef"
     @scroll.passive="handleScroll"
@@ -39,6 +40,7 @@
 import ProxyGroup from '@/components/proxies/ProxyGroup.vue'
 import ProxyGroupForMobile from '@/components/proxies/ProxyGroupForMobile.vue'
 import ProxyProvider from '@/components/proxies/ProxyProvider.vue'
+import { usePaddingForCtrls } from '@/composables/paddingForCtrls'
 import { disableProxiesPageScroll, isProxiesPageMounted, renderGroups } from '@/composables/proxies'
 import { PROXY_TAB_TYPE } from '@/constant'
 import { isMiddleScreen } from '@/helper/utils'
@@ -47,6 +49,7 @@ import { twoColumnProxyGroup } from '@/store/settings'
 import { useSessionStorage } from '@vueuse/core'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
+const { padding } = usePaddingForCtrls()
 const proxiesRef = ref()
 const scrollStatus = useSessionStorage('cache/proxies-scroll-status', {
   [PROXY_TAB_TYPE.PROVIDER]: 0,

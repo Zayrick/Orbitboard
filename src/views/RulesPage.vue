@@ -1,7 +1,8 @@
 <template>
   <div
     class="flex flex-col gap-1 overflow-x-hidden"
-    :class="renderRules.length < 200 && 'p-2'"
+    :class="dontNeedVirtualScroller && 'p-2'"
+    :style="dontNeedVirtualScroller && padding"
   >
     <template v-if="rulesTabShow === RULE_TAB_TYPE.PROVIDER">
       <RuleProvider
@@ -11,7 +12,7 @@
         :index="index + 1"
       />
     </template>
-    <template v-else-if="renderRules.length < 200">
+    <template v-else-if="dontNeedVirtualScroller">
       <RuleCard
         v-for="rule in renderRules"
         :key="rule.payload"
@@ -39,9 +40,16 @@
 import VirtualScroller from '@/components/common/VirtualScroller.vue'
 import RuleCard from '@/components/rules/RuleCard.vue'
 import RuleProvider from '@/components/rules/RuleProvider.vue'
+import { usePaddingForCtrls } from '@/composables/paddingForCtrls'
 import { RULE_TAB_TYPE } from '@/constant'
 import { fetchRules, renderRules, renderRulesProvider, rules, rulesTabShow } from '@/store/rules'
 import type { Rule } from '@/types'
+import { computed } from 'vue'
 
 fetchRules()
+
+const { padding } = usePaddingForCtrls()
+const dontNeedVirtualScroller = computed(() => {
+  return renderRules.value.length < 200
+})
 </script>
