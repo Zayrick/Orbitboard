@@ -285,3 +285,11 @@ export enum IP_INFO_API {
   IPWHOIS = 'ipwho.is',
   IPAPI = 'ipapi.is',
 }
+
+export enum SETTINGS_MENU_KEY {
+  general = 'generalSettings',
+  backend = 'backendSettings',
+  proxies = 'proxySettings',
+  connections = 'connectionSettings',
+  overview = 'overviewSettings',
+}

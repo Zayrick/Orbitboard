@@ -1,6 +1,6 @@
 import { disconnectByIdAPI, isSingBox, updateProxyProviderAPI } from '@/api'
 import { renderGroups } from '@/composables/proxies'
-import { PROXY_SORT_TYPE, PROXY_TAB_TYPE, ROUTE_NAME } from '@/constant'
+import { PROXY_SORT_TYPE, PROXY_TAB_TYPE, ROUTE_NAME, SETTINGS_MENU_KEY } from '@/constant'
 import { getMinCardWidth } from '@/helper/utils'
 import { configs, updateConfigs } from '@/store/config'
 import { activeConnections } from '@/store/connections'
@@ -323,7 +323,7 @@ export default defineComponent({
                   settingsModel.value = false
                   router.push({
                     name: ROUTE_NAME.settings,
-                    query: { scrollTo: 'proxies-settings' },
+                    query: { scrollTo: SETTINGS_MENU_KEY.proxies },
                   })
                 }}
               >

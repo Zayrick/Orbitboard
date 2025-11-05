@@ -1,5 +1,5 @@
 import { disconnectAllAPI, disconnectByIdAPI } from '@/api'
-import { ROUTE_NAME, SORT_DIRECTION, SORT_TYPE } from '@/constant'
+import { ROUTE_NAME, SETTINGS_MENU_KEY, SORT_DIRECTION, SORT_TYPE } from '@/constant'
 import { useTooltip } from '@/helper/tooltip'
 import {
   connectionFilter,
@@ -144,7 +144,7 @@ export default defineComponent({
                   settingsModel.value = false
                   router.push({
                     name: ROUTE_NAME.settings,
-                    query: { scrollTo: 'connections-settings' },
+                    query: { scrollTo: SETTINGS_MENU_KEY.connections },
                   })
                 }}
               >

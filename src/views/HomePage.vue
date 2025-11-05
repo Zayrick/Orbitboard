@@ -1,5 +1,8 @@
 <template>
-  <div class="bg-base-200/50 home-page flex size-full">
+  <div
+    class="bg-base-200/50 home-page flex size-full"
+    :class="isSidebarCollapsed ? 'sidebar-collapsed' : 'sidebar-expanded'"
+  >
     <SideBar v-if="!isMiddleScreen" />
     <RouterView v-slot="{ Component, route }">
       <div
@@ -101,7 +104,7 @@ import { initLogs } from '@/store/logs'
 import { initSatistic } from '@/store/overview'
 import { fetchProxies, proxiesTabShow } from '@/store/proxies'
 import { fetchRules, rulesTabShow } from '@/store/rules'
-import { useConnectionCard } from '@/store/settings'
+import { isSidebarCollapsed, useConnectionCard } from '@/store/settings'
 import { activeBackend, activeUuid, backendList } from '@/store/setup'
 import type { Backend } from '@/types'
 import { useDocumentVisibility, useElementSize } from '@vueuse/core'
