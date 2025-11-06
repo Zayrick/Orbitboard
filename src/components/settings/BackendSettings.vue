@@ -28,7 +28,7 @@
 
     <template v-if="!isSingBox && configs">
       <div class="divider"></div>
-      <div class="grid max-w-3xl grid-cols-1 gap-2 lg:grid-cols-3">
+      <div class="grid max-w-3xl grid-cols-1 gap-2 gap-x-6 md:grid-cols-2 lg:grid-cols-3">
         <div
           class="setting-item"
           v-for="portConfig in portList"
@@ -47,7 +47,7 @@
           />
         </div>
       </div>
-      <div class="grid max-w-3xl grid-cols-1 gap-2 lg:grid-cols-4">
+      <div class="grid max-w-3xl grid-cols-1 gap-2 gap-x-6 md:grid-cols-2 lg:grid-cols-4">
         <div
           class="setting-item"
           v-if="configs?.tun"

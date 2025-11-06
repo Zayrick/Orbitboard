@@ -6,27 +6,25 @@
     <SideBar v-if="!isMiddleScreen" />
     <RouterView v-slot="{ Component, route }">
       <div
-        class="relative flex flex-1 flex-col overflow-hidden"
+        class="relative flex-1 overflow-hidden"
         ref="swiperRef"
       >
-        <div class="relative h-0 flex-1">
-          <div class="absolute flex h-full w-full flex-col overflow-y-auto">
-            <Transition
-              :name="(route.meta.transition as string) || 'fade'"
-              v-if="isMiddleScreen"
-            >
-              <Component :is="Component" />
-            </Transition>
-            <Component
-              v-else
-              :is="Component"
-            />
-          </div>
+        <div class="absolute flex h-full w-full flex-col overflow-y-auto">
+          <Transition
+            :name="(route.meta.transition as string) || 'fade'"
+            v-if="isMiddleScreen"
+          >
+            <Component :is="Component" />
+          </Transition>
+          <Component
+            v-else
+            :is="Component"
+          />
         </div>
 
         <div
           v-if="ctrlsMap[route.name as string]"
-          class="bg-base-100/50 ctrls-bar absolute top-2 right-2 left-2 z-[9999] rounded-xl shadow-md backdrop-blur-sm md:right-4"
+          class="bg-base-100/20 ctrls-bar absolute top-2 right-2 left-2 z-30 rounded-xl shadow-sm backdrop-blur-sm md:right-4"
           ref="ctrlsBarRef"
         >
           <component
@@ -37,22 +35,23 @@
 
         <template v-if="isMiddleScreen">
           <div
-            class="nav-bar shrink-0"
-            :style="styleForSafeArea"
-          />
-          <div
-            class="dock dock-sm bg-base-200 z-30"
-            :style="styleForSafeArea"
+            class="dock dock-sm bg-base-200/20 absolute right-2 left-2 z-30 h-16 w-auto rounded-3xl shadow-sm backdrop-blur-sm"
+            :style="{
+              padding: '0',
+              bottom: 'calc(var(--spacing) * 2 + env(safe-area-inset-bottom))',
+            }"
+            ref="dockRef"
           >
             <button
               v-for="r in renderRoutes"
               :key="r"
               @click="router.push({ name: r })"
+              class="h-14 flex-col items-center justify-center pt-2"
               :class="r === route.name && 'dock-active'"
             >
               <component
                 :is="ROUTE_ICON_MAP[r]"
-                class="size-5"
+                class="h-5 w-5 flex-shrink-0"
               />
               <span class="dock-label">
                 {{ $t(r) }}
@@ -93,7 +92,7 @@ import LogsCtrl from '@/components/sidebar/LogsCtrl.tsx'
 import ProxiesCtrl from '@/components/sidebar/ProxiesCtrl.tsx'
 import RulesCtrl from '@/components/sidebar/RulesCtrl.tsx'
 import SideBar from '@/components/sidebar/SideBar.vue'
-import { ctrlsHeight } from '@/composables/paddingForCtrls'
+import { ctrlsHeight, dockTop } from '@/composables/paddingViews'
 import { useSettings } from '@/composables/settings'
 import { useSwipeRouter } from '@/composables/swipe'
 import { PROXY_TAB_TYPE, ROUTE_ICON_MAP, ROUTE_NAME, RULE_TAB_TYPE } from '@/constant'
@@ -109,7 +108,7 @@ import { fetchRules, rulesTabShow } from '@/store/rules'
 import { isSidebarCollapsed, useConnectionCard } from '@/store/settings'
 import { activeBackend, activeUuid, backendList } from '@/store/setup'
 import type { Backend } from '@/types'
-import { useDocumentVisibility, useElementSize } from '@vueuse/core'
+import { useDocumentVisibility, useElementBounding, useElementSize } from '@vueuse/core'
 import { computed, ref, watch, type Component } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
 
@@ -120,16 +119,14 @@ const ctrlsMap: Record<string, Component> = {
   [ROUTE_NAME.rules]: RulesCtrl,
 }
 
-const styleForSafeArea = {
-  height: 'calc(var(--spacing) * 14 + env(safe-area-inset-bottom))',
-  'padding-bottom': 'env(safe-area-inset-bottom)',
-}
-
 const router = useRouter()
 const { swiperRef } = useSwipeRouter()
 
+const dockRef = ref<HTMLDivElement>()
 const ctrlsBarRef = ref<HTMLDivElement>()
 const { width: ctrlsBarWidth, height: ctrlsBarHeight } = useElementSize(ctrlsBarRef)
+const { top: dockRefTop } = useElementBounding(dockRef)
+
 const isLargeCtrlsBar = computed(() => {
   if (router.currentRoute.value.name === ROUTE_NAME.connections && useConnectionCard.value) {
     return ctrlsBarWidth.value > 860
@@ -137,9 +134,21 @@ const isLargeCtrlsBar = computed(() => {
   return ctrlsBarWidth.value > 720
 })
 
-watch(ctrlsBarHeight, () => {
-  ctrlsHeight.value = ctrlsBarHeight.value ?? 64
-})
+watch(
+  ctrlsBarHeight,
+  () => {
+    ctrlsHeight.value = ctrlsBarHeight.value ?? 64
+  },
+  { immediate: true },
+)
+
+watch(
+  dockRefTop,
+  () => {
+    dockTop.value = window.innerHeight - dockRefTop.value
+  },
+  { immediate: true },
+)
 
 watch(
   activeUuid,

@@ -13,9 +13,9 @@
 import ConnectionCardList from '@/components/connections/ConnectionCardList.vue'
 import ConnectionDetails from '@/components/connections/ConnectionDetails.vue'
 import ConnectionTable from '@/components/connections/ConnectionTable.vue'
-import { usePaddingForCtrls } from '@/composables/paddingForCtrls'
+import { usePaddingForViews } from '@/composables/paddingViews'
 import { useConnectionCard } from '@/store/settings'
-const { padding } = usePaddingForCtrls(4)
+const { padding } = usePaddingForViews()
 </script>
 
 <style>

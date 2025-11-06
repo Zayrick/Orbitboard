@@ -5,9 +5,10 @@
       ref="scrollContainerRef"
       class="overflow-x-hidden overflow-y-auto"
       @scroll.passive="handleScroll"
+      :style="padding"
     >
-      <div class="grid grid-cols-1 gap-2 max-md:pb-16 md:pt-16">
-        <div class="flex flex-col gap-4 p-2">
+      <div class="grid grid-cols-1 gap-2 max-md:pb-15 md:pt-15">
+        <div class="flex flex-col gap-4 px-2">
           <div
             v-for="item in menuItems"
             :key="item.key"
@@ -24,7 +25,6 @@
     <!-- 左侧菜单 -->
     <SettingsMenu
       ref="menuComponentRef"
-      class="absolute right-5 left-2 z-[9999] max-md:bottom-2 md:top-2"
       :menu-items="menuItems"
       :active-menu-key="activeMenuKey"
       @menu-click="handleMenuClick"
@@ -39,6 +39,7 @@ import GeneralSettings from '@/components/settings/GeneralSettings.vue'
 import OverviewSettings from '@/components/settings/OverviewSettings.vue'
 import ProxiesSettings from '@/components/settings/ProxiesSettings.vue'
 import SettingsMenu from '@/components/settings/SettingsMenu.vue'
+import { usePaddingForViews } from '@/composables/paddingViews'
 import { SETTINGS_MENU_KEY } from '@/constant'
 import { splitOverviewPage } from '@/store/settings'
 import {
@@ -60,6 +61,7 @@ type MenuItem = {
   component: Component
 }
 
+const { padding } = usePaddingForViews()
 const route = useRoute()
 const activeMenuKey = ref(
   splitOverviewPage.value ? SETTINGS_MENU_KEY.general : SETTINGS_MENU_KEY.overview,

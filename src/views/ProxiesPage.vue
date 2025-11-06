@@ -40,7 +40,7 @@
 import ProxyGroup from '@/components/proxies/ProxyGroup.vue'
 import ProxyGroupForMobile from '@/components/proxies/ProxyGroupForMobile.vue'
 import ProxyProvider from '@/components/proxies/ProxyProvider.vue'
-import { usePaddingForCtrls } from '@/composables/paddingForCtrls'
+import { usePaddingForViews } from '@/composables/paddingViews'
 import { disableProxiesPageScroll, isProxiesPageMounted, renderGroups } from '@/composables/proxies'
 import { PROXY_TAB_TYPE } from '@/constant'
 import { isMiddleScreen } from '@/helper/utils'
@@ -49,7 +49,7 @@ import { twoColumnProxyGroup } from '@/store/settings'
 import { useSessionStorage } from '@vueuse/core'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
-const { padding } = usePaddingForCtrls()
+const { padding } = usePaddingForViews()
 const proxiesRef = ref()
 const scrollStatus = useSessionStorage('cache/proxies-scroll-status', {
   [PROXY_TAB_TYPE.PROVIDER]: 0,

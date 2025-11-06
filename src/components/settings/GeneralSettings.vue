@@ -10,15 +10,15 @@
       <div class="setting-item">
         <div class="setting-item-label">
           {{ $t('autoDisconnectIdleUDP') }}
+          <QuestionMarkCircleIcon
+            class="h-4 w-4 cursor-pointer"
+            @mouseenter="showTip($event, $t('autoDisconnectIdleUDPTip'))"
+          />
         </div>
         <input
           type="checkbox"
           v-model="autoDisconnectIdleUDP"
           class="toggle"
-        />
-        <QuestionMarkCircleIcon
-          class="h-4 w-4 cursor-pointer"
-          @mouseenter="showTip($event, $t('autoDisconnectIdleUDPTip'))"
         />
       </div>
       <div
@@ -38,6 +38,10 @@
       <div class="setting-item">
         <div class="setting-item-label">
           {{ $t('IPInfoAPI') }}
+          <QuestionMarkCircleIcon
+            class="h-4 w-4 cursor-pointer"
+            @mouseenter="showTip($event, $t('IPInfoAPITip'))"
+          />
         </div>
         <select
           class="select select-sm min-w-24"
@@ -51,13 +55,9 @@
             {{ opt }}
           </option>
         </select>
-        <QuestionMarkCircleIcon
-          class="h-4 w-4 cursor-pointer"
-          @mouseenter="showTip($event, $t('IPInfoAPITip'))"
-        />
       </div>
 
-      <div class="setting-item md:hidden">
+      <div class="setting-item md:hidden!">
         <div class="setting-item-label">
           {{ $t('scrollAnimationEffect') }}
         </div>
@@ -67,7 +67,7 @@
           class="toggle"
         />
       </div>
-      <div class="setting-item md:hidden">
+      <div class="setting-item md:hidden!">
         <div class="setting-item-label">
           {{ $t('swipeInPages') }}
         </div>
@@ -78,7 +78,7 @@
         />
       </div>
       <div
-        class="setting-item md:hidden"
+        class="setting-item md:hidden!"
         v-if="swipeInPages"
       >
         <div class="setting-item-label">
@@ -90,18 +90,18 @@
           class="toggle"
         />
       </div>
-      <div class="setting-item md:hidden">
+      <div class="setting-item md:hidden!">
         <div class="setting-item-label">
           {{ $t('disablePullToRefresh') }}
+          <QuestionMarkCircleIcon
+            class="h-4 w-4 cursor-pointer"
+            @mouseenter="showTip($event, $t('disablePullToRefreshTip'))"
+          />
         </div>
         <input
           type="checkbox"
           v-model="disablePullToRefresh"
           class="toggle"
-        />
-        <QuestionMarkCircleIcon
-          class="h-4 w-4 cursor-pointer"
-          @mouseenter="showTip($event, $t('disablePullToRefreshTip'))"
         />
       </div>
       <div
@@ -110,15 +110,15 @@
       >
         <div class="setting-item-label">
           {{ $t('displayAllFeatures') }}
+          <QuestionMarkCircleIcon
+            class="h-4 w-4 cursor-pointer"
+            @mouseenter="showTip($event, $t('displayAllFeaturesTip'))"
+          />
         </div>
         <input
           type="checkbox"
           v-model="displayAllFeatures"
           class="toggle"
-        />
-        <QuestionMarkCircleIcon
-          class="h-4 w-4 cursor-pointer"
-          @mouseenter="showTip($event, $t('displayAllFeaturesTip'))"
         />
       </div>
     </div>

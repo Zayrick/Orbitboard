@@ -40,7 +40,7 @@
 import VirtualScroller from '@/components/common/VirtualScroller.vue'
 import RuleCard from '@/components/rules/RuleCard.vue'
 import RuleProvider from '@/components/rules/RuleProvider.vue'
-import { usePaddingForCtrls } from '@/composables/paddingForCtrls'
+import { usePaddingForViews } from '@/composables/paddingViews'
 import { RULE_TAB_TYPE } from '@/constant'
 import { fetchRules, renderRules, renderRulesProvider, rules, rulesTabShow } from '@/store/rules'
 import type { Rule } from '@/types'
@@ -48,7 +48,7 @@ import { computed } from 'vue'
 
 fetchRules()
 
-const { padding } = usePaddingForCtrls()
+const { padding } = usePaddingForViews()
 const dontNeedVirtualScroller = computed(() => {
   return renderRules.value.length < 200
 })

@@ -1,8 +1,7 @@
 <template>
   <div
     ref="parentRef"
-    class="flex h-full w-full overflow-y-auto p-2"
-    :style="padding"
+    class="flex h-full w-full overflow-y-auto px-2"
   >
     <div
       :style="{
@@ -21,7 +20,7 @@
           :key="row.key.toString()"
           :data-index="row.index"
           :ref="(ref) => measureElement(ref as Element | null)"
-          class="mb-1"
+          :style="{ marginBottom: marginBottom(row.index) }"
         >
           <slot
             :item="data[row.index]"
@@ -34,11 +33,11 @@
 </template>
 
 <script setup lang="ts">
-import { usePaddingForCtrls } from '@/composables/paddingForCtrls'
+import { usePaddingForViews } from '@/composables/paddingViews'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 import { computed, nextTick, ref } from 'vue'
 
-const { padding } = usePaddingForCtrls()
+const { paddingTop, paddingBottom } = usePaddingForViews()
 const parentRef = ref<HTMLElement | null>(null)
 const props = withDefaults(
   defineProps<{
@@ -59,14 +58,17 @@ const virutalOptions = computed(() => {
     getScrollElement: () => parentRef.value,
     estimateSize: () => props.size,
     overscan: props.overscan,
+    paddingStart: paddingTop.value,
   }
 })
 
 const rowVirtualizer = useVirtualizer(virutalOptions)
-
 const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
 const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
 
+const marginBottom = (index: number) => {
+  return index === props.data.length - 1 ? `${paddingBottom.value}px` : '4px'
+}
 const measureElement = (el: Element | null) => {
   if (!el) {
     return

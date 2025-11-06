@@ -60,15 +60,15 @@
       <div class="setting-item">
         <div class="setting-item-label">
           {{ $t('independentLatencyTest') }}
+          <QuestionMarkCircleIcon
+            class="h-4 w-4"
+            @mouseenter="independentLatencyTestTip"
+          />
         </div>
         <input
           class="toggle"
           type="checkbox"
           v-model="independentLatencyTest"
-        />
-        <QuestionMarkCircleIcon
-          class="h-4 w-4"
-          @mouseenter="independentLatencyTestTip"
         />
       </div>
       <div

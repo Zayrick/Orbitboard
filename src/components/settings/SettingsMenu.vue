@@ -1,8 +1,9 @@
 <template>
   <div
     ref="menuRef"
-    class="scrollbar-hidden bg-base-100/80 rounded-3xl shadow-md backdrop-blur-sm"
+    class="scrollbar-hidden bg-base-100/20 absolute right-2 left-2 z-30 rounded-3xl shadow-sm backdrop-blur-sm"
     :class="{ 'cursor-grabbing': isDragging, 'cursor-grab': !isDragging }"
+    :style="styleForSafeArea"
     @touchstart.passive.stop
     @touchmove.passive.stop
     @touchend.passive.stop
@@ -34,9 +35,10 @@
 
 <script setup lang="ts">
 import { SETTINGS_MENU_KEY } from '@/constant'
+import { isMiddleScreen } from '@/helper/utils'
 import { useSwipe } from '@vueuse/core'
 import type { Component } from 'vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 type MenuItem = {
   key: SETTINGS_MENU_KEY
@@ -53,6 +55,17 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'menu-click', key: SETTINGS_MENU_KEY): void
 }>()
+
+const styleForSafeArea = computed(() => {
+  if (isMiddleScreen.value) {
+    return {
+      bottom: 'calc(var(--spacing) * 20 + env(safe-area-inset-bottom))',
+    }
+  }
+  return {
+    top: 'calc(var(--spacing) * 2)',
+  }
+})
 
 const menuRef = ref<HTMLDivElement>()
 const menuItemRefs = ref<Map<SETTINGS_MENU_KEY, HTMLLIElement>>(new Map())

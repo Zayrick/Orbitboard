@@ -1,5 +1,8 @@
 <template>
-  <div class="flex h-full flex-col gap-2 overflow-x-hidden overflow-y-auto p-2">
+  <div
+    class="flex h-full flex-col gap-2 overflow-x-hidden overflow-y-auto p-2"
+    :style="padding"
+  >
     <ChartsCard />
     <NetworkCard v-if="showIPAndConnectionInfo" />
     <div
@@ -26,7 +29,9 @@ import ChartsCard from '@/components/overview/ChartsCard.vue'
 import ConnectionHistory from '@/components/overview/ConnectionHistory.vue'
 import NetworkCard from '@/components/overview/NetworkCard.vue'
 import TopologyCharts from '@/components/overview/TopologyCharts.vue'
+import { usePaddingForViews } from '@/composables/paddingViews'
 import { getLabelFromBackend } from '@/helper/utils'
 import { displayConnectionTopology, showIPAndConnectionInfo } from '@/store/settings'
 import { activeBackend } from '@/store/setup'
+const { padding } = usePaddingForViews()
 </script>
