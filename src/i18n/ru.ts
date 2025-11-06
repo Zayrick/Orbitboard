@@ -165,7 +165,6 @@ const ru: LANG_MESSAGE = {
     'Включение независимого тестирования задержки попытается использовать URL-адреса, указанные в конфигурационном файле, вместо настроек URL-адресов в панели управления во время теста задержки. Задержка будет отображаться отдельно на основе URL-адресов, установленных в группах политик.',
   search: 'Поиск',
   searchMultiple: 'Ключевые слова через пробелы',
-  allSourceIP: 'Все IP-источники',
   importing: 'Импортируется',
   hideConnection: 'Скрыть соединение',
   hideConnectionRegex: 'Скрыть соединение Regex',
@@ -182,10 +181,6 @@ const ru: LANG_MESSAGE = {
   reset: 'Сбросить',
   minProxyCardWidth: 'Минимальная ширина карточки прокси',
   displayGlobalByMode: 'Отображать GLOBAL по режиму',
-  proxyCountMode: 'Режим подсчета прокси',
-  filteredTotal: 'Отфильтровано всего',
-  total: 'Всего',
-  aliveTotal: 'Живых / всего',
   displaySelectedNode: 'Отображать выбранный узел',
   displayLatencyNumber: 'Отображать задержку',
   tipForFixed:

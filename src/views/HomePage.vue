@@ -24,7 +24,7 @@
 
         <div
           v-if="ctrlsMap[route.name as string]"
-          class="bg-base-100/20 ctrls-bar absolute top-2 right-2 left-2 z-30 rounded-xl shadow-sm backdrop-blur-sm md:right-4"
+          class="bg-base-100/20 ctrls-bar absolute top-2 right-2 left-2 z-30 rounded-xl shadow-sm backdrop-blur-sm md:right-3 md:rounded-lg"
           ref="ctrlsBarRef"
         >
           <component
@@ -108,7 +108,7 @@ import { fetchRules, rulesTabShow } from '@/store/rules'
 import { isSidebarCollapsed, useConnectionCard } from '@/store/settings'
 import { activeBackend, activeUuid, backendList } from '@/store/setup'
 import type { Backend } from '@/types'
-import { useDocumentVisibility, useElementBounding, useElementSize } from '@vueuse/core'
+import { useDocumentVisibility, useElementBounding } from '@vueuse/core'
 import { computed, ref, watch, type Component } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
 
@@ -124,7 +124,7 @@ const { swiperRef } = useSwipeRouter()
 
 const dockRef = ref<HTMLDivElement>()
 const ctrlsBarRef = ref<HTMLDivElement>()
-const { width: ctrlsBarWidth, height: ctrlsBarHeight } = useElementSize(ctrlsBarRef)
+const { bottom: ctrlsBarBottom, width: ctrlsBarWidth } = useElementBounding(ctrlsBarRef)
 const { top: dockRefTop } = useElementBounding(dockRef)
 
 const isLargeCtrlsBar = computed(() => {
@@ -135,9 +135,9 @@ const isLargeCtrlsBar = computed(() => {
 })
 
 watch(
-  ctrlsBarHeight,
+  ctrlsBarBottom,
   () => {
-    ctrlsHeight.value = ctrlsBarHeight.value ?? 64
+    ctrlsHeight.value = ctrlsBarBottom.value ?? 64
   },
   { immediate: true },
 )

@@ -3,7 +3,7 @@
     class="join-item select select-sm"
     v-model="sourceIPFilter"
   >
-    <option :value="null">{{ $t('allSourceIP') }}</option>
+    <option :value="null">{{ $t('all') }}</option>
     <option
       v-for="opt in sourceIPOpts"
       :key="opt.value.join(',')"

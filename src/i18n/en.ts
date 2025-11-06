@@ -163,7 +163,6 @@ const en = {
     "When enabled, the latency test will use URLs specified in the configuration file instead of zashboard's URL settings. Latency will be displayed independently based on the URLs set in policy groups.",
   search: 'Search',
   searchMultiple: 'Space-separated keywords',
-  allSourceIP: 'All Source IPs',
   importing: 'Importing...',
   hideConnection: 'Hide connection',
   hideConnectionRegex: 'Hide connection regex',
@@ -180,10 +179,6 @@ const en = {
   reset: 'Reset',
   minProxyCardWidth: 'Proxy card min width',
   displayGlobalByMode: 'Display GLOBAL by mode',
-  proxyCountMode: 'Proxy count mode',
-  filteredTotal: 'Filtered total',
-  total: 'Total',
-  aliveTotal: 'Alive / Total',
   displaySelectedNode: 'Show selected node',
   displayLatencyNumber: 'Show latency numbers',
   tipForFixed:

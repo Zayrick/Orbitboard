@@ -173,12 +173,6 @@ export enum PROXY_TYPE {
   LoadBalance = 'loadbalance',
 }
 
-export enum PROXY_COUNT_MODE {
-  FILTERED_TOTAL = 'filteredTotal',
-  TOTAL = 'total',
-  ALIVE_TOTAL = 'aliveTotal',
-}
-
 export const SIMPLE_CARD_STYLE = [
   [CONNECTIONS_TABLE_ACCESSOR_KEY.Host, CONNECTIONS_TABLE_ACCESSOR_KEY.ConnectTime],
   [

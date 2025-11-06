@@ -105,7 +105,7 @@
     <div class="divider"></div>
 
     <div
-      class="grid max-w-3xl grid-cols-2 gap-2"
+      class="grid max-w-3xl grid-cols-2 gap-2 gap-y-3"
       :class="
         hasSmartGroup
           ? 'md:grid-cols-4 xl:max-w-6xl xl:grid-cols-7'

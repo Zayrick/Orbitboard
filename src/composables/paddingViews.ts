@@ -3,19 +3,21 @@ import { computed, ref } from 'vue'
 
 export const ctrlsHeight = ref(64)
 export const dockTop = ref(0)
-export const usePaddingForViews = (offset = 0) => {
+export const usePaddingForViews = (config?: { offsetTop?: number; offsetBottom?: number }) => {
+  const { offsetTop = 0, offsetBottom = 0 } = config ?? {}
+  const baseOffset = 8
   const paddingTop = computed(() => {
     if (ctrlsHeight.value === 0) {
-      return 8
+      return offsetTop + baseOffset
     }
-    return offset + ctrlsHeight.value + 16
+    return offsetTop + ctrlsHeight.value + baseOffset
   })
 
   const paddingBottom = computed(() => {
     if (isMiddleScreen.value) {
-      return offset + dockTop.value + 8
+      return offsetBottom + dockTop.value + baseOffset
     }
-    return 8
+    return offsetBottom + baseOffset
   })
 
   const padding = computed(() => {

@@ -95,55 +95,13 @@
       </div>
       <div class="setting-item">
         <div class="setting-item-label">
-          {{ $t('proxyPreviewType') }}
+          {{ $t('truncateProxyName') }}
         </div>
-        <select
-          class="select select-sm min-w-24"
-          v-model="proxyPreviewType"
-        >
-          <option
-            v-for="opt in Object.values(PROXY_PREVIEW_TYPE)"
-            :key="opt"
-            :value="opt"
-          >
-            {{ $t(opt) }}
-          </option>
-        </select>
-      </div>
-      <div class="setting-item">
-        <div class="setting-item-label">
-          {{ $t('proxyCountMode') }}
-        </div>
-        <select
-          class="select select-sm min-w-24"
-          v-model="proxyCountMode"
-        >
-          <option
-            v-for="opt in Object.values(PROXY_COUNT_MODE)"
-            :key="opt"
-            :value="opt"
-          >
-            {{ $t(opt) }}
-          </option>
-        </select>
-      </div>
-      <div class="setting-item">
-        <div class="setting-item-label">
-          {{ $t('proxyCardSize') }}
-        </div>
-        <select
-          class="select select-sm min-w-24"
-          v-model="proxyCardSize"
-          @change="handlerProxyCardSizeChange"
-        >
-          <option
-            v-for="opt in Object.values(PROXY_CARD_SIZE)"
-            :key="opt"
-            :value="opt"
-          >
-            {{ $t(opt) }}
-          </option>
-        </select>
+        <input
+          class="toggle"
+          type="checkbox"
+          v-model="truncateProxyName"
+        />
       </div>
       <div class="setting-item">
         <div class="setting-item-label">
@@ -177,21 +135,47 @@
       </div>
       <div class="setting-item">
         <div class="setting-item-label">
-          {{ $t('truncateProxyName') }}
+          {{ $t('proxyPreviewType') }}
         </div>
-        <input
-          class="toggle"
-          type="checkbox"
-          v-model="truncateProxyName"
-        />
+        <select
+          class="select select-sm min-w-24"
+          v-model="proxyPreviewType"
+        >
+          <option
+            v-for="opt in Object.values(PROXY_PREVIEW_TYPE)"
+            :key="opt"
+            :value="opt"
+          >
+            {{ $t(opt) }}
+          </option>
+        </select>
       </div>
+      <div class="setting-item">
+        <div class="setting-item-label">
+          {{ $t('proxyCardSize') }}
+        </div>
+        <select
+          class="select select-sm min-w-24"
+          v-model="proxyCardSize"
+          @change="handlerProxyCardSizeChange"
+        >
+          <option
+            v-for="opt in Object.values(PROXY_CARD_SIZE)"
+            :key="opt"
+            :value="opt"
+          >
+            {{ $t(opt) }}
+          </option>
+        </select>
+      </div>
+
       <div class="setting-item">
         <div class="setting-item-label">
           {{ $t('proxyGroupIconSize') }}
         </div>
         <input
           type="number"
-          class="input input-sm w-20"
+          class="input input-sm w-24"
           v-model="proxyGroupIconSize"
         />
       </div>
@@ -201,7 +185,7 @@
         </div>
         <input
           type="number"
-          class="input input-sm w-20"
+          class="input input-sm w-24"
           v-model="proxyGroupIconMargin"
         />
       </div>
@@ -216,7 +200,7 @@
 
 <script setup lang="ts">
 import { isSingBox } from '@/api'
-import { PROXY_CARD_SIZE, PROXY_COUNT_MODE, PROXY_PREVIEW_TYPE } from '@/constant'
+import { PROXY_CARD_SIZE, PROXY_PREVIEW_TYPE } from '@/constant'
 import { useTooltip } from '@/helper/tooltip'
 import { getMinCardWidth } from '@/helper/utils'
 import { proxyMap } from '@/store/proxies'
@@ -229,7 +213,6 @@ import {
   mediumLatency,
   minProxyCardWidth,
   proxyCardSize,
-  proxyCountMode,
   proxyGroupIconMargin,
   proxyGroupIconSize,
   proxyPreviewType,

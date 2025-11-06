@@ -15,7 +15,7 @@ import ConnectionDetails from '@/components/connections/ConnectionDetails.vue'
 import ConnectionTable from '@/components/connections/ConnectionTable.vue'
 import { usePaddingForViews } from '@/composables/paddingViews'
 import { useConnectionCard } from '@/store/settings'
-const { padding } = usePaddingForViews()
+const { padding } = usePaddingForViews({ offsetBottom: -8, offsetTop: -4 })
 </script>
 
 <style>

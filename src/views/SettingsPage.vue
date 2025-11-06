@@ -7,7 +7,7 @@
       @scroll.passive="handleScroll"
       :style="padding"
     >
-      <div class="grid grid-cols-1 gap-2 max-md:pb-15 md:pt-15">
+      <div class="grid grid-cols-1 gap-2 max-md:pb-14 md:pt-14">
         <div class="flex flex-col gap-4 px-2">
           <div
             v-for="item in menuItems"
@@ -63,9 +63,7 @@ type MenuItem = {
 
 const { padding } = usePaddingForViews()
 const route = useRoute()
-const activeMenuKey = ref(
-  splitOverviewPage.value ? SETTINGS_MENU_KEY.general : SETTINGS_MENU_KEY.overview,
-)
+
 const menuComponentRef = ref<InstanceType<typeof SettingsMenu> | null>(null)
 const scrollContainerRef = ref<HTMLDivElement>()
 const menuItems = computed<MenuItem[]>(() => {
@@ -105,11 +103,11 @@ const menuItems = computed<MenuItem[]>(() => {
   if (splitOverviewPage.value) {
     items.push(overviewItem)
   } else {
-    items.unshift(overviewItem)
+    items.splice(1, 0, overviewItem)
   }
   return items
 })
-
+const activeMenuKey = ref(menuItems.value[0].key)
 const getItemRef = (key: SETTINGS_MENU_KEY) => {
   return document.getElementById(`item-${key}`)
 }
@@ -132,7 +130,7 @@ const handleMenuClick = (key: SETTINGS_MENU_KEY) => {
       const containerRect = scrollContainerRef.value.getBoundingClientRect()
       const elementRect = element.getBoundingClientRect()
       const scrollTop = scrollContainerRef.value.scrollTop
-      const targetScrollTop = scrollTop + elementRect.top - containerRect.top - 128
+      const targetScrollTop = scrollTop + elementRect.top - containerRect.top - 86
 
       scrollContainerRef.value.scrollTo({
         top: targetScrollTop,

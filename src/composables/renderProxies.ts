@@ -1,12 +1,7 @@
-import { NOT_CONNECTED, PROXY_COUNT_MODE, PROXY_SORT_TYPE } from '@/constant'
+import { NOT_CONNECTED, PROXY_SORT_TYPE } from '@/constant'
 import { isProxyGroup } from '@/helper'
 import { getLatencyByName, proxiesFilter } from '@/store/proxies'
-import {
-  hideUnavailableProxies,
-  proxyCountMode,
-  proxySortType,
-  useSmartGroupSort,
-} from '@/store/settings'
+import { hideUnavailableProxies, proxySortType, useSmartGroupSort } from '@/store/settings'
 import { smartOrderMap } from '@/store/smart'
 import { computed, type ComputedRef } from 'vue'
 
@@ -22,14 +17,6 @@ export function useRenderProxies(proxies: ComputedRef<string[]>, proxyGroup?: st
 
   const proxiesCount = computed(() => {
     const all = proxies.value.length
-
-    if (proxyCountMode.value === PROXY_COUNT_MODE.FILTERED_TOTAL) {
-      return renderProxies.value.length
-    }
-
-    if (proxyCountMode.value === PROXY_COUNT_MODE.TOTAL || availableProxies.value === all) {
-      return all
-    }
 
     return `${availableProxies.value}/${all}`
   })

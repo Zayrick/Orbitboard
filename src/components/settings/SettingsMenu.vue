@@ -1,44 +1,46 @@
 <template>
   <div
     ref="menuRef"
-    class="scrollbar-hidden bg-base-100/20 absolute right-2 left-2 z-30 rounded-3xl shadow-sm backdrop-blur-sm"
-    :class="{ 'cursor-grabbing': isDragging, 'cursor-grab': !isDragging }"
+    class="scrollbar-hidden bg-base-100/20 absolute right-2 left-2 z-30 rounded-3xl p-1 px-2 shadow-sm backdrop-blur-sm md:rounded-lg"
     :style="styleForSafeArea"
     @touchstart.passive.stop
     @touchmove.passive.stop
     @touchend.passive.stop
   >
-    <ul class="menu w-full max-w-7xl flex-row">
-      <li
+    <div class="relative flex w-full max-w-7xl flex-row">
+      <div
+        class="bg-neutral absolute top-1 left-0 -z-1 h-8 rounded-3xl md:rounded-lg"
+        :class="[!isSwiping ? 'transition-transform duration-300 will-change-transform' : '']"
+        :style="activeStyle"
+      ></div>
+      <div
         v-for="item in menuItems"
         :key="item.key"
-        :ref="(el) => setMenuItemRef(el, item.key)"
-        class="flex-1 flex-shrink-0 md:w-full"
+        ref="menuItemRefs"
+        :data-key="item.key"
+        :id="`menu-item-${item.key}`"
+        class="flex h-10 flex-1 flex-shrink-0 cursor-pointer items-center justify-center gap-2 truncate transition-all duration-300 md:w-full"
+        :class="[activeMenuKey === item.key ? 'text-neutral-content' : '']"
+        @click="handleMenuClick(item.key)"
       >
-        <a
-          class="flex justify-center rounded-2xl px-4 py-2 whitespace-nowrap"
-          :class="[activeMenuKey === item.key ? 'menu-active' : '']"
-          @click="handleMenuClick(item.key)"
-        >
-          <component
-            :is="item.icon"
-            class="h-5 w-5"
-          />
-          <span class="hidden lg:block">
-            {{ $t(item.label) }}
-          </span>
-        </a>
-      </li>
-    </ul>
+        <component
+          :is="item.icon"
+          class="h-5 w-5"
+        />
+        <span class="hidden text-sm lg:block">
+          {{ $t(item.label) }}
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { SETTINGS_MENU_KEY } from '@/constant'
 import { isMiddleScreen } from '@/helper/utils'
-import { useSwipe } from '@vueuse/core'
+import { useElementSize, useSwipe } from '@vueuse/core'
 import type { Component } from 'vue'
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 
 type MenuItem = {
   key: SETTINGS_MENU_KEY
@@ -56,6 +58,58 @@ const emit = defineEmits<{
   (e: 'menu-click', key: SETTINGS_MENU_KEY): void
 }>()
 
+const menuRef = ref<HTMLDivElement>()
+const menuItemRefs = ref<HTMLLIElement[]>([])
+const { width } = useElementSize(menuRef)
+const activeLeft = ref(0)
+const activeWidth = ref(0)
+const activeStyle = computed(() => {
+  return {
+    transform: `translateX(${activeLeft.value}px)`,
+    width: `${activeWidth.value}px`,
+  }
+})
+
+const updateActiveMenuLeft = async () => {
+  await nextTick()
+  const itemRef = menuItemRefs.value.find((el) => el.dataset.key === props.activeMenuKey)
+  if (itemRef) {
+    activeLeft.value = itemRef.offsetLeft
+  }
+}
+
+const updateActiveMenuWidth = async () => {
+  await nextTick()
+  const itemRef = menuItemRefs.value.find((el) => el.dataset.key === props.activeMenuKey)
+  if (itemRef) {
+    activeWidth.value = itemRef.offsetWidth
+  }
+}
+
+const { isSwiping } = useSwipe(menuRef, {
+  passive: false,
+  onSwipe(e: TouchEvent) {
+    if (!menuRef.value) return
+    const menuRect = menuRef.value.getBoundingClientRect()
+    const relativeX = e.touches[0].clientX - menuRect.left
+
+    activeLeft.value = Math.max(
+      0,
+      Math.min(
+        relativeX - activeWidth.value / 2,
+        menuRef.value.offsetWidth - activeWidth.value - 16,
+      ),
+    )
+    const targetKey = getMenuItemAtPosition(e.touches[0].clientX)
+    if (targetKey && targetKey !== props.activeMenuKey) {
+      emit('menu-click', targetKey)
+    }
+  },
+  onSwipeEnd() {
+    updateActiveMenuLeft()
+  },
+})
+
 const styleForSafeArea = computed(() => {
   if (isMiddleScreen.value) {
     return {
@@ -67,21 +121,8 @@ const styleForSafeArea = computed(() => {
   }
 })
 
-const menuRef = ref<HTMLDivElement>()
-const menuItemRefs = ref<Map<SETTINGS_MENU_KEY, HTMLLIElement>>(new Map())
-const isDragging = ref(false)
-
-const setMenuItemRef = (el: unknown, key: SETTINGS_MENU_KEY) => {
-  if (el && el instanceof HTMLLIElement) {
-    menuItemRefs.value.set(key, el)
-  }
-}
-
 const handleMenuClick = (key: SETTINGS_MENU_KEY) => {
-  // 如果正在拖动，不触发点击事件
-  if (isDragging.value) {
-    return
-  }
+  if (isSwiping.value) return
   emit('menu-click', key)
 }
 
@@ -92,30 +133,35 @@ const getMenuItemAtPosition = (x: number): SETTINGS_MENU_KEY | null => {
   const relativeX = x - menuRect.left
 
   // 找到触摸位置对应的菜单项
-  for (const [key, itemEl] of menuItemRefs.value.entries()) {
+  for (const itemEl of menuItemRefs.value) {
     const itemRect = itemEl.getBoundingClientRect()
     const itemRelativeX = itemRect.left - menuRect.left
     const itemWidth = itemRect.width
 
     if (relativeX >= itemRelativeX && relativeX <= itemRelativeX + itemWidth) {
-      return key
+      return itemEl.dataset.key as SETTINGS_MENU_KEY
     }
   }
 
   return null
 }
 
-useSwipe(menuRef, {
-  passive: false,
-  onSwipe(e: TouchEvent) {
-    const targetKey = getMenuItemAtPosition(e.touches[0].clientX)
-    if (targetKey && targetKey !== props.activeMenuKey) {
-      emit('menu-click', targetKey)
-    }
+watch(
+  () => props.activeMenuKey,
+  () => {
+    if (isSwiping.value) return
+    updateActiveMenuLeft()
   },
-})
+  {
+    immediate: true,
+  },
+)
 
-defineExpose({
-  menuRef,
-})
+watch(
+  width,
+  () => {
+    updateActiveMenuWidth()
+  },
+  { immediate: true },
+)
 </script>

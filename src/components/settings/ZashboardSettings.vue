@@ -183,7 +183,7 @@
         />
       </div>
     </div>
-    <div class="mt-4 grid max-w-3xl grid-cols-2 gap-2 md:grid-cols-4">
+    <div class="mt-4 grid max-w-3xl grid-cols-2 gap-2 gap-y-3 md:grid-cols-4">
       <button
         :class="twMerge('btn btn-primary btn-sm', isUIUpgrading ? 'animate-pulse' : '')"
         @click="handlerClickUpgradeUI"

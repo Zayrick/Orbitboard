@@ -60,12 +60,13 @@ watch(isPreferredDark, setThemeColor)
 watch(
   disablePullToRefresh,
   () => {
+    const body = document.body
     if (disablePullToRefresh.value) {
-      document.body.style.overscrollBehavior = 'none'
-      document.documentElement.style.overscrollBehavior = 'none'
+      body.style.overscrollBehavior = 'none'
+      body.style.overflow = 'hidden'
     } else {
-      document.body.style.overscrollBehavior = ''
-      document.documentElement.style.overscrollBehavior = ''
+      body.style.overscrollBehavior = ''
+      body.style.overflow = ''
     }
   },
   {
@@ -130,7 +131,7 @@ useKeyboard()
     ref="app"
     id="app-content"
     :class="[
-      'bg-base-100 flex h-dvh w-screen overflow-x-hidden',
+      'bg-base-100 flex h-dvh w-screen overflow-hidden',
       fontClassName,
       backgroundImage &&
         `custom-background-${dashboardTransparent} custom-background bg-cover bg-center`,
