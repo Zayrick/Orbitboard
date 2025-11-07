@@ -140,11 +140,14 @@ const handleMenuClick = (key: SETTINGS_MENU_KEY) => {
   }
 }
 
+const scrollTop = ref(0)
 const updateActiveMenuByScroll = () => {
   if (!scrollContainerRef.value || isTriggerByClick.value) return
 
   const containerRect = scrollContainerRef.value.getBoundingClientRect()
-  const containerCenter = containerRect.top + containerRect.height / 2
+  const newScrollTop = scrollContainerRef.value.scrollTop
+  const containerCenter =
+    containerRect.top + containerRect.height * (newScrollTop > scrollTop.value ? 0.8 : 0.5)
 
   let minDistance = Infinity
   let closestKey: SETTINGS_MENU_KEY | null = null
@@ -167,6 +170,8 @@ const updateActiveMenuByScroll = () => {
   if (closestKey && closestKey !== activeMenuKey.value) {
     activeMenuKey.value = closestKey
   }
+
+  scrollTop.value = newScrollTop
 }
 
 const handleScroll = throttle(updateActiveMenuByScroll, 100)

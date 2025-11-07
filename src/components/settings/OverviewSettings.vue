@@ -1,7 +1,9 @@
 <template>
   <!-- overview -->
-  <OverviewCard />
-  <div class="divider my-4" />
+  <template v-if="!splitOverviewPage">
+    <OverviewCard />
+    <div class="divider my-4" />
+  </template>
   <div class="flex flex-col gap-2 p-4 text-sm">
     <div class="settings-title">
       {{ $t('overviewSettings') }}
