@@ -4,7 +4,10 @@
       {{ $t('latency') }}
     </div>
     <div class="settings-grid">
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.speedtestUrl`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('speedtestUrl') }}
         </div>
@@ -14,7 +17,10 @@
           :clearable="true"
         />
       </div>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.speedtestTimeout`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('speedtestTimeout') }}
         </div>
@@ -25,7 +31,10 @@
         />
         ms
       </div>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.lowLatency`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('lowLatencyDesc') }}
         </div>
@@ -36,7 +45,10 @@
         />
         ms
       </div>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.mediumLatency`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('mediumLatencyDesc') }}
         </div>
@@ -47,7 +59,10 @@
         />
         ms
       </div>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.ipv6Test`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('ipv6Test') }}
         </div>
@@ -57,7 +72,10 @@
           v-model="IPv6test"
         />
       </div>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.independentLatencyTest`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('independentLatencyTest') }}
           <QuestionMarkCircleIcon
@@ -72,18 +90,48 @@
         />
       </div>
       <div
-        v-if="independentLatencyTest"
+        v-if="
+          independentLatencyTest &&
+          !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.groupTestUrls`]
+        "
         class="col-span-full"
       >
         <GroupTestUrlsSettings />
       </div>
     </div>
-    <div class="divider my-4"></div>
-    <div class="settings-title">
+    <div
+      v-if="
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.twoColumnProxyGroup`] ||
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.truncateProxyName`] ||
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.displayGlobalByMode`] ||
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.customGlobalNode`] ||
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.proxyPreviewType`] ||
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.proxyCardSize`] ||
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.proxyGroupIconSize`] ||
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.proxyGroupIconMargin`]
+      "
+      class="divider my-4"
+    ></div>
+    <div
+      v-if="
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.twoColumnProxyGroup`] ||
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.truncateProxyName`] ||
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.displayGlobalByMode`] ||
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.customGlobalNode`] ||
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.proxyPreviewType`] ||
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.proxyCardSize`] ||
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.proxyGroupIconSize`] ||
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.proxyGroupIconMargin`]
+      "
+      class="settings-title"
+    >
       {{ $t('proxyStyle') }}
     </div>
     <div class="settings-grid">
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.twoColumnProxyGroup`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('twoColumnProxyGroup') }}
         </div>
@@ -93,7 +141,10 @@
           v-model="twoColumnProxyGroup"
         />
       </div>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.truncateProxyName`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('truncateProxyName') }}
         </div>
@@ -103,7 +154,10 @@
           v-model="truncateProxyName"
         />
       </div>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.displayGlobalByMode`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('displayGlobalByMode') }}
         </div>
@@ -114,8 +168,12 @@
         />
       </div>
       <div
+        v-if="
+          displayGlobalByMode &&
+          isSingBox &&
+          !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.customGlobalNode`]
+        "
         class="setting-item"
-        v-if="displayGlobalByMode && isSingBox"
       >
         <div class="setting-item-label">
           {{ $t('customGlobalNode') }}
@@ -133,7 +191,10 @@
           </option>
         </select>
       </div>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.proxyPreviewType`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('proxyPreviewType') }}
         </div>
@@ -150,7 +211,10 @@
           </option>
         </select>
       </div>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.proxyCardSize`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('proxyCardSize') }}
         </div>
@@ -169,7 +233,10 @@
         </select>
       </div>
 
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.proxyGroupIconSize`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('proxyGroupIconSize') }}
         </div>
@@ -179,7 +246,10 @@
           v-model="proxyGroupIconSize"
         />
       </div>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.proxyGroupIconMargin`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('proxyGroupIconMargin') }}
         </div>
@@ -190,23 +260,30 @@
         />
       </div>
     </div>
-    <div class="divider my-4"></div>
-    <div class="settings-title">
+    <div
+      v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.iconSettings`]"
+      class="divider my-4"
+    ></div>
+    <div
+      v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.iconSettings`]"
+      class="settings-title"
+    >
       {{ $t('icon') }}
     </div>
-    <IconSettings />
+    <IconSettings v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.iconSettings`]" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { isSingBox } from '@/api'
-import { PROXY_CARD_SIZE, PROXY_PREVIEW_TYPE } from '@/constant'
+import { PROXY_CARD_SIZE, PROXY_PREVIEW_TYPE, SETTINGS_MENU_KEY } from '@/constant'
 import { useTooltip } from '@/helper/tooltip'
 import { getMinCardWidth } from '@/helper/utils'
 import { proxyMap } from '@/store/proxies'
 import {
   customGlobalNode,
   displayGlobalByMode,
+  hiddenSettingsItems,
   independentLatencyTest,
   IPv6test,
   lowLatency,

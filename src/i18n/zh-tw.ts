@@ -104,6 +104,7 @@ const zhTW: LANG_MESSAGE = {
   lowLatencyDesc: '黃色的閾值',
   mediumLatencyDesc: '紅色的閾值',
   fonts: '面板字體',
+  emoji: 'Emoji',
   unauthorizedTip: '未授權，請重新登入',
   restartCore: '重啟核心',
   checkUpgrade: '檢查更新',
@@ -257,6 +258,9 @@ const zhTW: LANG_MESSAGE = {
   latency: '延遲',
   proxyStyle: '代理樣式',
   icon: '圖示',
+  settingsVisibility: '設置項顯示控制',
+  ports: '端口',
+  actions: '操作',
 }
 
 export default zhTW

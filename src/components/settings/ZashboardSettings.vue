@@ -36,8 +36,13 @@
       </button>
     </div>
     <div class="settings-grid">
-      <LanguageSelect />
-      <div class="setting-item">
+      <LanguageSelect
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.language`]"
+      />
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.fonts`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('fonts') }}
         </div>
@@ -54,7 +59,10 @@
           </option>
         </select>
       </div>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.emoji`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">Emoji</div>
         <select
           class="select select-sm w-48"
@@ -69,7 +77,12 @@
           </option>
         </select>
       </div>
-      <div class="setting-item">
+      <div
+        v-if="
+          !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.customBackgroundURL`]
+        "
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('customBackgroundURL') }}
         </div>
@@ -102,7 +115,13 @@
           @change="handlerFileChange"
         />
       </div>
-      <template v-if="customBackgroundURL && displayBgProperty">
+      <template
+        v-if="
+          customBackgroundURL &&
+          displayBgProperty &&
+          !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.transparent`]
+        "
+      >
         <div class="setting-item">
           <div class="setting-item-label">
             {{ $t('transparent') }}
@@ -118,7 +137,14 @@
             @touchend.passive.stop
           />
         </div>
-
+      </template>
+      <template
+        v-if="
+          customBackgroundURL &&
+          displayBgProperty &&
+          !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.blurIntensity`]
+        "
+      >
         <div class="setting-item">
           <div class="setting-item-label">
             {{ $t('blurIntensity') }}
@@ -135,7 +161,10 @@
           />
         </div>
       </template>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.defaultTheme`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('defaultTheme') }}
         </div>
@@ -154,15 +183,23 @@
         <CustomTheme v-model:value="customThemeModal" />
       </div>
       <div
+        v-if="
+          autoTheme &&
+          !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.darkTheme`]
+        "
         class="setting-item"
-        v-if="autoTheme"
       >
         <div class="setting-item-label">
           {{ $t('darkTheme') }}
         </div>
         <ThemeSelector v-model:value="darkTheme" />
       </div>
-      <div class="setting-item">
+      <div
+        v-if="
+          !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.autoSwitchTheme`]
+        "
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('autoSwitchTheme') }}
         </div>
@@ -172,7 +209,10 @@
           class="toggle"
         />
       </div>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.autoUpgrade`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('autoUpgrade') }}
         </div>
@@ -183,22 +223,36 @@
         />
       </div>
     </div>
-    <div class="mt-4 grid max-w-3xl grid-cols-2 gap-2 gap-y-3 md:grid-cols-4">
+    <div
+      v-if="
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.upgradeUI`] ||
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.exportSettings`] ||
+        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.importSettings`]
+      "
+      class="mt-4 grid max-w-3xl grid-cols-2 gap-2 gap-y-3 md:grid-cols-4"
+    >
       <button
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.upgradeUI`]"
         :class="twMerge('btn btn-primary btn-sm', isUIUpgrading ? 'animate-pulse' : '')"
         @click="handlerClickUpgradeUI"
       >
         {{ $t('upgradeUI') }}
       </button>
-      <div class="sm:hidden"></div>
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.upgradeUI`]"
+        class="sm:hidden"
+      ></div>
 
       <button
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.exportSettings`]"
         class="btn btn-sm"
         @click="exportSettings"
       >
         {{ $t('exportSettings') }}
       </button>
-      <ImportSettings />
+      <ImportSettings
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.importSettings`]"
+      />
     </div>
   </div>
 </template>
@@ -207,7 +261,7 @@
 import { upgradeUIAPI, zashboardVersion } from '@/api'
 import LanguageSelect from '@/components/settings/LanguageSelect.vue'
 import { useSettings } from '@/composables/settings'
-import { EMOJIS, FONTS } from '@/constant'
+import { EMOJIS, FONTS, SETTINGS_MENU_KEY } from '@/constant'
 import { handlerUpgradeSuccess } from '@/helper'
 import { deleteBase64FromIndexedDB, LOCAL_IMAGE, saveBase64ToIndexedDB } from '@/helper/indexeddb'
 import { exportSettings, isPWA } from '@/helper/utils'
@@ -221,6 +275,7 @@ import {
   defaultTheme,
   emoji,
   font,
+  hiddenSettingsItems,
 } from '@/store/settings'
 import {
   AdjustmentsHorizontalIcon,

@@ -104,6 +104,7 @@ const ru: LANG_MESSAGE = {
   lowLatencyDesc: 'Желтый порог',
   mediumLatencyDesc: 'Красный порог',
   fonts: 'Шрифты',
+  emoji: 'Emoji',
   unauthorizedTip: 'Не авторизован, пожалуйста, войдите снова.',
   restartCore: 'Перезапустить ядро',
   checkUpgrade: 'Проверить обновления',
@@ -260,6 +261,9 @@ const ru: LANG_MESSAGE = {
   latency: 'Задержка',
   proxyStyle: 'Стиль прокси',
   icon: 'Иконка',
+  settingsVisibility: 'Видимость настроек',
+  ports: 'Порты',
+  actions: 'Действия',
 }
 
 export default ru

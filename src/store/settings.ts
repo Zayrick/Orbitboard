@@ -11,6 +11,7 @@ import {
   PROXY_CHAIN_DIRECTION,
   PROXY_PREVIEW_TYPE,
   PROXY_SORT_TYPE,
+  SETTINGS_MENU_KEY,
   TABLE_SIZE,
   TABLE_WIDTH_MODE,
   TEST_URL,
@@ -187,3 +188,21 @@ export const displayLatencyInRule = useStorage('config/display-latency-in-rule',
 // logs
 export const logRetentionLimit = useStorage<number>('config/log-retention-limit', 1000)
 export const logSearchHistory = useStorage<string[]>('config/log-search-history', [])
+
+// settings visibility
+// 使用扁平结构，key 格式为 "大设置项.小设置项" 或 "大设置项"（仅大设置项）
+// 默认所有项都可见，只有隐藏的项才会记录在此对象中
+export const hiddenSettingsItems = useStorage<Record<string, boolean>>(
+  'config/hidden-settings-items',
+  {},
+)
+
+// settings menu order
+// 存储设置菜单项的顺序
+export const settingsMenuOrder = useStorage<SETTINGS_MENU_KEY[]>('config/settings-menu-order', [
+  SETTINGS_MENU_KEY.general,
+  SETTINGS_MENU_KEY.overview,
+  SETTINGS_MENU_KEY.backend,
+  SETTINGS_MENU_KEY.proxies,
+  SETTINGS_MENU_KEY.connections,
+])

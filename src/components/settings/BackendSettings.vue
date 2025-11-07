@@ -24,9 +24,11 @@
         </a>
       </div>
     </div>
-    <BackendSwitch />
+    <BackendSwitch v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.backend}.backendSwitch`]" />
 
-    <template v-if="!isSingBox && configs">
+    <template
+      v-if="!isSingBox && configs && !hiddenSettingsItems[`${SETTINGS_MENU_KEY.backend}.ports`]"
+    >
       <div class="divider"></div>
       <div class="grid max-w-3xl grid-cols-1 gap-2 gap-x-6 md:grid-cols-2 lg:grid-cols-3">
         <div
@@ -49,8 +51,8 @@
       </div>
       <div class="grid max-w-3xl grid-cols-1 gap-2 gap-x-6 md:grid-cols-2 lg:grid-cols-4">
         <div
+          v-if="configs?.tun && !hiddenSettingsItems[`${SETTINGS_MENU_KEY.backend}.tunMode`]"
           class="setting-item"
-          v-if="configs?.tun"
         >
           <div class="setting-item-label">
             {{ $t('tunMode') }}
@@ -62,7 +64,10 @@
             @change="hanlderTunModeChange"
           />
         </div>
-        <div class="setting-item">
+        <div
+          v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.backend}.allowLan`]"
+          class="setting-item"
+        >
           <div class="setting-item-label">
             {{ $t('allowLan') }}
           </div>
@@ -74,7 +79,10 @@
           />
         </div>
         <template v-if="!activeBackend?.disableUpgradeCore">
-          <div class="setting-item">
+          <div
+            v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.backend}.checkUpgrade`]"
+            class="setting-item"
+          >
             <div class="setting-item-label">
               {{ $t('checkUpgrade') }}
             </div>
@@ -86,8 +94,10 @@
             />
           </div>
           <div
+            v-if="
+              checkUpgradeCore && !hiddenSettingsItems[`${SETTINGS_MENU_KEY.backend}.autoUpgrade`]
+            "
             class="setting-item"
-            v-if="checkUpgradeCore"
           >
             <div class="setting-item-label">
               {{ $t('autoUpgrade') }}
@@ -102,9 +112,13 @@
       </div>
     </template>
 
-    <div class="divider"></div>
+    <div
+      v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.backend}.actions`]"
+      class="divider"
+    ></div>
 
     <div
+      v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.backend}.actions`]"
       class="grid max-w-3xl grid-cols-2 gap-2 gap-y-3"
       :class="
         hasSmartGroup
@@ -171,8 +185,11 @@
         {{ $t('flushSmartWeights') }}
       </button>
     </div>
-    <div class="divider"></div>
-    <DnsQuery />
+    <div
+      v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.backend}.dnsQuery`]"
+      class="divider"
+    ></div>
+    <DnsQuery v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.backend}.dnsQuery`]" />
     <UpgradeCoreModal v-model="showUpgradeCoreModal" />
   </div>
 </template>
@@ -191,11 +208,17 @@ import {
 import BackendVersion from '@/components/common/BackendVersion.vue'
 import BackendSwitch from '@/components/settings/BackendSwitch.vue'
 import DnsQuery from '@/components/settings/DnsQuery.vue'
+import { SETTINGS_MENU_KEY } from '@/constant'
 import { showNotification } from '@/helper/notification'
 import { configs, fetchConfigs, updateConfigs } from '@/store/config'
 import { fetchProxies, hasSmartGroup } from '@/store/proxies'
 import { fetchRules } from '@/store/rules'
-import { autoUpgradeCore, checkUpgradeCore, displayAllFeatures } from '@/store/settings'
+import {
+  autoUpgradeCore,
+  checkUpgradeCore,
+  displayAllFeatures,
+  hiddenSettingsItems,
+} from '@/store/settings'
 import { activeBackend } from '@/store/setup'
 import type { Config } from '@/types'
 import { ref } from 'vue'

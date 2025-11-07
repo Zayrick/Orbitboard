@@ -104,6 +104,7 @@ const zh: LANG_MESSAGE = {
   lowLatencyDesc: '黄色的阈值',
   mediumLatencyDesc: '红色的阈值',
   fonts: '面板字体',
+  emoji: 'Emoji',
   unauthorizedTip: '未授权，请重新登录',
   restartCore: '重启核心',
   checkUpgrade: '检查更新',
@@ -257,6 +258,9 @@ const zh: LANG_MESSAGE = {
   latency: '延迟',
   proxyStyle: '代理样式',
   icon: '图标',
+  settingsVisibility: '设置项显示控制',
+  ports: '端口',
+  actions: '操作',
 }
 
 export default zh

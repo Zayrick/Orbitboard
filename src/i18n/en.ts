@@ -102,6 +102,7 @@ const en = {
   lowLatencyDesc: 'Yellow threshold',
   mediumLatencyDesc: 'Red threshold',
   fonts: 'Fonts',
+  emoji: 'Emoji',
   unauthorizedTip: 'Unauthorized, please log in again.',
   restartCore: 'Restart core',
   checkUpgrade: 'Check for updates',
@@ -258,6 +259,9 @@ const en = {
   latency: 'Latency',
   proxyStyle: 'Proxy style',
   icon: 'Icon',
+  settingsVisibility: 'Settings Visibility',
+  ports: 'Ports',
+  actions: 'Actions',
 }
 
 export type LANG_MESSAGE = typeof en

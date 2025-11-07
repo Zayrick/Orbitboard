@@ -5,7 +5,10 @@
       {{ $t('connections') }}
     </div>
     <div class="settings-grid">
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.connections}.connectionStyle`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('connectionStyle') }}
         </div>
@@ -21,7 +24,10 @@
           </option>
         </select>
       </div>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.connections}.proxyChainDirection`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('proxyChainDirection') }}
         </div>
@@ -40,10 +46,13 @@
       </div>
     </div>
     <div
-      class="settings-grid"
       v-if="!useConnectionCard"
+      class="settings-grid"
     >
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.connections}.tableWidthMode`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('tableWidthMode') }}
         </div>
@@ -60,7 +69,10 @@
           </option>
         </select>
       </div>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.connections}.tableSize`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('tableSize') }}
         </div>
@@ -78,13 +90,24 @@
         </select>
       </div>
     </div>
-    <div class="divider"></div>
-    <SourceIPLabels />
+    <div
+      v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.connections}.sourceIPLabels`]"
+      class="divider"
+    ></div>
+    <SourceIPLabels
+      v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.connections}.sourceIPLabels`]"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import SourceIPLabels from '@/components/settings/SourceIPLabels.vue'
-import { PROXY_CHAIN_DIRECTION, TABLE_SIZE, TABLE_WIDTH_MODE } from '@/constant'
-import { proxyChainDirection, tableSize, tableWidthMode, useConnectionCard } from '@/store/settings'
+import { PROXY_CHAIN_DIRECTION, SETTINGS_MENU_KEY, TABLE_SIZE, TABLE_WIDTH_MODE } from '@/constant'
+import {
+  hiddenSettingsItems,
+  proxyChainDirection,
+  tableSize,
+  tableWidthMode,
+  useConnectionCard,
+} from '@/store/settings'
 </script>

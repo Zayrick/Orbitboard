@@ -7,7 +7,10 @@
       {{ $t('general') }}
     </div>
     <div class="settings-grid">
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.autoDisconnectIdleUDP`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('autoDisconnectIdleUDP') }}
           <QuestionMarkCircleIcon
@@ -22,8 +25,11 @@
         />
       </div>
       <div
+        v-if="
+          autoDisconnectIdleUDP &&
+          !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.autoDisconnectIdleUDPTime`]
+        "
         class="setting-item"
-        v-if="autoDisconnectIdleUDP"
       >
         <div class="setting-item-label">
           {{ $t('autoDisconnectIdleUDPTime') }}
@@ -35,7 +41,10 @@
         />
         mins
       </div>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.IPInfoAPI`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('IPInfoAPI') }}
           <QuestionMarkCircleIcon
@@ -57,7 +66,10 @@
         </select>
       </div>
 
-      <div class="setting-item md:hidden!">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.scrollAnimationEffect`]"
+        class="setting-item md:hidden!"
+      >
         <div class="setting-item-label">
           {{ $t('scrollAnimationEffect') }}
         </div>
@@ -67,7 +79,10 @@
           class="toggle"
         />
       </div>
-      <div class="setting-item md:hidden!">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.swipeInPages`]"
+        class="setting-item md:hidden!"
+      >
         <div class="setting-item-label">
           {{ $t('swipeInPages') }}
         </div>
@@ -78,8 +93,8 @@
         />
       </div>
       <div
+        v-if="swipeInPages && !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.swipeInTabs`]"
         class="setting-item md:hidden!"
-        v-if="swipeInPages"
       >
         <div class="setting-item-label">
           {{ $t('swipeInTabs') }}
@@ -90,7 +105,10 @@
           class="toggle"
         />
       </div>
-      <div class="setting-item md:hidden!">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.disablePullToRefresh`]"
+        class="setting-item md:hidden!"
+      >
         <div class="setting-item-label">
           {{ $t('disablePullToRefresh') }}
           <QuestionMarkCircleIcon
@@ -105,8 +123,8 @@
         />
       </div>
       <div
+        v-if="isSingBox && !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.displayAllFeatures`]"
         class="setting-item"
-        v-if="isSingBox"
       >
         <div class="setting-item-label">
           {{ $t('displayAllFeatures') }}
@@ -127,13 +145,14 @@
 
 <script setup lang="ts">
 import { isSingBox } from '@/api'
-import { IP_INFO_API } from '@/constant'
+import { IP_INFO_API, SETTINGS_MENU_KEY } from '@/constant'
 import { useTooltip } from '@/helper/tooltip'
 import {
   autoDisconnectIdleUDP,
   autoDisconnectIdleUDPTime,
   disablePullToRefresh,
   displayAllFeatures,
+  hiddenSettingsItems,
   IPInfoAPI,
   scrollAnimationEffect,
   swipeInPages,

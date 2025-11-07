@@ -7,7 +7,7 @@
       @scroll.passive="handleScroll"
       :style="padding"
     >
-      <div class="grid grid-cols-1 gap-2 max-md:pb-14 md:pt-14">
+      <div class="grid grid-cols-1 gap-2 pt-14">
         <div class="flex flex-col gap-4 px-2">
           <div
             v-for="item in menuItems"
@@ -41,7 +41,7 @@ import ProxiesSettings from '@/components/settings/ProxiesSettings.vue'
 import SettingsMenu from '@/components/settings/SettingsMenu.vue'
 import { usePaddingForViews } from '@/composables/paddingViews'
 import { SETTINGS_MENU_KEY } from '@/constant'
-import { splitOverviewPage } from '@/store/settings'
+import { hiddenSettingsItems, settingsMenuOrder } from '@/store/settings'
 import {
   ArrowsRightLeftIcon,
   CubeTransparentIcon,
@@ -51,7 +51,7 @@ import {
 } from '@heroicons/vue/24/outline'
 import { throttle } from 'lodash'
 import type { Component } from 'vue'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 type MenuItem = {
@@ -67,47 +67,76 @@ const route = useRoute()
 const menuComponentRef = ref<InstanceType<typeof SettingsMenu> | null>(null)
 const scrollContainerRef = ref<HTMLDivElement>()
 const menuItems = computed<MenuItem[]>(() => {
-  const overviewItem = {
-    key: SETTINGS_MENU_KEY.overview,
-    label: 'overviewSettings',
-    icon: CubeTransparentIcon,
-    component: OverviewSettings,
-  }
-  const items = [
-    {
-      key: SETTINGS_MENU_KEY.general,
-      label: 'zashboardSettings',
-      icon: HomeIcon,
-      component: GeneralSettings,
-    },
-    {
-      key: SETTINGS_MENU_KEY.backend,
-      label: 'backendSettings',
-      icon: ServerIcon,
-      component: BackendSettings,
-    },
-    {
-      key: SETTINGS_MENU_KEY.proxies,
-      label: 'proxySettings',
-      icon: GlobeAltIcon,
-      component: ProxiesSettings,
-    },
-    {
-      key: SETTINGS_MENU_KEY.connections,
-      label: 'connectionSettings',
-      icon: ArrowsRightLeftIcon,
-      component: ConnectionsSettings,
-    },
-  ]
+  const itemsMap = new Map<SETTINGS_MENU_KEY, MenuItem>([
+    [
+      SETTINGS_MENU_KEY.general,
+      {
+        key: SETTINGS_MENU_KEY.general,
+        label: 'zashboardSettings',
+        icon: HomeIcon,
+        component: GeneralSettings,
+      },
+    ],
+    [
+      SETTINGS_MENU_KEY.overview,
+      {
+        key: SETTINGS_MENU_KEY.overview,
+        label: 'overviewSettings',
+        icon: CubeTransparentIcon,
+        component: OverviewSettings,
+      },
+    ],
+    [
+      SETTINGS_MENU_KEY.backend,
+      {
+        key: SETTINGS_MENU_KEY.backend,
+        label: 'backendSettings',
+        icon: ServerIcon,
+        component: BackendSettings,
+      },
+    ],
+    [
+      SETTINGS_MENU_KEY.proxies,
+      {
+        key: SETTINGS_MENU_KEY.proxies,
+        label: 'proxySettings',
+        icon: GlobeAltIcon,
+        component: ProxiesSettings,
+      },
+    ],
+    [
+      SETTINGS_MENU_KEY.connections,
+      {
+        key: SETTINGS_MENU_KEY.connections,
+        label: 'connectionSettings',
+        icon: ArrowsRightLeftIcon,
+        component: ConnectionsSettings,
+      },
+    ],
+  ])
 
-  if (splitOverviewPage.value) {
-    items.push(overviewItem)
-  } else {
-    items.splice(1, 0, overviewItem)
-  }
-  return items
+  // 根据 settingsMenuOrder 排序，并过滤隐藏的项
+  return settingsMenuOrder.value
+    .map((key) => itemsMap.get(key))
+    .filter((item): item is MenuItem => item !== undefined && !hiddenSettingsItems.value[item.key])
 })
-const activeMenuKey = ref(menuItems.value[0].key)
+const activeMenuKey = ref<SETTINGS_MENU_KEY>(menuItems.value[0]?.key || SETTINGS_MENU_KEY.general)
+
+// 当 menuItems 变化时，如果当前激活的项被隐藏，则切换到第一个可见项
+watch(
+  menuItems,
+  (newItems) => {
+    if (newItems.length > 0) {
+      if (!newItems.find((item) => item.key === activeMenuKey.value)) {
+        activeMenuKey.value = newItems[0].key
+      }
+    } else {
+      // 如果所有设置项都被隐藏，保持当前值（虽然不会显示）
+      // 这种情况应该很少见，因为至少应该有一个设置项可见
+    }
+  },
+  { immediate: true },
+)
 const getItemRef = (key: SETTINGS_MENU_KEY) => {
   return document.getElementById(`item-${key}`)
 }

@@ -1,6 +1,8 @@
 <template>
   <!-- overview -->
-  <template v-if="!splitOverviewPage">
+  <template
+    v-if="!splitOverviewPage && !hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.overviewCard`]"
+  >
     <OverviewCard />
     <div class="divider my-4" />
   </template>
@@ -9,7 +11,10 @@
       {{ $t('overviewSettings') }}
     </div>
     <div class="settings-grid">
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.splitOverviewPage`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('splitOverviewPage') }}
         </div>
@@ -19,7 +24,10 @@
           v-model="splitOverviewPage"
         />
       </div>
-      <div class="setting-item">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.showIPAndConnectionInfo`]"
+        class="setting-item"
+      >
         <div class="setting-item-label">
           {{ $t('showIPAndConnectionInfo') }}
         </div>
@@ -30,7 +38,10 @@
         />
       </div>
       <template v-if="showIPAndConnectionInfo">
-        <div class="setting-item">
+        <div
+          v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.autoIPCheckWhenStart`]"
+          class="setting-item"
+        >
           <div class="setting-item-label">
             {{ $t('autoIPCheckWhenStart') }}
           </div>
@@ -40,7 +51,10 @@
             v-model="autoIPCheck"
           />
         </div>
-        <div class="setting-item">
+        <div
+          v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.autoConnectionCheckWhenStart`]"
+          class="setting-item"
+        >
           <div class="setting-item-label">
             {{ $t('autoConnectionCheckWhenStart') }}
           </div>
@@ -52,8 +66,11 @@
         </div>
       </template>
       <div
+        v-if="
+          splitOverviewPage &&
+          !hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.displayConnectionTopology`]
+        "
         class="setting-item"
-        v-if="splitOverviewPage"
       >
         <div class="setting-item-label">
           {{ $t('displayConnectionTopology') }}
@@ -64,7 +81,12 @@
           v-model="displayConnectionTopology"
         />
       </div>
-      <div class="setting-item max-md:hidden">
+      <div
+        v-if="
+          !hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.showStatisticsWhenSidebarCollapsed`]
+        "
+        class="setting-item max-md:hidden"
+      >
         <div class="setting-item-label">
           {{ $t('showStatisticsWhenSidebarCollapsed') }}
         </div>
@@ -74,7 +96,10 @@
           v-model="showStatisticsWhenSidebarCollapsed"
         />
       </div>
-      <div class="setting-item max-md:hidden">
+      <div
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.numberOfChartsInSidebar`]"
+        class="setting-item max-md:hidden"
+      >
         <div class="setting-item-label">
           {{ $t('numberOfChartsInSidebar') }}
         </div>
@@ -96,10 +121,12 @@
 </template>
 
 <script setup lang="ts">
+import { SETTINGS_MENU_KEY } from '@/constant'
 import {
   autoConnectionCheck,
   autoIPCheck,
   displayConnectionTopology,
+  hiddenSettingsItems,
   numberOfChartsInSidebar,
   showIPAndConnectionInfo,
   showStatisticsWhenSidebarCollapsed,

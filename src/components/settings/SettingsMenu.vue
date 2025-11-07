@@ -1,15 +1,14 @@
 <template>
   <div
     ref="menuRef"
-    class="settings-menu scrollbar-hidden bg-base-100/20 absolute right-2 left-2 z-30 rounded-3xl p-1 px-2 shadow-sm backdrop-blur-sm md:rounded-lg"
-    :style="styleForSafeArea"
+    class="settings-menu scrollbar-hidden bg-base-100/20 absolute top-2 right-2 left-2 z-30 rounded-xl p-1 px-2 shadow-sm backdrop-blur-sm md:rounded-lg"
     @touchstart.passive.stop
     @touchmove.passive.stop
     @touchend.passive.stop
   >
     <div class="relative flex w-full max-w-7xl flex-row">
       <div
-        class="bg-neutral absolute top-1 left-0 -z-1 h-8 rounded-3xl md:rounded-lg"
+        class="bg-neutral absolute top-1 left-0 -z-1 h-8 rounded-lg"
         :class="[!isSwiping ? 'transition-transform duration-300 will-change-transform' : '']"
         :style="activeStyle"
       ></div>
@@ -19,7 +18,7 @@
         ref="menuItemRefs"
         :data-key="item.key"
         :id="`menu-item-${item.key}`"
-        class="flex h-10 flex-1 flex-shrink-0 cursor-pointer items-center justify-center gap-2 truncate transition-all duration-300 md:w-full"
+        class="mr-2 flex h-10 w-full flex-1 flex-shrink-0 cursor-pointer items-center justify-center gap-2 truncate transition-all duration-300"
         :class="[activeMenuKey === item.key ? 'text-neutral-content' : '']"
         @click="handleMenuClick(item.key)"
       >
@@ -31,16 +30,25 @@
           {{ $t(item.label) }}
         </span>
       </div>
+      <button
+        class="btn btn-circle btn-sm my-auto"
+        @click="showVisibilityDialog = true"
+      >
+        <Cog6ToothIcon class="h-4 w-4" />
+      </button>
     </div>
   </div>
+
+  <SettingsVisibilityDialog v-model="showVisibilityDialog" />
 </template>
 
 <script setup lang="ts">
 import { SETTINGS_MENU_KEY } from '@/constant'
-import { isMiddleScreen } from '@/helper/utils'
+import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
 import { useElementSize, useSwipe } from '@vueuse/core'
 import type { Component } from 'vue'
 import { computed, nextTick, ref, watch } from 'vue'
+import SettingsVisibilityDialog from './SettingsVisibilityDialog.vue'
 
 type MenuItem = {
   key: SETTINGS_MENU_KEY
@@ -57,6 +65,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'menu-click', key: SETTINGS_MENU_KEY): void
 }>()
+
+const showVisibilityDialog = ref(false)
 
 const menuRef = ref<HTMLDivElement>()
 const menuItemRefs = ref<HTMLLIElement[]>([])
@@ -110,17 +120,6 @@ const { isSwiping } = useSwipe(menuRef, {
   },
 })
 
-const styleForSafeArea = computed(() => {
-  if (isMiddleScreen.value) {
-    return {
-      bottom: 'calc(var(--spacing) * 20 + env(safe-area-inset-bottom))',
-    }
-  }
-  return {
-    top: 'calc(var(--spacing) * 2)',
-  }
-})
-
 const handleMenuClick = (key: SETTINGS_MENU_KEY) => {
   if (isSwiping.value) return
   emit('menu-click', key)
@@ -158,7 +157,7 @@ watch(
 )
 
 watch(
-  width,
+  () => [width.value, props.menuItems],
   () => {
     updateActiveMenuWidth()
     updateActiveMenuLeft()
