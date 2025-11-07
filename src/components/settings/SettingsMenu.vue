@@ -1,7 +1,7 @@
 <template>
   <div
     ref="menuRef"
-    class="scrollbar-hidden bg-base-100/20 absolute right-2 left-2 z-30 rounded-3xl p-1 px-2 shadow-sm backdrop-blur-sm md:rounded-lg"
+    class="settings-menu scrollbar-hidden bg-base-100/20 absolute right-2 left-2 z-30 rounded-3xl p-1 px-2 shadow-sm backdrop-blur-sm md:rounded-lg"
     :style="styleForSafeArea"
     @touchstart.passive.stop
     @touchmove.passive.stop
@@ -161,6 +161,7 @@ watch(
   width,
   () => {
     updateActiveMenuWidth()
+    updateActiveMenuLeft()
   },
   { immediate: true },
 )
