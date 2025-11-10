@@ -147,7 +147,8 @@ const ru: LANG_MESSAGE = {
   sniffHost: 'Захватывать хост',
   ipScreenshotTip: 'Пожалуйста, убедитесь, что реальный IP скрыт при создании скриншотов.',
   showStatisticsWhenSidebarCollapsed: 'Показать статистику при сворачивании панели',
-  totalConnections: 'Всего соединений',
+  totalConnections: 'Статистика соединений',
+  totalConnectionsTip: 'Учитываются только соединения, открытые во время работы панели',
   mostDownloadHost: 'Ресурс с наибольшим скачиванием',
   mostUploadHost: 'Ресурс с наибольшей отправкой данных',
   mostDownloadSourceIP: 'IP-источник с наибольшим скачиванием',
@@ -266,6 +267,18 @@ const ru: LANG_MESSAGE = {
   actions: 'Действия',
   showAllPreset: 'Показать все',
   minimalPreset: 'Минимальный вид',
+  aggregateBy: 'Агрегация по',
+  aggregateBySourceIP: 'По исходному IP',
+  aggregateByDestination: 'По назначению',
+  aggregateByProcess: 'По процессу',
+  aggregateByOutbound: 'По исходящему',
+  aggregateByNode: 'По узлу',
+  totalTraffic: 'Общий трафик',
+  total: 'Итого',
+  clearConnectionHistory: 'Очистить историю соединений',
+  clearConnectionHistoryConfirm:
+    'Вы уверены, что хотите очистить все данные истории соединений? Это действие нельзя отменить.',
+  clearConnectionHistorySuccess: 'История соединений успешно очищена',
 }
 
 export default ru

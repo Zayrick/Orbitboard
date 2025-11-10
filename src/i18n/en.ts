@@ -145,7 +145,8 @@ const en = {
   sniffHost: 'Sniff host',
   ipScreenshotTip: 'Please hide the IP when taking screenshots.',
   showStatisticsWhenSidebarCollapsed: 'Show statistics when sidebar collapsed',
-  totalConnections: 'Total connections',
+  totalConnections: 'Connection statistics',
+  totalConnectionsTip: 'Only connections opened while the panel is open are counted',
   mostDownloadHost: 'Most downloaded host',
   mostUploadHost: 'Most uploaded host',
   mostDownloadSourceIP: 'Most downloaded source IP',
@@ -264,6 +265,18 @@ const en = {
   actions: 'Actions',
   showAllPreset: 'Show All',
   minimalPreset: 'Minimal View',
+  aggregateBy: 'Aggregate by',
+  aggregateBySourceIP: 'By source IP',
+  aggregateByDestination: 'By destination',
+  aggregateByProcess: 'By process',
+  aggregateByOutbound: 'By outbound',
+  aggregateByNode: 'By node',
+  totalTraffic: 'Total traffic',
+  total: 'Total',
+  clearConnectionHistory: 'Clear connection history',
+  clearConnectionHistoryConfirm:
+    'Are you sure you want to clear all connection history data? This action cannot be undone.',
+  clearConnectionHistorySuccess: 'Connection history data cleared successfully',
 }
 
 export type LANG_MESSAGE = typeof en

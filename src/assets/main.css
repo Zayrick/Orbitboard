@@ -160,6 +160,7 @@
     .sidebar,
     .nav-bar,
     .modal-box,
+    .need-blur,
     .table thead {
       /* prettier-ignore */
       backdrop-filter: blur($(i)px);

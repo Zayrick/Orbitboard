@@ -146,7 +146,8 @@ const zh: LANG_MESSAGE = {
   sniffHost: '嗅探主机',
   ipScreenshotTip: '截图时请确保隐藏IP',
   showStatisticsWhenSidebarCollapsed: '侧边栏折叠时显示统计',
-  totalConnections: '总连接数',
+  totalConnections: '连接统计',
+  totalConnectionsTip: '只能统计面板打开期间的连接',
   mostDownloadHost: '最多下载主机',
   mostUploadHost: '最多上传主机',
   mostDownloadSourceIP: '最多下载源IP',
@@ -263,6 +264,17 @@ const zh: LANG_MESSAGE = {
   actions: '操作',
   showAllPreset: '全部显示',
   minimalPreset: '精简显示',
+  aggregateBy: '聚合方式',
+  aggregateBySourceIP: '按源IP',
+  aggregateByDestination: '按目标地址',
+  aggregateByProcess: '按进程',
+  aggregateByOutbound: '按出站节点',
+  aggregateByNode: '按节点',
+  totalTraffic: '总流量',
+  total: '总计',
+  clearConnectionHistory: '清空连接历史',
+  clearConnectionHistoryConfirm: '确定要清空所有连接历史数据吗？此操作不可恢复。',
+  clearConnectionHistorySuccess: '连接历史数据清空成功',
 }
 
 export default zh

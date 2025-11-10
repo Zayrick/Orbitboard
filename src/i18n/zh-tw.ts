@@ -146,7 +146,8 @@ const zhTW: LANG_MESSAGE = {
   sniffHost: '嗅探主機',
   ipScreenshotTip: '截圖時請確保隱藏IP',
   showStatisticsWhenSidebarCollapsed: '側邊欄摺疊時顯示統計',
-  totalConnections: '總連接數',
+  totalConnections: '連接統計',
+  totalConnectionsTip: '只能統計面板開啟期間的連接',
   mostDownloadHost: '最多下載主機',
   mostUploadHost: '最多上傳主機',
   mostDownloadSourceIP: '最多下載源IP',
@@ -263,6 +264,17 @@ const zhTW: LANG_MESSAGE = {
   actions: '操作',
   showAllPreset: '全部顯示',
   minimalPreset: '精簡顯示',
+  aggregateBy: '聚合方式',
+  aggregateBySourceIP: '按源IP',
+  aggregateByDestination: '按目標地址',
+  aggregateByProcess: '按進程',
+  aggregateByOutbound: '按出站節點',
+  aggregateByNode: '按節點',
+  totalTraffic: '總流量',
+  total: '總計',
+  clearConnectionHistory: '清空連接歷史',
+  clearConnectionHistoryConfirm: '確定要清空所有連接歷史資料嗎？此操作不可恢復。',
+  clearConnectionHistorySuccess: '連接歷史資料清空成功',
 }
 
 export default zhTW
