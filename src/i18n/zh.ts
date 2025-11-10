@@ -261,6 +261,8 @@ const zh: LANG_MESSAGE = {
   settingsVisibility: '设置项显示控制',
   ports: '端口',
   actions: '操作',
+  showAllPreset: '全部显示',
+  minimalPreset: '精简显示',
 }
 
 export default zh

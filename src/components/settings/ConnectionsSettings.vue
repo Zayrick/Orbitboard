@@ -1,6 +1,9 @@
 <template>
   <!-- connections -->
-  <div class="flex flex-col gap-2 p-4 text-sm">
+  <div
+    v-if="hasVisibleItems"
+    class="flex flex-col gap-2 p-4 text-sm"
+  >
     <div class="settings-title">
       {{ $t('connections') }}
     </div>
@@ -110,4 +113,18 @@ import {
   tableWidthMode,
   useConnectionCard,
 } from '@/store/settings'
+import { computed } from 'vue'
+
+// 检查是否有可见的子项
+const hasVisibleItems = computed(() => {
+  return (
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.connections}.connectionStyle`] ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.connections}.proxyChainDirection`] ||
+    (!useConnectionCard.value &&
+      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.connections}.tableWidthMode`]) ||
+    (!useConnectionCard.value &&
+      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.connections}.tableSize`]) ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.connections}.sourceIPLabels`]
+  )
+})
 </script>

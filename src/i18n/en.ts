@@ -262,6 +262,8 @@ const en = {
   settingsVisibility: 'Settings Visibility',
   ports: 'Ports',
   actions: 'Actions',
+  showAllPreset: 'Show All',
+  minimalPreset: 'Minimal View',
 }
 
 export type LANG_MESSAGE = typeof en

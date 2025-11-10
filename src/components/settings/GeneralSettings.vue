@@ -1,8 +1,14 @@
 <template>
   <ZashboardSettings />
-  <div class="divider my-4" />
+  <div
+    v-if="hasVisibleGeneralItems"
+    class="divider my-4"
+  />
   <!-- dashboard -->
-  <div class="p-4 text-sm">
+  <div
+    v-if="hasVisibleGeneralItems"
+    class="p-4 text-sm"
+  >
     <div class="settings-title">
       {{ $t('general') }}
     </div>
@@ -159,7 +165,25 @@ import {
   swipeInTabs,
 } from '@/store/settings'
 import { QuestionMarkCircleIcon } from '@heroicons/vue/24/outline'
+import { computed } from 'vue'
 import ZashboardSettings from './ZashboardSettings.vue'
 
 const { showTip } = useTooltip()
+
+// 检查"通用"区块是否有可见的子项
+const hasVisibleGeneralItems = computed(() => {
+  return (
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.autoDisconnectIdleUDP`] ||
+    (autoDisconnectIdleUDP.value &&
+      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.autoDisconnectIdleUDPTime`]) ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.IPInfoAPI`] ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.scrollAnimationEffect`] ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.swipeInPages`] ||
+    (swipeInPages.value &&
+      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.swipeInTabs`]) ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.disablePullToRefresh`] ||
+    (isSingBox.value &&
+      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.displayAllFeatures`])
+  )
+})
 </script>

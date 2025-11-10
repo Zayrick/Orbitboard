@@ -4,6 +4,20 @@
     :title="$t('settingsVisibility')"
   >
     <div class="flex flex-col text-sm">
+      <div class="mb-4 flex gap-2">
+        <button
+          class="btn btn-sm"
+          @click="applyShowAllPreset"
+        >
+          {{ $t('showAllPreset') }}
+        </button>
+        <button
+          class="btn btn-sm"
+          @click="applyMinimalPreset"
+        >
+          {{ $t('minimalPreset') }}
+        </button>
+      </div>
       <Draggable
         v-model="orderedCategories"
         :animation="150"
@@ -36,24 +50,26 @@
                 />
               </div>
             </div>
-            <div class="collapse-content">
-              <div class="flex flex-col gap-2 pt-2">
-                <div
-                  v-for="item in category.items"
-                  :key="item.key"
-                  class="setting-item pl-4"
-                >
-                  <div class="setting-item-label">
-                    {{ $t(item.label) }}
+            <div class="collapse-content p-0">
+              <div class="max-h-96 overflow-y-auto">
+                <div class="flex flex-col gap-2">
+                  <div
+                    v-for="item in category.items"
+                    :key="item.key"
+                    class="setting-item px-4"
+                  >
+                    <div class="setting-item-label">
+                      {{ $t(item.label) }}
+                    </div>
+                    <input
+                      type="checkbox"
+                      class="toggle"
+                      :checked="!hiddenSettingsItems[item.key]"
+                      @change="
+                        hiddenSettingsItems[item.key] = !($event.target as HTMLInputElement).checked
+                      "
+                    />
                   </div>
-                  <input
-                    type="checkbox"
-                    class="toggle"
-                    :checked="!hiddenSettingsItems[item.key]"
-                    @change="
-                      hiddenSettingsItems[item.key] = !($event.target as HTMLInputElement).checked
-                    "
-                  />
                 </div>
               </div>
             </div>
@@ -286,6 +302,70 @@ const orderedCategories = computed({
     settingsMenuOrder.value = newOrder.map((category) => category.key)
   },
 })
+
+// 获取所有设置项的 key（包括分类和子项）
+const getAllSettingKeys = (): string[] => {
+  const keys: string[] = []
+  for (const category of allCategories) {
+    keys.push(category.key)
+    for (const item of category.items) {
+      keys.push(item.key)
+    }
+  }
+  return keys
+}
+
+// 应用"全部显示"预设
+const applyShowAllPreset = () => {
+  hiddenSettingsItems.value = {}
+}
+
+// 应用"精简显示"预设
+const applyMinimalPreset = () => {
+  const allKeys = getAllSettingKeys()
+  const minimalHiddenKeys: string[] = [SETTINGS_MENU_KEY.proxies, SETTINGS_MENU_KEY.connections]
+
+  // 隐藏不常用/高级设置项
+  for (const key of allKeys) {
+    if (key.includes('emoji') || key.includes('language')) {
+      minimalHiddenKeys.push(key)
+    }
+    // UDP 相关设置
+    else if (key.includes('autoDisconnectIdleUDP') || key.includes('autoDisconnectIdleUDPTime')) {
+      minimalHiddenKeys.push(key)
+    }
+    // 滚动动画效果、滑动切换相关
+    else if (
+      key.includes('scrollAnimationEffect') ||
+      key.includes('swipeInPages') ||
+      key.includes('swipeInTabs') ||
+      key.includes('disablePullToRefresh')
+    ) {
+      minimalHiddenKeys.push(key)
+    }
+    // 其他不常用选项
+    else if (
+      key.includes('displayAllFeatures') ||
+      key.includes('IPInfoAPI') ||
+      key.includes('displayConnectionTopology') ||
+      key.includes('numberOfChartsInSidebar') ||
+      key.includes('proxyGroupIconSize') ||
+      key.includes('proxyGroupIconMargin') ||
+      key.includes('proxyPreviewType') ||
+      key.includes('proxyCardSize') ||
+      key.includes('twoColumnProxyGroup')
+    ) {
+      minimalHiddenKeys.push(key)
+    }
+  }
+
+  // 设置隐藏项
+  const newHiddenItems: Record<string, boolean> = {}
+  for (const key of minimalHiddenKeys) {
+    newHiddenItems[key] = true
+  }
+  hiddenSettingsItems.value = newHiddenItems
+}
 </script>
 
 <style scoped>

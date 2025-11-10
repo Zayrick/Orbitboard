@@ -261,6 +261,8 @@ const zhTW: LANG_MESSAGE = {
   settingsVisibility: '設置項顯示控制',
   ports: '端口',
   actions: '操作',
+  showAllPreset: '全部顯示',
+  minimalPreset: '精簡顯示',
 }
 
 export default zhTW

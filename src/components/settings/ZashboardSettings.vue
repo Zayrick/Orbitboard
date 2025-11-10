@@ -1,6 +1,9 @@
 <template>
   <!-- dashboard -->
-  <div class="relative flex flex-col gap-2 p-4 text-sm">
+  <div
+    v-if="hasVisibleItems"
+    class="relative flex flex-col gap-2 p-4 text-sm"
+  >
     <div class="settings-title">
       <div class="indicator">
         <span
@@ -291,6 +294,32 @@ import CustomTheme from './CustomTheme.vue'
 import ThemeSelector from './ThemeSelector.vue'
 
 const customThemeModal = ref(false)
+
+// 检查是否有可见的子项
+const hasVisibleItems = computed(() => {
+  return (
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.language`] ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.fonts`] ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.emoji`] ||
+    !hiddenSettingsItems.value[
+      `${SETTINGS_MENU_KEY.general}.zashboardSettings.customBackgroundURL`
+    ] ||
+    (customBackgroundURL.value &&
+      displayBgProperty.value &&
+      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.transparent`]) ||
+    (customBackgroundURL.value &&
+      displayBgProperty.value &&
+      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.blurIntensity`]) ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.defaultTheme`] ||
+    (autoTheme.value &&
+      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.darkTheme`]) ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.autoSwitchTheme`] ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.autoUpgrade`] ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.upgradeUI`] ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.exportSettings`] ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.importSettings`]
+  )
+})
 const displayBgProperty = ref(false)
 const commitId = __COMMIT_ID__
 

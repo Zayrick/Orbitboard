@@ -176,7 +176,7 @@ const updateActiveMenuByScroll = () => {
   const containerRect = scrollContainerRef.value.getBoundingClientRect()
   const newScrollTop = scrollContainerRef.value.scrollTop
   const containerCenter =
-    containerRect.top + containerRect.height * (newScrollTop > scrollTop.value ? 0.8 : 0.5)
+    containerRect.top + containerRect.height * (newScrollTop > scrollTop.value ? 0.8 : 0.3)
 
   let minDistance = Infinity
   let closestKey: SETTINGS_MENU_KEY | null = null

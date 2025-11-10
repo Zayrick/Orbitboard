@@ -264,6 +264,8 @@ const ru: LANG_MESSAGE = {
   settingsVisibility: 'Видимость настроек',
   ports: 'Порты',
   actions: 'Действия',
+  showAllPreset: 'Показать все',
+  minimalPreset: 'Минимальный вид',
 }
 
 export default ru

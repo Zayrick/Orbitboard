@@ -6,7 +6,10 @@
     <OverviewCard />
     <div class="divider my-4" />
   </template>
-  <div class="flex flex-col gap-2 p-4 text-sm">
+  <div
+    v-if="hasVisibleItems"
+    class="flex flex-col gap-2 p-4 text-sm"
+  >
     <div class="settings-title">
       {{ $t('overviewSettings') }}
     </div>
@@ -132,5 +135,24 @@ import {
   showStatisticsWhenSidebarCollapsed,
   splitOverviewPage,
 } from '@/store/settings'
+import { computed } from 'vue'
 import OverviewCard from './OverviewCard.vue'
+
+// 检查是否有可见的子项
+const hasVisibleItems = computed(() => {
+  return (
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.splitOverviewPage`] ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.showIPAndConnectionInfo`] ||
+    (showIPAndConnectionInfo.value &&
+      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.autoIPCheckWhenStart`]) ||
+    (showIPAndConnectionInfo.value &&
+      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.autoConnectionCheckWhenStart`]) ||
+    (splitOverviewPage.value &&
+      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.displayConnectionTopology`]) ||
+    !hiddenSettingsItems.value[
+      `${SETTINGS_MENU_KEY.overview}.showStatisticsWhenSidebarCollapsed`
+    ] ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.numberOfChartsInSidebar`]
+  )
+})
 </script>

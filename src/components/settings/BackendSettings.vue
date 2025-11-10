@@ -1,6 +1,9 @@
 <template>
   <!-- backend -->
-  <div class="flex flex-col gap-2 p-4 text-sm">
+  <div
+    v-if="hasVisibleItems"
+    class="flex flex-col gap-2 p-4 text-sm"
+  >
     <div class="settings-title">
       <div class="indicator">
         <span
@@ -221,8 +224,36 @@ import {
 } from '@/store/settings'
 import { activeBackend } from '@/store/setup'
 import type { Config } from '@/types'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import UpgradeCoreModal from './UpgradeCoreModal.vue'
+
+// 检查是否有可见的子项
+const hasVisibleItems = computed(() => {
+  return (
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.backend}.backendSwitch`] ||
+    (!isSingBox.value &&
+      configs.value &&
+      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.backend}.ports`]) ||
+    (!isSingBox.value &&
+      configs.value &&
+      configs.value?.tun &&
+      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.backend}.tunMode`]) ||
+    (!isSingBox.value &&
+      configs.value &&
+      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.backend}.allowLan`]) ||
+    (!isSingBox.value &&
+      configs.value &&
+      !activeBackend.value?.disableUpgradeCore &&
+      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.backend}.checkUpgrade`]) ||
+    (!isSingBox.value &&
+      configs.value &&
+      !activeBackend.value?.disableUpgradeCore &&
+      checkUpgradeCore.value &&
+      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.backend}.autoUpgrade`]) ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.backend}.actions`] ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.backend}.dnsQuery`]
+  )
+})
 
 const portList = [
   {
