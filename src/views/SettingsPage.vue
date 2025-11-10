@@ -7,7 +7,7 @@
       @scroll.passive="handleScroll"
       :style="padding"
     >
-      <div class="grid grid-cols-1 gap-2 pt-14">
+      <div class="grid grid-cols-1 gap-2 pt-12">
         <div class="flex flex-col gap-4 px-2">
           <div
             v-for="item in menuItems"

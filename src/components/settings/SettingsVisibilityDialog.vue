@@ -3,7 +3,7 @@
     v-model="isOpen"
     :title="$t('settingsVisibility')"
   >
-    <div class="flex flex-col gap-2 text-sm">
+    <div class="flex flex-col text-sm">
       <Draggable
         v-model="orderedCategories"
         :animation="150"
@@ -13,7 +13,7 @@
       >
         <template #item="{ element: category }">
           <div
-            class="collapse-arrow border-base-300 bg-base-200/50 collapse mb-4 border"
+            class="collapse-arrow bg-base-200/50 collapse mb-4"
             :class="expandedCategories[category.key] ? 'collapse-open' : 'collapse-close'"
           >
             <div
