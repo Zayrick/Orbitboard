@@ -33,7 +33,10 @@
       v-if="!isSingBox && configs && !hiddenSettingsItems[`${SETTINGS_MENU_KEY.backend}.ports`]"
     >
       <div class="divider"></div>
-      <div class="grid max-w-3xl grid-cols-1 gap-2 gap-x-6 md:grid-cols-2 lg:grid-cols-3">
+      <div
+        class="grid max-w-3xl gap-2 gap-x-6"
+        :style="`grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));`"
+      >
         <div
           class="setting-item"
           v-for="portConfig in portList"
@@ -52,7 +55,10 @@
           />
         </div>
       </div>
-      <div class="grid max-w-3xl grid-cols-1 gap-2 gap-x-6 md:grid-cols-2 lg:grid-cols-4">
+      <div
+        class="grid max-w-3xl gap-2 gap-x-6"
+        :style="`grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));`"
+      >
         <div
           v-if="configs?.tun && !hiddenSettingsItems[`${SETTINGS_MENU_KEY.backend}.tunMode`]"
           class="setting-item"
@@ -122,12 +128,8 @@
 
     <div
       v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.backend}.actions`]"
-      class="grid max-w-3xl grid-cols-2 gap-2 gap-y-3"
-      :class="
-        hasSmartGroup
-          ? 'md:grid-cols-4 xl:max-w-6xl xl:grid-cols-7'
-          : 'md:grid-cols-3 xl:max-w-6xl xl:grid-cols-6'
-      "
+      class="grid max-w-6xl gap-2 gap-y-3"
+      :style="`grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));`"
     >
       <template v-if="!isSingBox || displayAllFeatures">
         <button

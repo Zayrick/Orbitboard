@@ -29,18 +29,13 @@
         </li>
       </ul>
       <template v-if="isSidebarCollapsed">
-        <VerticalInfos v-if="showStatisticsWhenSidebarCollapsed" />
-        <div
+        <VerticalInfos v-if="showStatisticsWhenSidebarCollapsed">
+          <SidebarButtons vertical />
+        </VerticalInfos>
+        <SidebarButtons
           v-else
-          class="flex w-full items-center justify-center"
-        >
-          <button
-            class="btn btn-circle btn-sm bg-base-300"
-            @click="isSidebarCollapsed = false"
-          >
-            <ArrowRightCircleIcon class="h-5 w-5" />
-          </button>
-        </div>
+          vertical
+        />
       </template>
       <template v-else>
         <OverviewCarousel v-if="route.name !== ROUTE_NAME.overview" />
@@ -59,11 +54,11 @@ import { renderRoutes } from '@/helper'
 import { useTooltip } from '@/helper/tooltip'
 import router from '@/router'
 import { isSidebarCollapsed, showStatisticsWhenSidebarCollapsed } from '@/store/settings'
-import { ArrowRightCircleIcon } from '@heroicons/vue/24/outline'
 import { twMerge } from 'tailwind-merge'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import OverviewCarousel from './OverviewCarousel.vue'
+import SidebarButtons from './SidebarButtons.vue'
 import VerticalInfos from './VerticalInfos.vue'
 
 const { showTip } = useTooltip()

@@ -31,7 +31,8 @@
       </div>
       <div
         v-if="isOpen"
-        class="max-h-[90dvh] overflow-y-auto p-4 max-md:max-h-[70dvh]"
+        class="max-h-[90dvh] overflow-y-auto max-md:max-h-[70dvh]"
+        :class="noPadding ? 'p-0' : 'p-4'"
       >
         <slot></slot>
       </div>
