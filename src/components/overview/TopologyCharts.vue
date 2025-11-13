@@ -1,5 +1,9 @@
 <template>
-  <div class="relative h-96 w-full overflow-hidden pt-12">
+  <div
+    :class="twMerge('relative h-96 w-full overflow-hidden pt-12')"
+    @mousemove.stop
+    @touchmove.stop
+  >
     <div
       ref="chart"
       class="h-full w-full"
@@ -16,27 +20,84 @@
         <div>{{ t('noData') }}</div>
       </div>
     </div>
+    <button
+      class=""
+      :class="
+        twMerge(
+          'btn btn-ghost btn-circle btn-sm absolute right-1 bottom-1',
+          isFullScreen ? 'fixed right-4 bottom-4 mb-[env(safe-area-inset-bottom)]' : '',
+        )
+      "
+      @click="isFullScreen = !isFullScreen"
+    >
+      <component
+        :is="isFullScreen ? ArrowsPointingInIcon : ArrowsPointingOutIcon"
+        class="h-4 w-4"
+      />
+    </button>
   </div>
+  <Teleport to="body">
+    <div
+      v-if="isFullScreen"
+      class="bg-base-100 custom-background fixed inset-0 z-[9999] h-screen w-screen bg-cover bg-center"
+      :class="`blur-intensity-${blurIntensity} custom-background-${dashboardTransparent}`"
+      :style="backgroundImage"
+    >
+      <div
+        ref="fullScreenChart"
+        :class="shouldRotate ? 'bg-base-100' : 'bg-base-100 h-full w-full'"
+        :style="fullChartStyle"
+      />
+      <button
+        class="btn btn-ghost btn-circle btn-sm fixed right-4 bottom-4 mb-[env(safe-area-inset-bottom)]"
+        @click="isFullScreen = false"
+      >
+        <ArrowsPointingInIcon class="h-4 w-4" />
+      </button>
+    </div>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
+import { backgroundImage } from '@/helper/indexeddb'
 import { getIPLabelFromMap } from '@/helper/sourceip'
+import { isMiddleScreen } from '@/helper/utils'
 import { activeConnections } from '@/store/connections'
-import { font, theme } from '@/store/settings'
-import { useElementSize } from '@vueuse/core'
+import { blurIntensity, dashboardTransparent, font, theme } from '@/store/settings'
+import { ArrowsPointingInIcon, ArrowsPointingOutIcon } from '@heroicons/vue/24/outline'
+import { useElementSize, useWindowSize } from '@vueuse/core'
 import { SankeyChart } from 'echarts/charts'
 import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components'
 import * as echarts from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { debounce } from 'lodash'
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { twMerge } from 'tailwind-merge'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 echarts.use([SankeyChart, GridComponent, LegendComponent, TooltipComponent, CanvasRenderer])
 
 const { t } = useI18n()
+const isFullScreen = ref(false)
 const colorRef = ref()
 const chart = ref()
+const fullScreenChart = ref()
+const fullScreenMyChart = ref<echarts.ECharts>()
+const { width: windowWidth, height: windowHeight } = useWindowSize()
+
+const shouldRotate = computed(() => {
+  return isFullScreen.value && isMiddleScreen.value && windowHeight.value > windowWidth.value
+})
+
+const fullChartStyle = computed(() => {
+  const baseStyle = `backdrop-filter: blur(${blurIntensity.value}px);`
+
+  if (shouldRotate.value) {
+    return `${baseStyle} transform: rotate(90deg); width: 100vh; height: 100vw; position: absolute; top: 50%; left: 50%; margin-top: -50vw; margin-left: -50vh;`
+  }
+
+  return baseStyle
+})
 const colorSet = {
   baseContent10: '',
   baseContent30: '',
@@ -228,6 +289,7 @@ onMounted(() => {
   watch(font, updateFontFamily)
 
   const myChart = echarts.init(chart.value)
+
   myChart.setOption(options.value)
 
   const updateChartData = debounce((newData: typeof sankeyData.value) => {
@@ -235,6 +297,19 @@ onMounted(() => {
       myChart.setOption(options.value)
     } else if (myChart && newData.nodes.length === 0) {
       myChart.clear()
+    }
+
+    if (isFullScreen.value) {
+      nextTick(() => {
+        if (!fullScreenMyChart.value) {
+          fullScreenMyChart.value = echarts.init(fullScreenChart.value)
+        }
+        if (fullScreenMyChart.value && newData.nodes.length > 0) {
+          fullScreenMyChart.value.setOption(options.value)
+        } else if (fullScreenMyChart.value && newData.nodes.length === 0) {
+          fullScreenMyChart.value.clear()
+        }
+      })
     }
   }, 300)
 
@@ -244,14 +319,43 @@ onMounted(() => {
     if (myChart) {
       myChart.setOption(options.value)
     }
+    if (fullScreenMyChart.value) {
+      fullScreenMyChart.value.setOption(options.value)
+    }
+  })
+
+  watch(isFullScreen, () => {
+    if (isFullScreen.value) {
+      nextTick(() => {
+        if (!fullScreenMyChart.value) {
+          fullScreenMyChart.value = echarts.init(fullScreenChart.value)
+        }
+        if (fullScreenMyChart.value && sankeyData.value.nodes.length > 0) {
+          fullScreenMyChart.value.setOption(options.value)
+        }
+      })
+    } else {
+      fullScreenMyChart.value?.dispose()
+      fullScreenMyChart.value = undefined
+    }
   })
 
   const { width } = useElementSize(chart)
   const resize = debounce(() => {
     myChart.resize()
+    fullScreenMyChart.value?.resize()
   }, 100)
 
   watch(width, resize)
+
+  // 监听窗口大小变化和旋转状态变化，确保全屏图表正确调整大小
+  watch([windowWidth, windowHeight, shouldRotate], () => {
+    if (isFullScreen.value && fullScreenMyChart.value) {
+      nextTick(() => {
+        fullScreenMyChart.value?.resize()
+      })
+    }
+  })
 })
 
 onUnmounted(() => {
@@ -260,6 +364,10 @@ onUnmounted(() => {
     if (myChart) {
       myChart.dispose()
     }
+  }
+  if (fullScreenMyChart.value) {
+    fullScreenMyChart.value.dispose()
+    fullScreenMyChart.value = undefined
   }
 })
 </script>
