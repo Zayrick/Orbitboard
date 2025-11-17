@@ -43,9 +43,19 @@ export const isProxyGroup = (name: string) => {
 }
 
 export const getHostFromConnection = (connection: Connection) => {
-  return `${connection.metadata.host || connection.metadata.sniffHost || connection.metadata.destinationIP}:${
-    connection.metadata.destinationPort
-  }`
+  const port = connection.metadata.destinationPort
+  const host = connection.metadata.host || connection.metadata.sniffHost
+
+  if (host) {
+    return `${host}:${port}`
+  }
+
+  const ip = connection.metadata.destinationIP
+
+  if (ipaddr.IPv6.isIPv6(ip)) {
+    return `[${ip}]:${port}`
+  }
+  return `${ip}:${port}`
 }
 
 export const getProcessFromConnection = (connection: Connection) => {
