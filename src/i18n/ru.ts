@@ -169,6 +169,7 @@ const ru: LANG_MESSAGE = {
   searchMultiple: 'Ключевые слова через пробелы',
   importing: 'Импортируется',
   hideConnection: 'Скрыть соединение',
+  showConnection: 'Показать соединение',
   hideConnectionRegex: 'Скрыть соединение Regex',
   hideConnectionTip:
     'Используйте регистронезависимое регулярное выражение, чтобы найти и скрыть нежелательные соединения.',

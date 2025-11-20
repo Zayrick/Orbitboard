@@ -16,6 +16,8 @@ import { useConnectionCard } from '@/store/settings'
 import {
   ArrowDownCircleIcon,
   ArrowUpCircleIcon,
+  LinkIcon,
+  LinkSlashIcon,
   PauseIcon,
   PlayIcon,
   QuestionMarkCircleIcon,
@@ -53,7 +55,7 @@ export default defineComponent({
     const { t } = useI18n()
     const router = useRouter()
     const settingsModel = ref(false)
-    const { showTip } = useTooltip()
+    const { showTip, updateTip } = useTooltip()
     const { isLargeCtrlsBar } = useCtrlsBar(useConnectionCard.value ? 860 : 720)
 
     return () => {
@@ -163,6 +165,24 @@ export default defineComponent({
 
       const buttons = (
         <>
+          <button
+            class="btn btn-circle btn-sm"
+            onClick={() => {
+              quickFilterEnabled.value = !quickFilterEnabled.value
+              updateTip(quickFilterEnabled.value ? t('showConnection') : t('hideConnection'))
+            }}
+            onMouseenter={(e) =>
+              showTip(e, quickFilterEnabled.value ? t('showConnection') : t('hideConnection'), {
+                appendTo: 'parent',
+              })
+            }
+          >
+            {quickFilterEnabled.value ? (
+              <LinkIcon class="h-4 w-4" />
+            ) : (
+              <LinkSlashIcon class="h-4 w-4" />
+            )}
+          </button>
           <button
             class="btn btn-circle btn-sm"
             onClick={() => {

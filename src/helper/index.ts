@@ -52,7 +52,7 @@ export const getHostFromConnection = (connection: Connection) => {
 
   const ip = connection.metadata.destinationIP
 
-  if (ipaddr.IPv6.isIPv6(ip)) {
+  if (ip.includes(':')) {
     return `[${ip}]:${port}`
   }
   return `${ip}:${port}`

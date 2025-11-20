@@ -167,6 +167,7 @@ const en = {
   searchMultiple: 'Space-separated keywords',
   importing: 'Importing...',
   hideConnection: 'Hide connection',
+  showConnection: 'Show connection',
   hideConnectionRegex: 'Hide connection regex',
   hideConnectionTip:
     'You can use case-insensitive regular expressions to match and hide unwanted connections.',

@@ -168,6 +168,7 @@ const zhTW: LANG_MESSAGE = {
   searchMultiple: '多個關鍵詞用空格分隔',
   importing: '正在匯入',
   hideConnection: '隱藏連接',
+  showConnection: '顯示連接',
   hideConnectionRegex: '隱藏連接正則',
   hideConnectionTip: '可通過不區分大小寫的正則表達式來匹配並隱藏不需要看到的連接',
   loadBalance: '負載均衡',
