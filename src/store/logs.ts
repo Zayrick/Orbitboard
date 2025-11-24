@@ -28,9 +28,14 @@ const restructMatchs = () => {
   for (const { key, label, scope } of sourceIPLabelList.value) {
     if (scope && !scope.includes(activeBackend.value?.uuid as string)) continue
     if (key.startsWith('/')) continue
-    const regex = new RegExp(key + ':', 'ig')
 
-    ipSourceMatchs.push([regex, `${key} (${label}) :`])
+    if (key.includes(':')) {
+      const regex = new RegExp(`${key}]:`, 'ig')
+      ipSourceMatchs.push([regex, `${key}] (${label}) :`])
+    } else {
+      const regex = new RegExp(`${key}:`, 'ig')
+      ipSourceMatchs.push([regex, `${key} (${label}) :`])
+    }
   }
 }
 
