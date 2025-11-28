@@ -21,6 +21,7 @@
 </template>
 
 <script setup lang="ts">
+import { isMiddleScreen } from '@/helper/utils'
 import { font, theme } from '@/store/settings'
 import { PauseCircleIcon, PlayCircleIcon } from '@heroicons/vue/24/outline'
 import { useElementSize } from '@vueuse/core'
@@ -29,7 +30,7 @@ import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/compon
 import * as echarts from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { debounce } from 'lodash'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 echarts.use([LineChart, GridComponent, LegendComponent, TooltipComponent, CanvasRenderer])
 
@@ -164,6 +165,9 @@ const options = computed(() => {
   }
 })
 
+let myChart: echarts.ECharts | null = null
+let touchEndHandler: ((e: TouchEvent) => void) | null = null
+
 onMounted(() => {
   updateColorSet()
   updateFontFamily()
@@ -171,7 +175,7 @@ onMounted(() => {
   watch(theme, updateColorSet)
   watch(font, updateFontFamily)
 
-  const myChart = echarts.init(chart.value)
+  myChart = echarts.init(chart.value)
 
   myChart.setOption(options.value)
 
@@ -184,9 +188,29 @@ onMounted(() => {
 
   const { width } = useElementSize(chart)
   const resize = debounce(() => {
-    myChart.resize()
+    myChart?.resize()
   }, 100)
 
   watch(width, resize)
+
+  // 移动端：松手后自动隐藏 tooltip
+  if (isMiddleScreen.value && chart.value) {
+    touchEndHandler = () => {
+      if (myChart) {
+        myChart.dispatchAction({ type: 'hideTip' })
+      }
+    }
+    chart.value.addEventListener('touchend', touchEndHandler)
+  }
+})
+
+onUnmounted(() => {
+  if (chart.value && touchEndHandler) {
+    chart.value.removeEventListener('touchend', touchEndHandler)
+  }
+  if (myChart) {
+    myChart.dispose()
+    myChart = null
+  }
 })
 </script>
