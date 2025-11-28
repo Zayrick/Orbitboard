@@ -178,9 +178,9 @@ export default defineComponent({
             }
           >
             {quickFilterEnabled.value ? (
-              <LinkIcon class="h-4 w-4" />
-            ) : (
               <LinkSlashIcon class="h-4 w-4" />
+            ) : (
+              <LinkIcon class="h-4 w-4" />
             )}
           </button>
           <button

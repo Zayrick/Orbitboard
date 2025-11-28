@@ -7,6 +7,7 @@ import {
   IP_INFO_API,
   IS_APPLE_DEVICE,
   LANG,
+  OVERVIEW_CARD,
   PROXY_CARD_SIZE,
   PROXY_CHAIN_DIRECTION,
   PROXY_PREVIEW_TYPE,
@@ -88,7 +89,6 @@ export const autoDisconnectIdleUDPTime = useStorage('config/auto-disconnect-idle
 
 // overview
 export const splitOverviewPage = useStorage('config/split-overview-page', false)
-export const showIPAndConnectionInfo = useStorage('config/show-ip-and-connection-info', true)
 export const autoIPCheck = useStorage('config/auto-ip-check', true)
 export const autoConnectionCheck = useStorage('config/auto-connection-check', true)
 export const showStatisticsWhenSidebarCollapsed = useStorage(
@@ -99,7 +99,31 @@ export const numberOfChartsInSidebar = useStorage<1 | 2 | 3>(
   'config/number-of-charts-in-sidebar',
   2,
 )
-export const displayConnectionTopology = useStorage('config/display-connection-topology', true)
+export const overviewCardOrder = useStorage<{ card: OVERVIEW_CARD; visible: boolean }[]>(
+  'config/overview-card-order',
+  [
+    {
+      card: OVERVIEW_CARD.ChartsCard,
+      visible: true,
+    },
+    {
+      card: OVERVIEW_CARD.NetworkCard,
+      visible: true,
+    },
+    {
+      card: OVERVIEW_CARD.ProviderTrafficOverview,
+      visible: true,
+    },
+    {
+      card: OVERVIEW_CARD.TopologyCharts,
+      visible: true,
+    },
+    {
+      card: OVERVIEW_CARD.ConnectionHistory,
+      visible: true,
+    },
+  ],
+)
 
 // proxies
 export const collapseGroupMap = useStorage<Record<string, boolean>>('config/collapse-group-map', {})

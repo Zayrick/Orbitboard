@@ -6,7 +6,7 @@
     </div>
     <div class="settings-grid">
       <StatisticsStats type="settings" />
-      <template v-if="showIPAndConnectionInfo">
+      <template v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.networkCard`]">
         <IPCheck />
         <ConnectionStatus />
       </template>
@@ -24,7 +24,8 @@ import IPCheck from '@/components/overview/IPCheck.vue'
 import MemoryCharts from '@/components/overview/MemoryCharts.vue'
 import SpeedCharts from '@/components/overview/SpeedCharts.vue'
 import StatisticsStats from '@/components/overview/StatisticsStats.vue'
-import { showIPAndConnectionInfo } from '@/store/settings'
+import { SETTINGS_MENU_KEY } from '@/constant'
+import { hiddenSettingsItems } from '@/store/settings'
 import { onMounted, ref } from 'vue'
 
 const isMounted = ref(false)

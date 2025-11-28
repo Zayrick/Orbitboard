@@ -189,12 +189,9 @@ const allCategories: Category[] = [
     key: SETTINGS_MENU_KEY.overview,
     label: 'overviewSettings',
     items: [
-      { key: `${SETTINGS_MENU_KEY.overview}.overviewCard`, label: 'overviewCard' },
+      { key: `${SETTINGS_MENU_KEY.overview}.overviewCard`, label: 'chartsCard' },
+      { key: `${SETTINGS_MENU_KEY.overview}.networkCard`, label: 'networkCard' },
       { key: `${SETTINGS_MENU_KEY.overview}.splitOverviewPage`, label: 'splitOverviewPage' },
-      {
-        key: `${SETTINGS_MENU_KEY.overview}.showIPAndConnectionInfo`,
-        label: 'showIPAndConnectionInfo',
-      },
       {
         key: `${SETTINGS_MENU_KEY.overview}.autoIPCheckWhenStart`,
         label: 'autoIPCheckWhenStart',
@@ -202,10 +199,6 @@ const allCategories: Category[] = [
       {
         key: `${SETTINGS_MENU_KEY.overview}.autoConnectionCheckWhenStart`,
         label: 'autoConnectionCheckWhenStart',
-      },
-      {
-        key: `${SETTINGS_MENU_KEY.overview}.displayConnectionTopology`,
-        label: 'displayConnectionTopology',
       },
       {
         key: `${SETTINGS_MENU_KEY.overview}.showStatisticsWhenSidebarCollapsed`,
@@ -347,7 +340,6 @@ const applyMinimalPreset = () => {
     else if (
       key.includes('displayAllFeatures') ||
       key.includes('IPInfoAPI') ||
-      key.includes('displayConnectionTopology') ||
       key.includes('numberOfChartsInSidebar') ||
       key.includes('proxyGroupIconSize') ||
       key.includes('proxyGroupIconMargin') ||

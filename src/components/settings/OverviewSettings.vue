@@ -28,60 +28,29 @@
         />
       </div>
       <div
-        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.showIPAndConnectionInfo`]"
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.autoIPCheckWhenStart`]"
         class="setting-item"
       >
         <div class="setting-item-label">
-          {{ $t('showIPAndConnectionInfo') }}
+          {{ $t('autoIPCheckWhenStart') }}
         </div>
         <input
           class="toggle"
           type="checkbox"
-          v-model="showIPAndConnectionInfo"
+          v-model="autoIPCheck"
         />
       </div>
-      <template v-if="showIPAndConnectionInfo">
-        <div
-          v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.autoIPCheckWhenStart`]"
-          class="setting-item"
-        >
-          <div class="setting-item-label">
-            {{ $t('autoIPCheckWhenStart') }}
-          </div>
-          <input
-            class="toggle"
-            type="checkbox"
-            v-model="autoIPCheck"
-          />
-        </div>
-        <div
-          v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.autoConnectionCheckWhenStart`]"
-          class="setting-item"
-        >
-          <div class="setting-item-label">
-            {{ $t('autoConnectionCheckWhenStart') }}
-          </div>
-          <input
-            class="toggle"
-            type="checkbox"
-            v-model="autoConnectionCheck"
-          />
-        </div>
-      </template>
       <div
-        v-if="
-          splitOverviewPage &&
-          !hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.displayConnectionTopology`]
-        "
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.autoConnectionCheckWhenStart`]"
         class="setting-item"
       >
         <div class="setting-item-label">
-          {{ $t('displayConnectionTopology') }}
+          {{ $t('autoConnectionCheckWhenStart') }}
         </div>
         <input
           class="toggle"
           type="checkbox"
-          v-model="displayConnectionTopology"
+          v-model="autoConnectionCheck"
         />
       </div>
       <div
@@ -128,10 +97,8 @@ import { SETTINGS_MENU_KEY } from '@/constant'
 import {
   autoConnectionCheck,
   autoIPCheck,
-  displayConnectionTopology,
   hiddenSettingsItems,
   numberOfChartsInSidebar,
-  showIPAndConnectionInfo,
   showStatisticsWhenSidebarCollapsed,
   splitOverviewPage,
 } from '@/store/settings'
@@ -142,13 +109,8 @@ import OverviewCard from './OverviewCard.vue'
 const hasVisibleItems = computed(() => {
   return (
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.splitOverviewPage`] ||
-    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.showIPAndConnectionInfo`] ||
-    (showIPAndConnectionInfo.value &&
-      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.autoIPCheckWhenStart`]) ||
-    (showIPAndConnectionInfo.value &&
-      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.autoConnectionCheckWhenStart`]) ||
-    (splitOverviewPage.value &&
-      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.displayConnectionTopology`]) ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.autoIPCheckWhenStart`] ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.autoConnectionCheckWhenStart`] ||
     !hiddenSettingsItems.value[
       `${SETTINGS_MENU_KEY.overview}.showStatisticsWhenSidebarCollapsed`
     ] ||

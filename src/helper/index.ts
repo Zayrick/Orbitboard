@@ -44,18 +44,13 @@ export const isProxyGroup = (name: string) => {
 
 export const getHostFromConnection = (connection: Connection) => {
   const port = connection.metadata.destinationPort
-  const host = connection.metadata.host || connection.metadata.sniffHost
+  const host =
+    connection.metadata.host || connection.metadata.sniffHost || connection.metadata.destinationIP
 
-  if (host) {
-    return `${host}:${port}`
+  if (host.includes(':')) {
+    return `[${host}]:${port}`
   }
-
-  const ip = connection.metadata.destinationIP
-
-  if (ip.includes(':')) {
-    return `[${ip}]:${port}`
-  }
-  return `${ip}:${port}`
+  return `${host}:${port}`
 }
 
 export const getProcessFromConnection = (connection: Connection) => {

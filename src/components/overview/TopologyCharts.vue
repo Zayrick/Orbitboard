@@ -1,40 +1,45 @@
 <template>
-  <div
-    :class="twMerge('relative h-96 w-full overflow-hidden pt-12')"
-    @mousemove.stop
-    @touchmove.stop
-  >
-    <div
-      ref="chart"
-      class="h-full w-full"
-    />
-    <span
-      class="border-base-content/30 text-base-content/10 bg-base-100/70 hidden"
-      ref="colorRef"
-    />
-    <div
-      v-if="sankeyData.nodes.length === 0"
-      class="text-base-content/50 absolute inset-0 flex items-center justify-center"
-    >
-      <div class="text-center">
-        <div>{{ t('noData') }}</div>
-      </div>
+  <div class="card">
+    <div class="card-title absolute px-4 pt-4">
+      {{ $t('connectionTopology') }}
     </div>
-    <button
-      class=""
-      :class="
-        twMerge(
-          'btn btn-ghost btn-circle btn-sm absolute right-1 bottom-1',
-          isFullScreen ? 'fixed right-4 bottom-4 mb-[env(safe-area-inset-bottom)]' : '',
-        )
-      "
-      @click="isFullScreen = !isFullScreen"
+    <div
+      :class="twMerge('relative h-96 w-full overflow-hidden pt-12')"
+      @mousemove.stop
+      @touchmove.stop
     >
-      <component
-        :is="isFullScreen ? ArrowsPointingInIcon : ArrowsPointingOutIcon"
-        class="h-4 w-4"
+      <div
+        ref="chart"
+        class="h-full w-full"
       />
-    </button>
+      <span
+        class="border-base-content/30 text-base-content/10 bg-base-100/70 hidden"
+        ref="colorRef"
+      />
+      <div
+        v-if="sankeyData.nodes.length === 0"
+        class="text-base-content/50 absolute inset-0 flex items-center justify-center"
+      >
+        <div class="text-center">
+          <div>{{ t('noData') }}</div>
+        </div>
+      </div>
+      <button
+        class=""
+        :class="
+          twMerge(
+            'btn btn-ghost btn-circle btn-sm absolute right-1 bottom-1',
+            isFullScreen ? 'fixed right-4 bottom-4 mb-[env(safe-area-inset-bottom)]' : '',
+          )
+        "
+        @click="isFullScreen = !isFullScreen"
+      >
+        <component
+          :is="isFullScreen ? ArrowsPointingInIcon : ArrowsPointingOutIcon"
+          class="h-4 w-4"
+        />
+      </button>
+    </div>
   </div>
   <Teleport to="body">
     <div

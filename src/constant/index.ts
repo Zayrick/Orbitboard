@@ -287,3 +287,11 @@ export enum SETTINGS_MENU_KEY {
   connections = 'connectionSettings',
   overview = 'overviewSettings',
 }
+
+export enum OVERVIEW_CARD {
+  ChartsCard = 'ChartsCard',
+  NetworkCard = 'NetworkCard',
+  ProviderTrafficOverview = 'ProviderTrafficOverview',
+  TopologyCharts = 'TopologyCharts',
+  ConnectionHistory = 'ConnectionHistory',
+}
