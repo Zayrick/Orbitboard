@@ -278,6 +278,9 @@ const en = {
   clearConnectionHistoryConfirm:
     'Are you sure you want to clear all connection history data? This action cannot be undone.',
   clearConnectionHistorySuccess: 'Connection history data cleared successfully',
+  providerTrafficOverview: 'Provider Traffic Overview',
+  remainingTraffic: 'Remaining',
+  usedTraffic: 'Used',
 }
 
 export type LANG_MESSAGE = typeof en

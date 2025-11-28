@@ -276,6 +276,9 @@ const zhTW: LANG_MESSAGE = {
   clearConnectionHistory: '清空連接歷史',
   clearConnectionHistoryConfirm: '確定要清空所有連接歷史資料嗎？此操作不可恢復。',
   clearConnectionHistorySuccess: '連接歷史資料清空成功',
+  providerTrafficOverview: '提供商流量概覽',
+  remainingTraffic: '剩餘流量',
+  usedTraffic: '已使用',
 }
 
 export default zhTW

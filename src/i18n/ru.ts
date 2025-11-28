@@ -280,6 +280,9 @@ const ru: LANG_MESSAGE = {
   clearConnectionHistoryConfirm:
     'Вы уверены, что хотите очистить все данные истории соединений? Это действие нельзя отменить.',
   clearConnectionHistorySuccess: 'История соединений успешно очищена',
+  providerTrafficOverview: 'Обзор трафика провайдеров',
+  remainingTraffic: 'Осталось',
+  usedTraffic: 'Использовано',
 }
 
 export default ru

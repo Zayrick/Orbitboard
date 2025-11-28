@@ -276,6 +276,9 @@ const zh: LANG_MESSAGE = {
   clearConnectionHistory: '清空连接历史',
   clearConnectionHistoryConfirm: '确定要清空所有连接历史数据吗？此操作不可恢复。',
   clearConnectionHistorySuccess: '连接历史数据清空成功',
+  providerTrafficOverview: '提供商流量概览',
+  remainingTraffic: '剩余流量',
+  usedTraffic: '已使用',
 }
 
 export default zh

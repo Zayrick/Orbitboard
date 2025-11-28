@@ -5,6 +5,7 @@
   >
     <ChartsCard />
     <NetworkCard v-if="showIPAndConnectionInfo" />
+    <ProviderTrafficOverview />
     <div
       class="card"
       v-if="displayConnectionTopology"
@@ -30,6 +31,7 @@ import BackendVersion from '@/components/common/BackendVersion.vue'
 import ChartsCard from '@/components/overview/ChartsCard.vue'
 import ConnectionHistory from '@/components/overview/ConnectionHistory.vue'
 import NetworkCard from '@/components/overview/NetworkCard.vue'
+import ProviderTrafficOverview from '@/components/overview/ProviderTrafficOverview.vue'
 import TopologyCharts from '@/components/overview/TopologyCharts.vue'
 import { usePaddingForViews } from '@/composables/paddingViews'
 import { getLabelFromBackend } from '@/helper/utils'
