@@ -24,7 +24,7 @@
 
         <template v-if="isMiddleScreen">
           <div
-            class="glass-panel dock dock-sm z-10 h-14 w-auto"
+            class="bg-base-100/20 dock dock-xs z-10 h-14 w-auto shadow-sm backdrop-blur-sm"
             :style="{
               padding: '0',
               bottom: 'calc(var(--spacing) * 2 + env(safe-area-inset-bottom))',
@@ -47,6 +47,7 @@
               </span>
             </button>
           </div>
+          <div class="dock-shadow"></div>
         </template>
       </div>
     </RouterView>

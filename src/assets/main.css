@@ -327,7 +327,22 @@ div {
 }
 
 .glass-panel {
-  @apply bg-base-100/20 shadow-sm backdrop-blur-md;
+  @apply bg-base-100/60 md:bg-base-100/20 shadow-sm backdrop-blur-lg;
+}
+.dock-shadow {
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.3),
+    rgba(0, 0, 0, 0.16),
+    rgba(0, 0, 0, 0.08),
+    rgba(0, 0, 0, 0.02),
+    rgba(0, 0, 0, 0)
+  );
+  width: 100%;
+  height: env(safe-area-inset-bottom);
+  position: fixed;
+  bottom: 0;
+  z-index: 10;
 }
 .ctrls-bar {
   @apply fixed top-0 right-0 left-0 z-30 md:sticky;
