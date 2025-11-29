@@ -1,5 +1,5 @@
 <template>
-  <div class="glass-panel ctrls-bar">
+  <div class="ctrls-bar">
     <div class="flex h-12 flex-row items-center gap-2 p-2 text-sm">
       <span class="truncate overflow-hidden">
         {{ getLabelFromBackend(activeBackend!) }}

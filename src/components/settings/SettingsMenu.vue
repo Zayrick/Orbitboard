@@ -1,7 +1,7 @@
 <template>
   <div
     ref="menuRef"
-    class="settings-menu glass-panel scrollbar-hidden ctrls-bar p-1 px-2"
+    class="settings-menu scrollbar-hidden ctrls-bar p-1 px-2"
     @touchstart.passive.stop
     @touchmove.passive.stop
     @touchend.passive.stop

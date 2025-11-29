@@ -254,7 +254,7 @@ export default defineComponent({
         </div>
       )
 
-      return <div class="glass-panel ctrls-bar">{content}</div>
+      return <div class="ctrls-bar">{content}</div>
     }
   },
 })
