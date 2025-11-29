@@ -9,6 +9,7 @@
         height: `${totalSize}px`,
       }"
       class="relative w-full"
+      v-if="data.length > 0"
     >
       <div
         class="absolute top-0 left-0 w-full p-2"
@@ -29,6 +30,12 @@
           />
         </div>
       </div>
+    </div>
+    <div
+      v-else
+      class="card m-2 flex-row p-2 text-sm"
+    >
+      {{ $t('noContent') }}
     </div>
   </div>
 </template>

@@ -1,13 +1,6 @@
 <template>
   <div class="size-full overflow-hidden">
-    <template v-if="!renderLogs.length">
-      <LogsCtrl />
-      <div class="card m-2 flex-row p-2 text-sm">
-        {{ $t('noContent') }}
-      </div>
-    </template>
     <VirtualScroller
-      v-else
       :data="renderLogs"
       :size="isMiddleScreen ? 96 : 64"
     >
