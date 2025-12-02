@@ -361,6 +361,18 @@ export const proxyGroupLatencyTest = async (proxyGroupName: string) => {
 }
 
 export const allProxiesLatencyTest = async () => {
+  if (independentLatencyTest.value) {
+    const limit = pLimit(3)
+
+    return await Promise.all(
+      proxyGroupList.value.map((proxyGroupName) =>
+        limit(async () => {
+          await proxyGroupLatencyTest(proxyGroupName)
+        }),
+      ),
+    )
+  }
+
   const proxyNode = Object.keys(proxyMap.value).filter((proxy) => !isProxyGroup(proxy))
 
   return testLatencyOneByOneWithTip('all', proxyNode)
