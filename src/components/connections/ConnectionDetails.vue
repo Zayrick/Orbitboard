@@ -12,8 +12,8 @@
         >
           <template #renderNodeValue="{ node, defaultValue }">
             <template v-if="node.path.startsWith('root.chains') && proxyMap[node.content]?.icon">
-              <span>
-                "<ProxyIcon
+              <span
+                >"<ProxyIcon
                   :icon="proxyMap[node.content].icon"
                   class="inline-block"
                   :margin="0"

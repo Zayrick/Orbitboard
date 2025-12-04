@@ -11,28 +11,25 @@
     "
     @contextmenu.stop.prevent="handlerLatencyTest"
   >
-    <div class="flex w-full flex-1 items-center">
+    <div
+      class="w-full flex-1 text-sm"
+      :class="truncateProxyName && 'truncate'"
+      @mouseenter="checkTruncation"
+    >
       <ProxyIcon
         v-if="node?.icon"
-        class="shrink-0"
+        class="mb-1 inline-block shrink-0"
         :icon="node.icon"
         :fill="active ? 'fill-primary-content' : 'fill-base-content'"
-      />
-      <!-- fix twemoji on ios -->
-      <span
+      /><span
         v-if="active"
-        :class="twMerge('text-primary-content text-sm', truncateProxyName && 'truncate')"
-        @mouseenter="checkTruncation"
-      >
-        {{ node.name }}
-      </span>
-      <span
+        class="text-primary-content"
+        >{{ node.name }}</span
+      ><span
         v-else
-        :class="twMerge('text-base-content text-sm', truncateProxyName && 'truncate')"
-        @mouseenter="checkTruncation"
+        class="text-base-content"
+        >{{ node.name }}</span
       >
-        {{ node.name }}
-      </span>
     </div>
 
     <div class="flex h-4 w-full items-center justify-between">
