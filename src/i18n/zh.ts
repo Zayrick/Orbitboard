@@ -141,6 +141,7 @@ const zh: LANG_MESSAGE = {
   proxyGroupIconMargin: '策略组图标间距',
   allowLan: '允许局域网',
   proxyChainDirection: '代理链方向',
+  showFullProxyChain: '完整显示代理链',
   reverse: '反向',
   sniffHost: '嗅探主机',
   ipScreenshotTip: '截图时请确保隐藏IP',

@@ -216,6 +216,7 @@ import { connectionTabShow, renderConnections } from '@/store/connections'
 import {
   connectionTableColumns,
   proxyChainDirection,
+  showFullProxyChain,
   tableSize,
   tableWidthMode,
 } from '@/store/settings'
@@ -362,8 +363,14 @@ const columns: ColumnDef<Connection>[] = [
     },
     cell: ({ row }) => {
       const chains: VNode[] = []
-      const originChains = row.original.chains
+      const isReverse = proxyChainDirection.value === PROXY_CHAIN_DIRECTION.REVERSE
+      let originChains = row.original.chains
 
+      if (!showFullProxyChain.value && originChains.length > 2) {
+        originChains = [originChains[0], originChains[originChains.length - 1]]
+      }
+
+      // 完整显示所有代理链
       originChains.forEach((chain, index) => {
         chains.unshift(h(ProxyName, { name: chain, key: chain }))
 
@@ -380,7 +387,7 @@ const columns: ColumnDef<Connection>[] = [
       return h(
         'div',
         {
-          class: `flex items-center ${proxyChainDirection.value === PROXY_CHAIN_DIRECTION.REVERSE && 'flex-row-reverse justify-end'} gap-1`,
+          class: `flex items-center ${isReverse && 'flex-row-reverse justify-end'} gap-1`,
         },
         chains,
       )

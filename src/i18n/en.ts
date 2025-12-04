@@ -140,6 +140,7 @@ const en = {
   proxyGroupIconMargin: 'Proxy group icon margin',
   allowLan: 'Allow LAN',
   proxyChainDirection: 'Proxy chain direction',
+  showFullProxyChain: 'Show full proxy chain',
   reverse: 'Reverse',
   sniffHost: 'Sniff host',
   ipScreenshotTip: 'Please hide the IP when taking screenshots.',

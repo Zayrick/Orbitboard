@@ -142,6 +142,7 @@ const ru: LANG_MESSAGE = {
   proxyGroupIconMargin: 'Отступ иконки группы прокси',
   allowLan: 'Разрешить локальную сеть',
   proxyChainDirection: 'Направление цепочки прокси',
+  showFullProxyChain: 'Показать полную цепочку прокси',
   reverse: 'Обратное',
   sniffHost: 'Захватывать хост',
   ipScreenshotTip: 'Пожалуйста, убедитесь, что реальный IP скрыт при создании скриншотов.',

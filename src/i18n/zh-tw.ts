@@ -141,6 +141,7 @@ const zhTW: LANG_MESSAGE = {
   proxyGroupIconMargin: '策略組圖示間距',
   allowLan: '允許區域網路',
   proxyChainDirection: '代理鏈方向',
+  showFullProxyChain: '完整顯示代理鏈',
   reverse: '反向',
   sniffHost: '嗅探主機',
   ipScreenshotTip: '截圖時請確保隱藏IP',
