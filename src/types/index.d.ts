@@ -51,6 +51,8 @@ export type Proxy = {
   icon: string
   hidden?: boolean
   testUrl?: string
+  'dialer-proxy'?: string
+  'provider-name'?: string
 }
 
 export type SubscriptionInfo = {
