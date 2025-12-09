@@ -171,6 +171,10 @@ const en = {
   hideConnectionRegex: 'Hide connection regex',
   hideConnectionTip:
     'You can use case-insensitive regular expressions to match and hide unwanted connections.',
+  hideLog: 'Hide log',
+  showLog: 'Show log',
+  hideLogRegex: 'Hide log regex',
+  hideLogTip: 'You can use case-insensitive regular expressions to match and hide unwanted logs.',
   loadBalance: 'Load Balance',
   label: 'Label',
   optional: 'Optional',

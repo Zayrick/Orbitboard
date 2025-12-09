@@ -13,6 +13,8 @@ export const logFilter = ref('')
 export const logTypeFilter = ref('')
 export const isPaused = ref(false)
 export const logLevel = useStorage<string>('config/log-level', LOG_LEVEL.Info)
+export const logFilterRegex = useStorage<string>('config/log-filter-regex', '')
+export const logFilterEnabled = useStorage<boolean>('config/log-filter-enabled', false)
 
 let cancel: () => void
 let logsTemp: LogWithSeq[] = []

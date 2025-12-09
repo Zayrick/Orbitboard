@@ -1,12 +1,25 @@
 import { isSingBox } from '@/api'
 import { useCtrlsBar } from '@/composables/useCtrlsBar'
 import { LOG_LEVEL } from '@/constant'
-import { initLogs, isPaused, logFilter, logLevel, logTypeFilter, logs } from '@/store/logs'
+import { useTooltip } from '@/helper/tooltip'
+import {
+  initLogs,
+  isPaused,
+  logFilter,
+  logFilterEnabled,
+  logFilterRegex,
+  logLevel,
+  logTypeFilter,
+  logs,
+} from '@/store/logs'
 import { logRetentionLimit, logSearchHistory } from '@/store/settings'
 import {
   ArrowDownTrayIcon,
+  LinkIcon,
+  LinkSlashIcon,
   PauseIcon,
   PlayIcon,
+  QuestionMarkCircleIcon,
   WrenchScrewdriverIcon,
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
@@ -22,6 +35,7 @@ export default defineComponent({
     const { t } = useI18n()
     const settingsModel = ref(false)
     const { isLargeCtrlsBar } = useCtrlsBar()
+    const { showTip, updateTip } = useTooltip()
     const insertLogSearchHistory = debounce((log: string) => {
       if (!log) {
         return
@@ -201,6 +215,30 @@ export default defineComponent({
                   v-model={logRetentionLimit.value}
                 />
               </div>
+              <div class="flex items-center gap-2">
+                <span class="shrink-0">{t('hideLogRegex')}</span>
+                <TextInput
+                  class="w-32 max-w-64 flex-1"
+                  v-model={logFilterRegex.value}
+                />
+              </div>
+              <div class="flex items-center gap-2">
+                {t('hideLog')}
+                <input
+                  type="checkbox"
+                  class="toggle"
+                  v-model={logFilterEnabled.value}
+                />
+                <div
+                  onMouseenter={(e) =>
+                    showTip(e, t('hideLogTip'), {
+                      appendTo: 'parent',
+                    })
+                  }
+                >
+                  <QuestionMarkCircleIcon class="h-4 w-4" />
+                </div>
+              </div>
             </div>
           </DialogWrapper>
         </>
@@ -214,6 +252,24 @@ export default defineComponent({
             onClick={downloadAllLogs}
           >
             <ArrowDownTrayIcon class="h-4 w-4" />
+          </button>
+          <button
+            class="btn btn-circle btn-sm"
+            onClick={() => {
+              logFilterEnabled.value = !logFilterEnabled.value
+              updateTip(logFilterEnabled.value ? t('showLog') : t('hideLog'))
+            }}
+            onMouseenter={(e) =>
+              showTip(e, logFilterEnabled.value ? t('showLog') : t('hideLog'), {
+                appendTo: 'parent',
+              })
+            }
+          >
+            {logFilterEnabled.value ? (
+              <LinkSlashIcon class="h-4 w-4" />
+            ) : (
+              <LinkIcon class="h-4 w-4" />
+            )}
           </button>
           <button
             class="btn btn-circle btn-sm"
