@@ -24,21 +24,29 @@
           <div>{{ t('noData') }}</div>
         </div>
       </div>
-      <button
-        class=""
-        :class="
-          twMerge(
-            'btn btn-ghost btn-circle btn-sm absolute right-1 bottom-1',
-            isFullScreen ? 'fixed right-4 bottom-4 mb-[env(safe-area-inset-bottom)]' : '',
-          )
-        "
-        @click="isFullScreen = !isFullScreen"
+      <div
+        class="absolute right-1 bottom-1 flex flex-col gap-1"
+        :class="isFullScreen ? 'fixed right-4 bottom-4 mb-[env(safe-area-inset-bottom)]' : ''"
       >
-        <component
-          :is="isFullScreen ? ArrowsPointingInIcon : ArrowsPointingOutIcon"
-          class="h-4 w-4"
-        />
-      </button>
+        <button
+          class="btn btn-ghost btn-circle btn-sm"
+          @click="isPaused = !isPaused"
+        >
+          <component
+            :is="!isPaused ? PauseCircleIcon : PlayCircleIcon"
+            class="h-4 w-4"
+          />
+        </button>
+        <button
+          class="btn btn-ghost btn-circle btn-sm"
+          @click="isFullScreen = !isFullScreen"
+        >
+          <component
+            :is="isFullScreen ? ArrowsPointingInIcon : ArrowsPointingOutIcon"
+            class="h-4 w-4"
+          />
+        </button>
+      </div>
     </div>
   </div>
   <Teleport to="body">
@@ -53,12 +61,23 @@
         :class="shouldRotate ? 'bg-base-100' : 'bg-base-100 h-full w-full'"
         :style="fullChartStyle"
       />
-      <button
-        class="btn btn-ghost btn-circle btn-sm fixed right-4 bottom-4 mb-[env(safe-area-inset-bottom)]"
-        @click="isFullScreen = false"
-      >
-        <ArrowsPointingInIcon class="h-4 w-4" />
-      </button>
+      <div class="fixed right-4 bottom-4 mb-[env(safe-area-inset-bottom)] flex flex-col gap-1">
+        <button
+          class="btn btn-ghost btn-circle btn-sm"
+          @click="isPaused = !isPaused"
+        >
+          <component
+            :is="!isPaused ? PauseCircleIcon : PlayCircleIcon"
+            class="h-4 w-4"
+          />
+        </button>
+        <button
+          class="btn btn-ghost btn-circle btn-sm"
+          @click="isFullScreen = false"
+        >
+          <ArrowsPointingInIcon class="h-4 w-4" />
+        </button>
+      </div>
     </div>
   </Teleport>
 </template>
@@ -69,7 +88,12 @@ import { getIPLabelFromMap } from '@/helper/sourceip'
 import { isMiddleScreen } from '@/helper/utils'
 import { activeConnections } from '@/store/connections'
 import { blurIntensity, dashboardTransparent, font, theme } from '@/store/settings'
-import { ArrowsPointingInIcon, ArrowsPointingOutIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowsPointingInIcon,
+  ArrowsPointingOutIcon,
+  PauseCircleIcon,
+  PlayCircleIcon,
+} from '@heroicons/vue/24/outline'
 import { useElementSize, useWindowSize } from '@vueuse/core'
 import { SankeyChart } from 'echarts/charts'
 import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components'
@@ -84,6 +108,7 @@ echarts.use([SankeyChart, GridComponent, LegendComponent, TooltipComponent, Canv
 
 const { t } = useI18n()
 const isFullScreen = ref(false)
+const isPaused = ref(false)
 const colorRef = ref()
 const chart = ref()
 const fullScreenChart = ref()
@@ -333,7 +358,19 @@ onMounted(() => {
 
   myChart.setOption(options.value)
 
+  // 监听 tooltip 显示和隐藏事件
+  myChart.on('showTip', () => {
+    isPaused.value = true
+  })
+  myChart.on('hideTip', () => {
+    isPaused.value = false
+  })
+
   const updateChartData = debounce((newData: typeof sankeyData.value) => {
+    if (isPaused.value) {
+      return
+    }
+
     if (myChart && newData.nodes.length > 0) {
       myChart.setOption(options.value)
     } else if (myChart && newData.nodes.length === 0) {
@@ -344,6 +381,13 @@ onMounted(() => {
       nextTick(() => {
         if (!fullScreenMyChart.value) {
           fullScreenMyChart.value = echarts.init(fullScreenChart.value)
+          // 为全屏图表也添加事件监听
+          fullScreenMyChart.value.on('showTip', () => {
+            isPaused.value = true
+          })
+          fullScreenMyChart.value.on('hideTip', () => {
+            isPaused.value = false
+          })
         }
         if (fullScreenMyChart.value && newData.nodes.length > 0) {
           fullScreenMyChart.value.setOption(options.value)
@@ -370,6 +414,13 @@ onMounted(() => {
       nextTick(() => {
         if (!fullScreenMyChart.value) {
           fullScreenMyChart.value = echarts.init(fullScreenChart.value)
+          // 为全屏图表也添加事件监听
+          fullScreenMyChart.value.on('showTip', () => {
+            isPaused.value = true
+          })
+          fullScreenMyChart.value.on('hideTip', () => {
+            isPaused.value = false
+          })
         }
         if (fullScreenMyChart.value && sankeyData.value.nodes.length > 0) {
           fullScreenMyChart.value.setOption(options.value)
