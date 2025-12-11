@@ -217,7 +217,15 @@ const totalStats = computed(() => {
 const aggregateSourceCount = computed(() => aggregatedData.value.length)
 
 const aggregateSourceLabel = computed(() => {
-  return t(aggregationType.value)
+  if (aggregationType.value === ConnectionHistoryType.SourceIP) {
+    return t('sourceIP')
+  } else if (aggregationType.value === ConnectionHistoryType.Destination) {
+    return t('host')
+  } else if (aggregationType.value === ConnectionHistoryType.Process) {
+    return t('process')
+  } else {
+    return t('outbound')
+  }
 })
 
 const columns = computed<ColumnDef<ConnectionHistoryData>[]>(() => {
