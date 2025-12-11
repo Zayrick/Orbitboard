@@ -100,7 +100,9 @@ router.afterEach((to) => {
 })
 
 watch(language, () => {
-  setTitleByName(router.currentRoute.value.name)
+  setTimeout(() => {
+    setTitleByName(router.currentRoute.value.name)
+  })
 })
 
 export default router
