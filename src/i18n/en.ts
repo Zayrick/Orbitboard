@@ -146,7 +146,8 @@ const en = {
   ipScreenshotTip: 'Please hide the IP when taking screenshots.',
   showStatisticsWhenSidebarCollapsed: 'Show statistics when sidebar collapsed',
   totalConnections: 'Connection statistics',
-  totalConnectionsTip: 'Only connections opened while the panel is open are counted',
+  totalConnectionsTip:
+    'Only connections opened while the panel is open are counted. \nRecording start time: {statsStartTime}',
   mostDownloadHost: 'Most downloaded host',
   mostUploadHost: 'Most uploaded host',
   mostDownloadSourceIP: 'Most downloaded source IP',
@@ -287,6 +288,11 @@ const en = {
   clearConnectionHistoryConfirm:
     'Are you sure you want to clear all connection history data? This action cannot be undone.',
   clearConnectionHistorySuccess: 'Connection history data cleared successfully',
+  autoCleanupInterval: 'Auto cleanup interval',
+  autoCleanupIntervalWeek: 'Weekly',
+  autoCleanupIntervalMonth: 'Monthly',
+  autoCleanupIntervalQuarter: 'Quarterly',
+  autoCleanupIntervalNever: 'Never',
   remainingTraffic: 'Remaining',
   usedTraffic: 'Used',
 }
