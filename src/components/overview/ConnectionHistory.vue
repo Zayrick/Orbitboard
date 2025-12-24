@@ -19,7 +19,7 @@
 
         <div class="flex items-center gap-2 font-normal max-sm:flex-col max-sm:items-start">
           <div class="flex items-center gap-2">
-            <span class="text-sm">{{ $t('aggregateBy') }}:</span>
+            <span class="text-sm">{{ $t('aggregateBy') }}</span>
             <select
               v-model="aggregationType"
               class="select select-bordered select-sm w-32"
@@ -37,7 +37,7 @@
             </select>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-sm">{{ $t('autoCleanupInterval') }}:</span>
+            <span class="text-sm">{{ $t('autoCleanupInterval') }}</span>
             <select
               v-model="autoCleanupInterval"
               class="select select-bordered select-sm w-28"
