@@ -295,6 +295,10 @@ const en = {
   autoCleanupIntervalNever: 'Never',
   remainingTraffic: 'Remaining',
   usedTraffic: 'Used',
+  ruleHitCount: 'Hit: {count} times',
+  ruleLastHit: 'Last hit: {time}',
+  ruleMissCount: 'Miss: {count} times',
+  ruleLastMiss: 'Last miss: {time}',
 }
 
 export type LANG_MESSAGE = typeof en

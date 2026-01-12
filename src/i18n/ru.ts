@@ -298,6 +298,10 @@ const ru: LANG_MESSAGE = {
   autoCleanupIntervalNever: 'Никогда',
   remainingTraffic: 'Осталось',
   usedTraffic: 'Использовано',
+  ruleHitCount: 'Попадание: {count} раз',
+  ruleLastHit: 'Последнее попадание: {time}',
+  ruleMissCount: 'Промах: {count} раз',
+  ruleLastMiss: 'Последний промах: {time}',
 }
 
 export default ru

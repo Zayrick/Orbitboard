@@ -292,6 +292,10 @@ const zhTW: LANG_MESSAGE = {
   autoCleanupIntervalNever: '永不',
   remainingTraffic: '剩餘流量',
   usedTraffic: '已使用',
+  ruleHitCount: '命中: {count} 次',
+  ruleLastHit: '最後命中: {time}',
+  ruleMissCount: '未命中: {count} 次',
+  ruleLastMiss: '最後未命中: {time}',
 }
 
 export default zhTW
