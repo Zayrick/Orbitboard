@@ -1,36 +1,22 @@
 <template>
   <div
     ref="containerRef"
-    class="pointer-events-none absolute inset-0 z-0"
+    class="pointer-events-none absolute inset-0 z-0 p-3"
     aria-hidden="true"
   >
-    <div
-      class="proxy-inline-dots__grid grid h-full w-full p-0 opacity-25 blur-[0.3px] brightness-95 saturate-50"
-      :style="gridStyle"
-    >
-      <div
-        v-for="(item, idx) in items"
-        :key="item.placeholder ? `ph-${idx}` : item.name"
-        class="rounded-full"
-        :class="getDotClass(item)"
-        :style="dotStyle"
-      />
-    </div>
+    <canvas
+      ref="canvasRef"
+      class="mask-gradient h-full w-full opacity-25 blur-[0.3px] brightness-95 saturate-50"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { NOT_CONNECTED } from '@/constant'
+import { LATENCY_COLORS, NOT_CONNECTED } from '@/constant'
 import { getLatencyByName } from '@/store/proxies'
 import { lowLatency, mediumLatency } from '@/store/settings'
 import { useElementSize } from '@vueuse/core'
-import { computed, ref } from 'vue'
-
-// 间距随点大小动态调整：gap = clamp(round(dotSize * ratio), min, max)
-// 目标：点尽可能大，同时间距随之合理变化。
-const GAP_RATIO = 0.35
-const GAP_MIN_PX = 2
-const GAP_MAX_PX = 10
+import { computed, onMounted, ref, watch } from 'vue'
 
 const props = defineProps<{
   nodes: string[]
@@ -38,173 +24,144 @@ const props = defineProps<{
   groupName?: string
 }>()
 
-type DotItem = { name: string; placeholder: boolean }
-
-const containerRef = ref<HTMLElement | null>(null)
+const containerRef = ref<HTMLElement>()
+const canvasRef = ref<HTMLCanvasElement>()
 const { width, height } = useElementSize(containerRef)
 
-type Layout = {
-  cols: number
-  rows: number
-  dotSize: number
-  gap: number
+// Constants
+const GAP_RATIO = 0.35
+const GAP_LIMITS = [2, 10] as const
+const ALPHA_LEVEL = 0.35
+
+const THEME = {
+  ...LATENCY_COLORS,
+  base: 'rgba(166, 173, 187, 0.18)',
+  active: 'oklch(65.69% 0.196 275.75)',
+} as const
+
+// Utils
+const applyAlpha = (color: string, alpha: number) => {
+  if (color.startsWith('oklch(')) return color.replace(')', ` / ${alpha})`)
+  if (color.startsWith('rgb(')) return color.replace('rgb(', 'rgba(').replace(')', `, ${alpha})`)
+  return color
 }
 
-const clampInt = (value: number, min: number, max: number) =>
-  Math.max(min, Math.min(max, Math.round(value)))
+const getGap = (size: number) =>
+  Math.max(GAP_LIMITS[0], Math.min(GAP_LIMITS[1], Math.round(size * GAP_RATIO)))
 
-const getGapPx = (dotSize: number) => {
-  const raw = Math.round(dotSize * GAP_RATIO)
-  return Math.max(GAP_MIN_PX, Math.min(GAP_MAX_PX, raw))
-}
-
-const solveBestDotSizeWithDynamicGap = (
-  w: number,
-  h: number,
-  cols: number,
-  rows: number,
-): { dotSize: number; gap: number } => {
-  // 上界：忽略 gap 时的最大点尺寸
-  let dot = Math.floor(Math.min(w / cols, h / rows))
-
-  if (dot <= 0) return { dotSize: 0, gap: GAP_MIN_PX }
-
-  // 单调收敛：dot 越大 -> gap 越大 -> dot 可能变小
-  for (let i = 0; i < 6; i++) {
-    const gap = getGapPx(dot)
-    const availableW = w - (cols - 1) * gap
-    const availableH = h - (rows - 1) * gap
-
-    if (availableW <= 0 || availableH <= 0) {
-      return { dotSize: 0, gap }
-    }
-
-    const nextDot = Math.floor(Math.min(availableW / cols, availableH / rows))
-    if (nextDot === dot) {
-      return { dotSize: dot, gap }
-    }
-
-    dot = nextDot
-    if (dot <= 0) {
-      return { dotSize: 0, gap }
-    }
-  }
-
-  return { dotSize: dot, gap: getGapPx(dot) }
-}
-
-const layout = computed<Layout>(() => {
+// Layout Engine
+const layout = computed(() => {
   const n = props.nodes.length
-  const w = Math.floor(width.value)
-  const h = Math.floor(height.value)
+  const w = width.value
+  const h = height.value
 
-  if (n <= 0 || w <= 0 || h <= 0) {
-    return { cols: 1, rows: 1, dotSize: 0, gap: GAP_MIN_PX }
-  }
+  if (n <= 0 || w <= 0 || h <= 0) return { cols: 1, rows: 1, size: 0 }
 
-  // 目标：看起来“足够好”即可，不追求绝对最优。
-  // 用宽高比估算列数，并只尝试邻域候选(±1)，避免 O(n) 遍历。
   const ratio = w / h
-  const estimatedCols = clampInt(Math.sqrt(n * ratio), 1, n)
-  const candidateCols = Array.from(
-    new Set([estimatedCols - 1, estimatedCols, estimatedCols + 1].filter((c) => c >= 1 && c <= n)),
+  const estimatedCols = Math.round(Math.sqrt(n * ratio)) || 1
+  const candidates = [estimatedCols - 1, estimatedCols, estimatedCols + 1].filter(
+    (c) => c >= 1 && c <= n,
   )
 
-  let best: Layout = {
-    cols: estimatedCols,
-    rows: Math.ceil(n / estimatedCols),
-    dotSize: 0,
-    gap: GAP_MIN_PX,
-  }
+  let best = { cols: 1, size: 0 }
 
-  for (const cols of candidateCols) {
+  for (const cols of candidates) {
     const rows = Math.ceil(n / cols)
-    const { dotSize, gap } = solveBestDotSizeWithDynamicGap(w, h, cols, rows)
-    if (dotSize <= 0) continue
+    let size = Math.floor(Math.min(w / cols, h / rows))
 
-    const isBetter =
-      dotSize > best.dotSize ||
-      (dotSize === best.dotSize && Math.abs(cols - rows) < Math.abs(best.cols - best.rows)) ||
-      (dotSize === best.dotSize &&
-        Math.abs(cols - rows) === Math.abs(best.cols - best.rows) &&
-        cols > best.cols)
+    // Refine size considering dynamic gap (3 iterations is sufficient for convergence)
+    for (let i = 0; i < 3; i++) {
+      const gap = getGap(size)
+      const maxW = (w - (cols - 1) * gap) / cols
+      const maxH = (h - (rows - 1) * gap) / rows
+      const nextSize = Math.floor(Math.min(maxW, maxH))
+      if (nextSize === size) break
+      size = nextSize
+    }
 
-    if (isBetter) best = { cols, rows, dotSize, gap }
+    if (size > best.size) best = { cols, size }
   }
 
-  return best
+  return { ...best, rows: Math.ceil(n / best.cols) }
 })
 
-const items = computed<DotItem[]>(() => {
-  const { cols } = layout.value
-  const base = props.nodes.map((name) => ({ name, placeholder: false }))
-  const remainder = props.nodes.length % cols
-  if (remainder === 0) return base
+const getDotColor = (name: string) => {
+  const latency = getLatencyByName(name, props.groupName)
+  if (latency === NOT_CONNECTED) return THEME.base
 
-  const placeholders = Array.from({ length: cols - remainder }, () => ({
-    name: '',
-    placeholder: true,
-  }))
-  return base.concat(placeholders)
-})
+  const color =
+    latency < lowLatency.value
+      ? THEME.low
+      : latency < mediumLatency.value
+        ? THEME.medium
+        : THEME.high
 
-const gridStyle = computed(() => {
-  const { cols, rows, dotSize, gap } = layout.value
-  if (dotSize <= 0) return { display: 'none' }
-
-  return {
-    gridTemplateColumns: `repeat(${cols}, ${dotSize}px)`,
-    gridAutoRows: `${dotSize}px`,
-    gap: `${gap}px`,
-    justifyContent: rows > 1 && cols > 1 ? 'space-between' : 'start',
-    alignContent: rows > 1 ? 'space-between' : 'start',
-  }
-})
-
-const dotStyle = computed(() => {
-  const { dotSize } = layout.value
-  return { width: `${dotSize}px`, height: `${dotSize}px` }
-})
-
-const getBgClass = (latency: number) => {
-  if (latency === NOT_CONNECTED) return 'bg-base-content/18'
-  if (latency < lowLatency.value) return 'bg-low-latency/35'
-  if (latency < mediumLatency.value) return 'bg-medium-latency/35'
-  return 'bg-high-latency/35'
+  return applyAlpha(color, ALPHA_LEVEL)
 }
 
-const getDotClass = (item: DotItem) => {
-  if (item.placeholder) return 'opacity-0'
+const draw = () => {
+  const canvas = canvasRef.value
+  const ctx = canvas?.getContext('2d')
+  if (!canvas || !ctx || !width.value || !height.value) return
 
-  const latency = getLatencyByName(item.name, props.groupName)
-  const base = getBgClass(latency)
-  const isActive = props.active === item.name
+  const dpr = window.devicePixelRatio || 1
+  canvas.width = width.value * dpr
+  canvas.height = height.value * dpr
+  ctx.scale(dpr, dpr)
+  ctx.clearRect(0, 0, width.value, height.value)
 
-  return isActive ? `${base} ring-1 ring-primary/45` : base
+  const { cols, rows, size } = layout.value
+  if (size <= 0) return
+
+  const radius = size / 2
+
+  // Calculate spacing - prefer space-between to fill area, fallback to center
+  const stepX = cols > 1 ? (width.value - size) / (cols - 1) : 0
+  const stepY = rows > 1 ? (height.value - size) / (rows - 1) : 0
+
+  // If we can't do space-between (1 col/row), center it
+  const startX = cols > 1 ? radius : (width.value - size) / 2 + radius
+  const startY = rows > 1 ? radius : (height.value - size) / 2 + radius
+
+  props.nodes.forEach((name, i) => {
+    const col = i % cols
+    const row = Math.floor(i / cols)
+
+    const x = cols > 1 ? radius + col * stepX : startX
+    const y = rows > 1 ? radius + row * stepY : startY
+
+    ctx.beginPath()
+    ctx.arc(x, y, radius, 0, Math.PI * 2)
+    ctx.fillStyle = getDotColor(name)
+    ctx.fill()
+
+    if (props.active === name) {
+      ctx.beginPath()
+      ctx.arc(x, y, radius - 0.5, 0, Math.PI * 2)
+      ctx.strokeStyle = applyAlpha(THEME.active, 0.45)
+      ctx.lineWidth = 1
+      ctx.stroke()
+    }
+  })
 }
+
+watch([width, height, () => props.nodes, () => props.active], draw, { flush: 'post' })
+
+onMounted(() => requestAnimationFrame(draw))
 </script>
 
 <style scoped>
-/*
- * 这是标题区域的“装饰性背景预览”。
- * 重点是“可感知但不抢戏”：左侧（文字密集区）更淡，右侧稍明显。
- */
-.proxy-inline-dots__grid {
+.mask-gradient {
+  mask-image: linear-gradient(to right, transparent 0px, rgba(0, 0, 0, 0.35) 72px, black 180px);
   -webkit-mask-image: linear-gradient(
     to right,
-    rgba(0, 0, 0, 0) 0px,
+    transparent 0px,
     rgba(0, 0, 0, 0.35) 72px,
-    rgba(0, 0, 0, 1) 180px
+    black 180px
   );
-  mask-image: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0) 0px,
-    rgba(0, 0, 0, 0.35) 72px,
-    rgba(0, 0, 0, 1) 180px
-  );
-  -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
   mask-size: 100% 100%;
+  -webkit-mask-size: 100% 100%;
 }
 </style>

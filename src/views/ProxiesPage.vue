@@ -1,6 +1,6 @@
 <template>
   <div
-    class="max-md:scrollbar-hidden h-full"
+    class="scrollbar-hidden h-full"
     :class="disableProxiesPageScroll ? 'overflow-y-hidden' : 'overflow-y-scroll'"
     :style="padding"
     ref="proxiesRef"

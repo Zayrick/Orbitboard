@@ -14,6 +14,13 @@ export const GLOBAL = 'GLOBAL'
 export const TEST_URL = 'https://www.gstatic.com/generate_204'
 export const IPV6_TEST_URL = 'https://ipv6.google.com/generate_204'
 export const NOT_CONNECTED = 0
+
+// 延迟颜色常量 (与 tailwind.config.ts 保持同步)
+export const LATENCY_COLORS = {
+  low: 'oklch(0.648 0.15 160)',
+  medium: 'rgb(250, 210, 75)',
+  high: 'rgb(244, 96, 108)',
+} as const
 export enum LANG {
   EN_US = 'en-US',
   ZH_CN = 'zh-CN',

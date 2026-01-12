@@ -9,6 +9,8 @@ const props = defineProps<{
   name: string
   now: string
   renderProxies: string[]
+  /** 固定列数，用于弹窗动画时锁定布局 */
+  columns?: number
 }>()
 
 const groupedProxies = computed(() => {
@@ -85,7 +87,7 @@ const truncatedProxies = computed(() => {
       >
         {{ providerName }}
       </p>
-      <ProxyNodeGrid>
+      <ProxyNodeGrid :columns="columns">
         <ProxyNodeCard
           v-for="node in proxies"
           :key="node"

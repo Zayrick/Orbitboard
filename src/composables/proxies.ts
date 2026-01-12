@@ -3,9 +3,22 @@ import { GLOBAL, PROXY_TAB_TYPE } from '@/constant'
 import { isHiddenGroup } from '@/helper'
 import { configs } from '@/store/config'
 import { proxiesTabShow, proxyGroupList, proxyMap, proxyProviederList } from '@/store/proxies'
-import { customGlobalNode, displayGlobalByMode, manageHiddenGroup } from '@/store/settings'
+import {
+  customGlobalNode,
+  displayGlobalByMode,
+  manageHiddenGroup,
+  minProxyCardWidth,
+} from '@/store/settings'
 import { isEmpty } from 'lodash'
 import { computed, ref } from 'vue'
+
+/**
+ * 根据容器宽度和 padding 计算代理卡片网格列数
+ */
+export const calculateGridColumns = (containerWidth: number, padding = 24): number => {
+  const contentWidth = containerWidth - padding
+  return Math.max(Math.floor(contentWidth / minProxyCardWidth.value), 2)
+}
 
 const filterGroups = (all: string[]) => {
   if (manageHiddenGroup.value) {

@@ -82,6 +82,7 @@
           :name="name"
           :now="proxyGroup.now"
           :render-proxies="renderProxies"
+          :columns="fixedColumns"
         />
       </div>
     </div>
@@ -90,7 +91,7 @@
 
 <script setup lang="ts">
 import { useBounceOnVisible } from '@/composables/bouncein'
-import { disableProxiesPageScroll } from '@/composables/proxies'
+import { calculateGridColumns, disableProxiesPageScroll } from '@/composables/proxies'
 import { useRenderProxies } from '@/composables/renderProxies'
 import { isHiddenGroup } from '@/helper'
 import { SCROLLABLE_PARENT_CLASS } from '@/helper/utils'
@@ -120,6 +121,9 @@ const contentOpacity = ref(0)
 
 const cardWrapperRef = ref()
 const cardRef = ref()
+
+// 预计算的固定列数，用于防止动画过程中布局抖动
+const fixedColumns = ref<number | undefined>(undefined)
 
 const INIT_STYLE = {
   width: '100%',
@@ -224,6 +228,13 @@ const handlerGroupClick = async () => {
 
   if (modalMode.value) {
     displayContent.value = true
+    // 预先计算目标宽度并锁定列数，防止动画过程中布局抖动
+    // 目标宽度为 calc(100vw - 1rem) = innerWidth - 16px
+    const targetWidth = window.innerWidth - 16
+    fixedColumns.value = calculateGridColumns(targetWidth, 16)
+  } else {
+    // 关闭时清除固定列数
+    fixedColumns.value = undefined
   }
   showAllContent.value = false
   contentOpacity.value = 0

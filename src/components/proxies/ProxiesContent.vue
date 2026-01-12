@@ -9,6 +9,8 @@ const props = defineProps<{
   name: string
   now?: string
   renderProxies: string[]
+  /** 固定列数，用于弹窗动画时锁定布局 */
+  columns?: number
 }>()
 
 const { maxProxies } = useCalculateMaxProxies(
@@ -19,7 +21,7 @@ const proxies = computed(() => props.renderProxies.slice(0, maxProxies.value))
 </script>
 
 <template>
-  <ProxyNodeGrid>
+  <ProxyNodeGrid :columns="columns">
     <ProxyNodeCard
       v-for="node in proxies"
       :key="node"
