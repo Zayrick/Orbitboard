@@ -146,7 +146,6 @@ const ru: LANG_MESSAGE = {
   reverse: 'Обратное',
   sniffHost: 'Захватывать хост',
   ipScreenshotTip: 'Пожалуйста, убедитесь, что реальный IP скрыт при создании скриншотов.',
-  showStatisticsWhenSidebarCollapsed: 'Показать статистику при сворачивании панели',
   totalConnections: 'Статистика соединений',
   totalConnectionsTip:
     'Учитываются только соединения, открытые во время работы панели. \nВремя начала записи: {statsStartTime}',

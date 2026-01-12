@@ -18,7 +18,7 @@ import {
   TEST_URL,
   type THEME,
 } from '@/constant'
-import { getMinCardWidth, isMiddleScreen, isPreferredDark } from '@/helper/utils'
+import { getMinCardWidth, isPreferredDark } from '@/helper/utils'
 import type { SourceIPLabel } from '@/types'
 import { useStorage } from '@vueuse/core'
 import { computed } from 'vue'
@@ -42,19 +42,6 @@ export const language = useStorage<LANG>(
     ? (navigator.language as LANG)
     : LANG.EN_US,
 )
-export const isSidebarCollapsedConfig = useStorage('config/is-sidebar-collapsed', true)
-export const isSidebarCollapsed = computed({
-  get: () => {
-    if (isMiddleScreen.value) {
-      return true
-    }
-
-    return isSidebarCollapsedConfig.value
-  },
-  set: (value) => {
-    isSidebarCollapsedConfig.value = value
-  },
-})
 const fontConfig = useStorage<FONTS>('config/font', FONTS.MI_SANS)
 export const font = computed({
   get: () => {
@@ -91,10 +78,6 @@ export const autoDisconnectIdleUDPTime = useStorage('config/auto-disconnect-idle
 export const splitOverviewPage = useStorage('config/split-overview-page', false)
 export const autoIPCheck = useStorage('config/auto-ip-check', true)
 export const autoConnectionCheck = useStorage('config/auto-connection-check', true)
-export const showStatisticsWhenSidebarCollapsed = useStorage(
-  'config/show-statistics-when-sidebar-collapsed',
-  true,
-)
 export const numberOfChartsInSidebar = useStorage<1 | 2 | 3>(
   'config/number-of-charts-in-sidebar',
   2,

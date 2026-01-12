@@ -54,21 +54,6 @@
         />
       </div>
       <div
-        v-if="
-          !hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.showStatisticsWhenSidebarCollapsed`]
-        "
-        class="setting-item max-md:hidden"
-      >
-        <div class="setting-item-label">
-          {{ $t('showStatisticsWhenSidebarCollapsed') }}
-        </div>
-        <input
-          class="toggle"
-          type="checkbox"
-          v-model="showStatisticsWhenSidebarCollapsed"
-        />
-      </div>
-      <div
         v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.numberOfChartsInSidebar`]"
         class="setting-item max-md:hidden"
       >
@@ -99,7 +84,6 @@ import {
   autoIPCheck,
   hiddenSettingsItems,
   numberOfChartsInSidebar,
-  showStatisticsWhenSidebarCollapsed,
   splitOverviewPage,
 } from '@/store/settings'
 import { computed } from 'vue'
@@ -111,9 +95,6 @@ const hasVisibleItems = computed(() => {
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.splitOverviewPage`] ||
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.autoIPCheckWhenStart`] ||
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.autoConnectionCheckWhenStart`] ||
-    !hiddenSettingsItems.value[
-      `${SETTINGS_MENU_KEY.overview}.showStatisticsWhenSidebarCollapsed`
-    ] ||
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.numberOfChartsInSidebar`]
   )
 })

@@ -13,6 +13,7 @@
     "build:pingfang-only": "vite build --mode PingFang",
     "build:sarasa-only": "vite build --mode SarasaUi",
     "dev": "vite",
+    "dev:host": "vite --host 0.0.0.0",
     "format": "prettier --write src/",
     "lint": "eslint . --fix",
     "prepare": "husky",
