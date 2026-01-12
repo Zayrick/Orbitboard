@@ -2,7 +2,6 @@ import { disconnectByIdAPI, isSingBox, updateProxyProviderAPI } from '@/api'
 import { renderGroups } from '@/composables/proxies'
 import { useCtrlsBar } from '@/composables/useCtrlsBar'
 import { PROXY_SORT_TYPE, PROXY_TAB_TYPE, ROUTE_NAME, SETTINGS_MENU_KEY } from '@/constant'
-import { getMinCardWidth } from '@/helper/utils'
 import { configs, updateConfigs } from '@/store/config'
 import { activeConnections } from '@/store/connections'
 import {
@@ -21,10 +20,7 @@ import {
   groupProxiesByProvider,
   hideUnavailableProxies,
   manageHiddenGroup,
-  minProxyCardWidth,
-  proxyCardSize,
   proxySortType,
-  twoColumnProxyGroup,
   useSmartGroupSort,
 } from '@/store/settings'
 import {
@@ -108,10 +104,6 @@ export default defineComponent({
       collapseGroupMap.value = Object.fromEntries(
         renderGroups.value.map((name) => [name, !hasNotCollapsed.value]),
       )
-    }
-
-    const handlerResetProxyCardWidth = () => {
-      minProxyCardWidth.value = getMinCardWidth(proxyCardSize.value)
     }
 
     const tabsWithNumbers = computed(() => {
@@ -204,12 +196,7 @@ export default defineComponent({
 
       const toggleCollapseAll = (
         <button
-          class={[
-            'btn btn-circle btn-sm',
-            twoColumnProxyGroup.value &&
-              proxiesTabShow.value === PROXY_TAB_TYPE.PROXIES &&
-              'max-sm:hidden',
-          ]}
+          class={['btn btn-circle btn-sm']}
           onClick={handlerClickToggleCollapse}
         >
           {hasNotCollapsed.value ? (
@@ -295,22 +282,6 @@ export default defineComponent({
                   type="checkbox"
                   v-model={displayFinalOutbound.value}
                 />
-              </div>
-              <div class="flex items-center gap-2">
-                {t('minProxyCardWidth')}
-                <div class="join">
-                  <input
-                    class="input input-sm join-item w-20"
-                    type="number"
-                    v-model={minProxyCardWidth.value}
-                  />
-                  <button
-                    class="btn join-item btn-sm"
-                    onClick={handlerResetProxyCardWidth}
-                  >
-                    {t('reset')}
-                  </button>
-                </div>
               </div>
               <div class="divider m-0"></div>
               <button

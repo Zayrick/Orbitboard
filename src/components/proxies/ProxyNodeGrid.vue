@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { minProxyCardWidth } from '@/store/settings'
+import { PROXY_NODE_CARD_MIN_WIDTH } from '@/constant'
 import { computed } from 'vue'
 
 const props = defineProps<{
@@ -22,6 +22,6 @@ const gridStyle = computed(() => {
     return `grid-template-columns: repeat(${props.columns}, minmax(0, 1fr));`
   }
   // 默认自适应列数
-  return `grid-template-columns: repeat(auto-fill, minmax(${minProxyCardWidth.value}px, 1fr));`
+  return `grid-template-columns: repeat(auto-fill, minmax(${PROXY_NODE_CARD_MIN_WIDTH}px, 1fr));`
 })
 </script>

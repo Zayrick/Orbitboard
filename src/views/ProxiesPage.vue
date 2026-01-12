@@ -7,6 +7,7 @@
     @scroll.passive="handleScroll"
   >
     <ProxiesCtrl />
+    <!-- 双列布局 (移动端或用户选择双列时) -->
     <template v-if="displayTwoColumns">
       <div class="grid grid-cols-2 gap-1 p-2 md:pr-1">
         <div
@@ -23,9 +24,11 @@
         </div>
       </div>
     </template>
+    <!-- 响应式网格布局 (开发中布局) -->
     <div
-      class="grid grid-cols-1 gap-1 p-2 md:pr-1"
       v-else
+      class="grid gap-1 p-2 md:pr-1"
+      :class="groupsGridClass"
     >
       <component
         v-for="name in renderGroups"
@@ -44,10 +47,10 @@ import ProxyProvider from '@/components/proxies/ProxyProvider.vue'
 import ProxiesCtrl from '@/components/sidebar/ProxiesCtrl.tsx'
 import { usePaddingForViews } from '@/composables/paddingViews'
 import { disableProxiesPageScroll, isProxiesPageMounted, renderGroups } from '@/composables/proxies'
-import { PROXY_TAB_TYPE } from '@/constant'
+import { PROXY_GROUP_LAYOUT, PROXY_TAB_TYPE } from '@/constant'
 import { isMiddleScreen } from '@/helper/utils'
 import { fetchProxies, proxiesTabShow } from '@/store/proxies'
-import { twoColumnProxyGroup } from '@/store/settings'
+import { proxyGroupLayout } from '@/store/settings'
 import { useSessionStorage } from '@vueuse/core'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
@@ -104,6 +107,7 @@ const renderComponent = computed(() => {
     return ProxyProvider
   }
 
+  // 移动端 + 双列布局时使用移动端专用组件
   if (isMiddleScreen.value && displayTwoColumns.value) {
     return ProxyGroupForMobile
   }
@@ -111,13 +115,27 @@ const renderComponent = computed(() => {
   return ProxyGroup
 })
 
+// 是否显示双列布局
 const displayTwoColumns = computed(() => {
+  // Provider 视图在移动端使用单列
   if (proxiesTabShow.value === PROXY_TAB_TYPE.PROVIDER && isMiddleScreen.value) {
     return false
   }
-  return twoColumnProxyGroup.value && renderGroups.value.length > 1
+  // 用户选择双列布局且有多个代理组
+  return proxyGroupLayout.value === PROXY_GROUP_LAYOUT.TWO_COLUMN && renderGroups.value.length > 1
 })
 
+// 响应式网格布局的样式类
+const groupsGridClass = computed(() => {
+  // Provider 视图单列展示
+  if (proxiesTabShow.value === PROXY_TAB_TYPE.PROVIDER) {
+    return 'grid-cols-1'
+  }
+  // 开发中布局：桌面端响应式多列
+  return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+})
+
+// 双列布局的内容过滤函数
 const filterContent: <T>(all: T[], target: number) => T[] = (all, target) => {
   return all.filter((_, index: number) => index % 2 === target)
 }

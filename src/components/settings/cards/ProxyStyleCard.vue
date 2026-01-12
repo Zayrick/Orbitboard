@@ -6,14 +6,21 @@
   >
     <div class="flex flex-col">
       <SettingsItem
-        :label="$t('twoColumnProxyGroup')"
-        :hidden="hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.twoColumnProxyGroup`]"
+        :label="$t('proxyGroupLayout')"
+        :hidden="hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.proxyGroupLayout`]"
       >
-        <input
-          class="toggle toggle-primary"
-          type="checkbox"
-          v-model="twoColumnProxyGroup"
-        />
+        <select
+          class="select select-sm w-36"
+          v-model="proxyGroupLayout"
+        >
+          <option
+            v-for="opt in Object.values(PROXY_GROUP_LAYOUT)"
+            :key="opt"
+            :value="opt"
+          >
+            {{ $t(opt) }}
+          </option>
+        </select>
       </SettingsItem>
       <SettingsItem
         :label="$t('truncateProxyName')"
@@ -71,24 +78,6 @@
         </select>
       </SettingsItem>
       <SettingsItem
-        :label="$t('proxyCardSize')"
-        :hidden="hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.proxyCardSize`]"
-      >
-        <select
-          class="select select-sm w-28"
-          v-model="proxyCardSize"
-          @change="handleProxyCardSizeChange"
-        >
-          <option
-            v-for="opt in Object.values(PROXY_CARD_SIZE)"
-            :key="opt"
-            :value="opt"
-          >
-            {{ $t(opt) }}
-          </option>
-        </select>
-      </SettingsItem>
-      <SettingsItem
         :label="$t('proxyGroupIconSize')"
         :hidden="hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.proxyGroupIconSize`]"
       >
@@ -116,38 +105,31 @@
 import { isSingBox } from '@/api'
 import SettingsCard from '@/components/settings/SettingsCard.vue'
 import SettingsItem from '@/components/settings/SettingsItem.vue'
-import { PROXY_CARD_SIZE, PROXY_PREVIEW_TYPE, SETTINGS_MENU_KEY } from '@/constant'
-import { getMinCardWidth } from '@/helper/utils'
+import { PROXY_GROUP_LAYOUT, PROXY_PREVIEW_TYPE, SETTINGS_MENU_KEY } from '@/constant'
 import { proxyMap } from '@/store/proxies'
 import {
   customGlobalNode,
   displayGlobalByMode,
   hiddenSettingsItems,
-  minProxyCardWidth,
-  proxyCardSize,
   proxyGroupIconMargin,
   proxyGroupIconSize,
+  proxyGroupLayout,
   proxyPreviewType,
   truncateProxyName,
-  twoColumnProxyGroup,
 } from '@/store/settings'
 import { Squares2X2Icon } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
 
 const hasVisibleItems = computed(() => {
   const keys = [
-    `${SETTINGS_MENU_KEY.proxies}.twoColumnProxyGroup`,
+    `${SETTINGS_MENU_KEY.proxies}.proxyGroupLayout`,
     `${SETTINGS_MENU_KEY.proxies}.truncateProxyName`,
     `${SETTINGS_MENU_KEY.proxies}.displayGlobalByMode`,
+    `${SETTINGS_MENU_KEY.proxies}.customGlobalNode`,
     `${SETTINGS_MENU_KEY.proxies}.proxyPreviewType`,
-    `${SETTINGS_MENU_KEY.proxies}.proxyCardSize`,
     `${SETTINGS_MENU_KEY.proxies}.proxyGroupIconSize`,
     `${SETTINGS_MENU_KEY.proxies}.proxyGroupIconMargin`,
   ]
   return keys.some((key) => !hiddenSettingsItems.value[key])
 })
-
-const handleProxyCardSizeChange = () => {
-  minProxyCardWidth.value = getMinCardWidth(proxyCardSize.value)
-}
 </script>

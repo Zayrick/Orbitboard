@@ -5,7 +5,7 @@
       twMerge(
         'bg-base-200 flex cursor-pointer flex-col items-start rounded-md',
         active ? 'bg-primary sm:hover:bg-primary/95' : 'sm:hover:bg-base-300',
-        isSmallCard ? 'gap-1 p-1' : 'gap-2 p-2',
+        'gap-2 p-2',
         latencyTipAnimationClass,
       )
     "
@@ -40,7 +40,7 @@
         {{ typeDescription }}
       </span>
       <LatencyTag
-        :class="[isSmallCard && 'h-4! w-8! rounded-md!', 'shrink-0', active && 'hover:bg-base-300']"
+        :class="['shrink-0', active && 'hover:bg-base-300']"
         :name="node.name"
         :loading="isLatencyTesting"
         :group-name="groupName"
@@ -51,11 +51,11 @@
 </template>
 
 <script setup lang="ts">
-import { PROXY_CARD_SIZE, PROXY_SORT_TYPE } from '@/constant'
+import { PROXY_SORT_TYPE } from '@/constant'
 import { checkTruncation } from '@/helper/tooltip'
 import { scrollIntoCenter } from '@/helper/utils'
 import { getIPv6ByName, getTestUrl, proxyLatencyTest, proxyMap } from '@/store/proxies'
-import { IPv6test, proxyCardSize, proxySortType, truncateProxyName } from '@/store/settings'
+import { IPv6test, proxySortType, truncateProxyName } from '@/store/settings'
 import { smartWeightsMap } from '@/store/smart'
 import { twMerge } from 'tailwind-merge'
 import { computed, onMounted, ref } from 'vue'
@@ -81,7 +81,6 @@ const typeFormatter = (type: string) => {
 
   return type
 }
-const isSmallCard = computed(() => proxyCardSize.value === PROXY_CARD_SIZE.SMALL)
 const typeDescription = computed(() => {
   const type = typeFormatter(node.value.type)
   const smartUsage = smartWeightsMap.value[props.groupName ?? '']?.[props.name]
@@ -89,7 +88,7 @@ const typeDescription = computed(() => {
   const isV6 = IPv6test.value && getIPv6ByName(node.value.name) ? 'IPv6' : ''
   const isUDP = node.value.udp ? (node.value.xudp ? 'xudp' : 'udp') : ''
 
-  return [type, isUDP, smartDesc, isV6].filter(Boolean).join(isSmallCard.value ? '/' : ' / ')
+  return [type, isUDP, smartDesc, isV6].filter(Boolean).join(' / ')
 })
 
 const latencyTipAnimationClass = ref<string[]>([])

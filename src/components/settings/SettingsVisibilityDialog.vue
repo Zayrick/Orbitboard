@@ -218,6 +218,7 @@ const allCategories: Category[] = [
     key: SETTINGS_MENU_KEY.proxies,
     label: 'proxySettings',
     items: [
+      { key: `${SETTINGS_MENU_KEY.proxies}.proxyGroupLayout`, label: 'proxyGroupLayout' },
       { key: `${SETTINGS_MENU_KEY.proxies}.speedtestUrl`, label: 'speedtestUrl' },
       { key: `${SETTINGS_MENU_KEY.proxies}.speedtestTimeout`, label: 'speedtestTimeout' },
       { key: `${SETTINGS_MENU_KEY.proxies}.lowLatency`, label: 'lowLatencyDesc' },
@@ -228,10 +229,6 @@ const allCategories: Category[] = [
         label: 'independentLatencyTest',
       },
       { key: `${SETTINGS_MENU_KEY.proxies}.groupTestUrls`, label: 'groupTestUrls' },
-      {
-        key: `${SETTINGS_MENU_KEY.proxies}.twoColumnProxyGroup`,
-        label: 'twoColumnProxyGroup',
-      },
       { key: `${SETTINGS_MENU_KEY.proxies}.truncateProxyName`, label: 'truncateProxyName' },
       {
         key: `${SETTINGS_MENU_KEY.proxies}.displayGlobalByMode`,
@@ -239,7 +236,6 @@ const allCategories: Category[] = [
       },
       { key: `${SETTINGS_MENU_KEY.proxies}.customGlobalNode`, label: 'customGlobalNode' },
       { key: `${SETTINGS_MENU_KEY.proxies}.proxyPreviewType`, label: 'proxyPreviewType' },
-      { key: `${SETTINGS_MENU_KEY.proxies}.proxyCardSize`, label: 'proxyCardSize' },
       {
         key: `${SETTINGS_MENU_KEY.proxies}.proxyGroupIconSize`,
         label: 'proxyGroupIconSize',
@@ -332,9 +328,7 @@ const applyMinimalPreset = () => {
       key.includes('IPInfoAPI') ||
       key.includes('proxyGroupIconSize') ||
       key.includes('proxyGroupIconMargin') ||
-      key.includes('proxyPreviewType') ||
-      key.includes('proxyCardSize') ||
-      key.includes('twoColumnProxyGroup')
+      key.includes('proxyPreviewType')
     ) {
       minimalHiddenKeys.push(key)
     }

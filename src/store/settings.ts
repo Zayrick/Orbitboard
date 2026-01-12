@@ -8,8 +8,8 @@ import {
   IS_APPLE_DEVICE,
   LANG,
   OVERVIEW_CARD,
-  PROXY_CARD_SIZE,
   PROXY_CHAIN_DIRECTION,
+  PROXY_GROUP_LAYOUT,
   PROXY_PREVIEW_TYPE,
   PROXY_SORT_TYPE,
   SETTINGS_MENU_KEY,
@@ -18,7 +18,7 @@ import {
   TEST_URL,
   type THEME,
 } from '@/constant'
-import { getMinCardWidth, isPreferredDark } from '@/helper/utils'
+import { isPreferredDark } from '@/helper/utils'
 import type { SourceIPLabel } from '@/types'
 import { useStorage } from '@vueuse/core'
 import { computed } from 'vue'
@@ -125,7 +125,6 @@ if (missingCards.length > 0) {
 // proxies
 export const collapseGroupMap = useStorage<Record<string, boolean>>('config/collapse-group-map', {})
 export const displayFinalOutbound = useStorage('config/show-seleted-for-now-node', false)
-export const twoColumnProxyGroup = useStorage('config/two-columns', true)
 export const speedtestUrl = useStorage<string>('config/speedtest-url', TEST_URL)
 export const independentLatencyTest = useStorage('config/independent-latency-test', false)
 export const speedtestTimeout = useStorage<number>('config/speedtest-timeout', 5000)
@@ -140,15 +139,11 @@ export const hideUnavailableProxies = useStorage('config/hide-unavailable-proxie
 export const lowLatency = useStorage('config/low-latency', 400)
 export const mediumLatency = useStorage('config/medium-latency', 800)
 export const IPv6test = useStorage('config/ipv6-test', false)
-export const proxyCardSize = useStorage<PROXY_CARD_SIZE>(
-  'config/proxy-card-size',
-  PROXY_CARD_SIZE.LARGE,
-)
-export const minProxyCardWidth = useStorage<number>(
-  'config/min-proxy-card-width',
-  getMinCardWidth(proxyCardSize.value),
-)
 export const manageHiddenGroup = useStorage('config/manage-hidden-group-mode', false)
+export const proxyGroupLayout = useStorage<PROXY_GROUP_LAYOUT>(
+  'config/proxy-group-layout',
+  PROXY_GROUP_LAYOUT.TWO_COLUMN,
+)
 
 export const displayGlobalByMode = useStorage('config/display-global-by-mode', false)
 export const customGlobalNode = useStorage('config/custom-global-node-name', GLOBAL)

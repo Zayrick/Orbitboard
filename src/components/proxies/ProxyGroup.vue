@@ -158,6 +158,10 @@ const getModalPosition = () => {
 const floatingCardStyle = computed(() => {
   const { x, y, scale, width } = currentTransform.value
 
+  // Keep motion curve consistent across the app.
+  // Matches `EASE_OUT_EXPO` used in `src/views/HomePage.vue`.
+  const EASE_OUT_EXPO = 'cubic-bezier(0.25, 1, 0.5, 1)'
+
   return {
     top: `${originalRect.value.top}px`,
     left: `${originalRect.value.left}px`,
@@ -165,7 +169,7 @@ const floatingCardStyle = computed(() => {
     transform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`,
     transformOrigin: 'top left',
     transition: isAnimating.value
-      ? 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), border-radius 0.3s ease-out'
+      ? `transform 0.4s ${EASE_OUT_EXPO}, width 0.4s ${EASE_OUT_EXPO}, border-radius 0.3s ease-out`
       : 'none',
     borderRadius: isModalOpen.value ? '16px' : '8px',
   }

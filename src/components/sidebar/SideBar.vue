@@ -8,7 +8,7 @@
     >
       <!-- Shared Active Highlight (Sliding Background) -->
       <div
-        class="pointer-events-none absolute z-0 rounded-lg transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+        class="pointer-events-none absolute z-0 rounded-lg transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)]"
         :style="highlightStyle"
       />
 

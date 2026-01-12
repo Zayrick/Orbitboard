@@ -83,6 +83,11 @@ export enum PROXY_PREVIEW_TYPE {
   INLINE = 'inline',
 }
 
+export enum PROXY_GROUP_LAYOUT {
+  TWO_COLUMN = 'twoColumn',
+  RESPONSIVE_GRID = 'responsiveGrid',
+}
+
 export enum RULE_TAB_TYPE {
   RULES = 'rules',
   PROVIDER = 'ruleProvider',
@@ -155,15 +160,9 @@ export enum TABLE_SIZE {
   LARGE = 'large',
 }
 
-export enum PROXY_CARD_SIZE {
-  SMALL = 'small',
-  LARGE = 'large',
-}
-
-export enum MIN_PROXY_CARD_WIDTH {
-  SMALL = 130,
-  LARGE = 145,
-}
+// 代理节点卡片的固定布局常量（不再提供“卡片尺寸/最小宽度”设置项）
+export const PROXY_NODE_CARD_MIN_WIDTH = 145
+export const PROXY_NODE_CARD_PAGE_ROWS = 9
 
 export enum PROXY_CHAIN_DIRECTION {
   NORMAL = 'normal',

@@ -1,14 +1,9 @@
 import { isSingBox } from '@/api'
-import { GLOBAL, PROXY_TAB_TYPE } from '@/constant'
+import { GLOBAL, PROXY_NODE_CARD_MIN_WIDTH, PROXY_TAB_TYPE } from '@/constant'
 import { isHiddenGroup } from '@/helper'
 import { configs } from '@/store/config'
 import { proxiesTabShow, proxyGroupList, proxyMap, proxyProviederList } from '@/store/proxies'
-import {
-  customGlobalNode,
-  displayGlobalByMode,
-  manageHiddenGroup,
-  minProxyCardWidth,
-} from '@/store/settings'
+import { customGlobalNode, displayGlobalByMode, manageHiddenGroup } from '@/store/settings'
 import { isEmpty } from 'lodash'
 import { computed, ref } from 'vue'
 
@@ -17,7 +12,7 @@ import { computed, ref } from 'vue'
  */
 export const calculateGridColumns = (containerWidth: number, padding = 24): number => {
   const contentWidth = containerWidth - padding
-  return Math.max(Math.floor(contentWidth / minProxyCardWidth.value), 2)
+  return Math.max(Math.floor(contentWidth / PROXY_NODE_CARD_MIN_WIDTH), 2)
 }
 
 const filterGroups = (all: string[]) => {

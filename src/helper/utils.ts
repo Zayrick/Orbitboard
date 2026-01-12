@@ -1,4 +1,3 @@
-import { MIN_PROXY_CARD_WIDTH, PROXY_CARD_SIZE } from '@/constant'
 import type { Backend } from '@/types'
 import { useMediaQuery } from '@vueuse/core'
 import dayjs from 'dayjs'
@@ -45,10 +44,6 @@ export const getUrlFromBackend = (end: Omit<Backend, 'uuid'>) => {
 
 export const getLabelFromBackend = (end: Omit<Backend, 'uuid'>) => {
   return end.label || getUrlFromBackend(end)
-}
-
-export const getMinCardWidth = (size: PROXY_CARD_SIZE) => {
-  return size === PROXY_CARD_SIZE.LARGE ? MIN_PROXY_CARD_WIDTH.LARGE : MIN_PROXY_CARD_WIDTH.SMALL
 }
 
 export const SCROLLABLE_PARENT_CLASS = 'scrollable-parent'

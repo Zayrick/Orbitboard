@@ -1,6 +1,5 @@
-import { PROXY_CARD_SIZE } from '@/constant'
+import { PROXY_NODE_CARD_MIN_WIDTH, PROXY_NODE_CARD_PAGE_ROWS } from '@/constant'
 import { findScrollableParent } from '@/helper/utils'
-import { minProxyCardWidth, proxyCardSize } from '@/store/settings'
 import { useCurrentElement, useElementSize, useInfiniteScroll } from '@vueuse/core'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
@@ -9,8 +8,7 @@ export const useCalculateMaxProxies = (totalProxies: number, activeIndex: number
   const { width } = useElementSize(el)
   const initMaxProxies = computed(() => {
     return (
-      Math.max(Math.floor(width.value / minProxyCardWidth.value), 2) *
-      (proxyCardSize.value === PROXY_CARD_SIZE.LARGE ? 9 : 12)
+      Math.max(Math.floor(width.value / PROXY_NODE_CARD_MIN_WIDTH), 2) * PROXY_NODE_CARD_PAGE_ROWS
     )
   })
   const maxProxies = ref(Math.max(24, activeIndex + 12))
