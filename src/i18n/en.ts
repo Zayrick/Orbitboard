@@ -310,6 +310,28 @@ const en = {
   coreUpgrade: 'Core Upgrade',
   dnsQuery: 'DNS Query',
   updateAvailable: 'Update',
+  // Mobile settings groups
+  appearanceGroup: 'Appearance',
+  proxyGroup: 'Proxy',
+  systemGroup: 'System',
+  backendCoreGroup: 'Backend & Core',
+  toolsGroup: 'Tools',
+  // Subtitles in groups
+  themeAndStyle: 'Theme & Style',
+  backgroundSettings: 'Background',
+  proxyDisplaySettings: 'Display Settings',
+  iconSettings: 'Icon Settings',
+  latencySettings: 'Latency Settings',
+  generalConfig: 'General',
+  mobileConfig: 'Mobile',
+  overviewConfig: 'Overview',
+  connectionConfig: 'Connections',
+  backendConfig: 'Backend',
+  portsConfig: 'Ports',
+  coreConfig: 'Core',
+  actionsConfig: 'Actions',
+  dnsConfig: 'DNS Query',
+  dashboardConfig: 'Dashboard',
 }
 
 export type LANG_MESSAGE = typeof en

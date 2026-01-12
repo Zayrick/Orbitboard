@@ -313,6 +313,28 @@ const ru: LANG_MESSAGE = {
   coreUpgrade: 'Обновление ядра',
   dnsQuery: 'DNS запрос',
   updateAvailable: 'Обновление',
+  // Мобильные группы настроек
+  appearanceGroup: 'Внешний вид',
+  proxyGroup: 'Прокси',
+  systemGroup: 'Система',
+  backendCoreGroup: 'Бэкенд и ядро',
+  toolsGroup: 'Инструменты',
+  // Подзаголовки в группах
+  themeAndStyle: 'Тема и стиль',
+  backgroundSettings: 'Настройки фона',
+  proxyDisplaySettings: 'Настройки отображения',
+  iconSettings: 'Настройки иконок',
+  latencySettings: 'Настройки задержки',
+  generalConfig: 'Общие настройки',
+  mobileConfig: 'Мобильные настройки',
+  overviewConfig: 'Настройки обзора',
+  connectionConfig: 'Настройки соединений',
+  backendConfig: 'Настройки бэкенда',
+  portsConfig: 'Настройки портов',
+  coreConfig: 'Настройки ядра',
+  actionsConfig: 'Настройки действий',
+  dnsConfig: 'DNS запрос',
+  dashboardConfig: 'Настройки панели',
 }
 
 export default ru

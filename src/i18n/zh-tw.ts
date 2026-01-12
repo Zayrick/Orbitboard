@@ -307,6 +307,28 @@ const zhTW: LANG_MESSAGE = {
   coreUpgrade: '核心升級',
   dnsQuery: 'DNS 查詢',
   updateAvailable: '有更新',
+  // 移動端設定分組
+  appearanceGroup: '外觀設定',
+  proxyGroup: '代理設定',
+  systemGroup: '系統設定',
+  backendCoreGroup: '後端與核心',
+  toolsGroup: '工具',
+  // 組內小標題
+  themeAndStyle: '主題與樣式',
+  backgroundSettings: '背景設定',
+  proxyDisplaySettings: '顯示設定',
+  iconSettings: '圖示設定',
+  latencySettings: '延遲設定',
+  generalConfig: '通用配置',
+  mobileConfig: '移動端配置',
+  overviewConfig: '概覽配置',
+  connectionConfig: '連接配置',
+  backendConfig: '後端配置',
+  portsConfig: '連接埠配置',
+  coreConfig: '核心配置',
+  actionsConfig: '操作配置',
+  dnsConfig: 'DNS 查詢',
+  dashboardConfig: '面板配置',
 }
 
 export default zhTW

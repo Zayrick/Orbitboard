@@ -15,7 +15,14 @@
 
     <!-- Content -->
     <div class="flex-1 overflow-y-auto px-4 py-4 pb-20">
-      <component :is="currentComponent" />
+      <MobileSettingsGroupDetail
+        v-if="isGroupSetting"
+        :groupKey="settingKey"
+      />
+      <component
+        v-else
+        :is="currentComponent"
+      />
     </div>
   </div>
 </template>
@@ -38,6 +45,7 @@ import {
   ProxyStyleCard,
   ZashboardCard,
 } from '@/components/settings/cards'
+import MobileSettingsGroupDetail from '@/components/settings/MobileSettingsGroupDetail.vue'
 import { ChevronLeftIcon } from '@heroicons/vue/24/outline'
 import { computed, type Component } from 'vue'
 
@@ -49,6 +57,18 @@ defineEmits<{
   back: []
 }>()
 
+// Group settings keys
+const groupSettings = [
+  'appearanceGroup',
+  'proxyGroup',
+  'systemGroup',
+  'backendCoreGroup',
+  'toolsGroup',
+]
+
+const isGroupSetting = computed(() => groupSettings.includes(props.settingKey))
+
+// Individual settings config (kept for backward compatibility)
 const settingsConfig: Record<string, { component: Component; title: string }> = {
   appearance: { component: AppearanceCard, title: 'appearance' },
   background: { component: BackgroundCard, title: 'background' },
@@ -67,11 +87,23 @@ const settingsConfig: Record<string, { component: Component; title: string }> = 
   zashboard: { component: ZashboardCard, title: 'zashboardSettings' },
 }
 
+// Group settings title mapping
+const groupTitles: Record<string, string> = {
+  appearanceGroup: 'appearanceGroup',
+  proxyGroup: 'proxyGroup',
+  systemGroup: 'systemGroup',
+  backendCoreGroup: 'backendCoreGroup',
+  toolsGroup: 'toolsGroup',
+}
+
 const currentComponent = computed(() => {
   return settingsConfig[props.settingKey]?.component
 })
 
 const currentTitle = computed(() => {
+  if (isGroupSetting.value) {
+    return groupTitles[props.settingKey] || 'settings'
+  }
   return settingsConfig[props.settingKey]?.title || 'settings'
 })
 </script>

@@ -307,6 +307,28 @@ const zh: LANG_MESSAGE = {
   coreUpgrade: '核心升级',
   dnsQuery: 'DNS 查询',
   updateAvailable: '有更新',
+  // 移动端设置分组
+  appearanceGroup: '外观设置',
+  proxyGroup: '代理设置',
+  systemGroup: '系统设置',
+  backendCoreGroup: '后端与核心',
+  toolsGroup: '工具',
+  // 组内小标题
+  themeAndStyle: '主题与样式',
+  backgroundSettings: '背景设置',
+  proxyDisplaySettings: '显示设置',
+  iconSettings: '图标设置',
+  latencySettings: '延迟设置',
+  generalConfig: '通用配置',
+  mobileConfig: '移动端配置',
+  overviewConfig: '概览配置',
+  connectionConfig: '连接配置',
+  backendConfig: '后端配置',
+  portsConfig: '端口配置',
+  coreConfig: '核心配置',
+  actionsConfig: '操作配置',
+  dnsConfig: 'DNS 查询',
+  dashboardConfig: '面板配置',
 }
 
 export default zh
