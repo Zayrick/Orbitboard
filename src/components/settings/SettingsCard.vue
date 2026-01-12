@@ -1,11 +1,15 @@
 <template>
   <div
     v-if="!hidden"
-    class="bg-base-100 border-base-200/50 overflow-hidden rounded-2xl border shadow-sm transition-shadow duration-200 hover:shadow-md"
-    style="break-inside: avoid"
+    :class="
+      isMiddleScreen
+        ? 'mobile-settings-content'
+        : 'bg-base-100 border-base-200/50 overflow-hidden rounded-2xl border shadow-sm transition-shadow duration-200 hover:shadow-md'
+    "
+    :style="isMiddleScreen ? '' : 'break-inside: avoid'"
   >
     <div
-      v-if="title || $slots.header"
+      v-if="(title || $slots.header) && !isMiddleScreen"
       class="border-base-200/50 bg-base-200/20 flex items-center gap-3 border-b px-5 py-4"
     >
       <slot name="header">
@@ -18,11 +22,11 @@
         <slot name="header-extra" />
       </slot>
     </div>
-    <div class="px-5 py-4">
+    <div :class="isMiddleScreen ? '' : 'px-5 py-4'">
       <slot />
     </div>
     <div
-      v-if="$slots.footer"
+      v-if="$slots.footer && !isMiddleScreen"
       class="border-base-200/50 bg-base-200/10 border-t px-5 py-3"
     >
       <slot name="footer" />
@@ -31,6 +35,7 @@
 </template>
 
 <script setup lang="ts">
+import { isMiddleScreen } from '@/helper/utils'
 import type { Component } from 'vue'
 
 defineProps<{
