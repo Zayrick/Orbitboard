@@ -1,7 +1,7 @@
 <template>
   <div class="flex shrink-0 items-center">
     <ProxyIcon
-      v-if="icon"
+      v-if="icon && showIcon"
       :icon="icon"
       :margin="iconMargin"
       :size="iconSize"
@@ -21,10 +21,12 @@ const props = withDefaults(
     name: string
     iconSize?: number
     iconMargin?: number
+    showIcon?: boolean
   }>(),
   {
     iconSize: 16,
     iconMargin: 4,
+    showIcon: true,
   },
 )
 

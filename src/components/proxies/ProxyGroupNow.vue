@@ -1,24 +1,27 @@
 <template>
   <template v-if="proxyGroup.now">
+    <ProxyTypeBadge :type="proxyGroup.type" />
     <Component
       class="h-4 w-4 shrink-0 outline-none"
       :is="isFixed ? LockClosedIcon : ArrowRightCircleIcon"
       @mouseenter="tipForFixed"
     />
-
     <ProxyName
       :name="proxyGroup.now"
       class="text-base-content/80 text-xs md:text-sm"
+      :show-icon="false"
     />
     <template v-if="finalOutbound && displayFinalOutbound">
       <ArrowRightCircleIcon class="h-4 w-4 shrink-0" />
       <ProxyName
         :name="finalOutbound"
         class="text-base-content/80 text-xs md:text-sm"
+        :show-icon="false"
       />
     </template>
   </template>
   <template v-else-if="proxyGroup.type.toLowerCase() === PROXY_TYPE.LoadBalance">
+    <ProxyTypeBadge :type="proxyGroup.type" />
     <CheckCircleIcon class="h-4 w-4 shrink-0" />
     <span class="text-base-content/80 text-xs md:text-sm">
       {{ $t('loadBalance') }}
@@ -35,6 +38,7 @@ import { ArrowRightCircleIcon, CheckCircleIcon, LockClosedIcon } from '@heroicon
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ProxyName from './ProxyName.vue'
+import ProxyTypeBadge from './ProxyTypeBadge.vue'
 
 const props = defineProps<{
   name: string
