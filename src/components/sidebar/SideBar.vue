@@ -20,7 +20,6 @@
           </a>
         </li>
       </ul>
-      <OverviewCarousel v-if="route.name !== ROUTE_NAME.overview" />
       <div class="card">
         <CommonSidebar />
       </div>
@@ -30,11 +29,10 @@
 
 <script setup lang="ts">
 import CommonSidebar from '@/components/sidebar/CommonCtrl.vue'
-import { ROUTE_ICON_MAP, ROUTE_NAME } from '@/constant'
+import { ROUTE_ICON_MAP } from '@/constant'
 import { renderRoutes } from '@/helper'
 import router from '@/router'
 import { useRoute } from 'vue-router'
-import OverviewCarousel from './OverviewCarousel.vue'
 
 const route = useRoute()
 </script>

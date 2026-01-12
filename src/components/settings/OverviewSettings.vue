@@ -33,46 +33,20 @@
           v-model="autoConnectionCheck"
         />
       </div>
-      <div
-        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.numberOfChartsInSidebar`]"
-        class="setting-item max-md:hidden"
-      >
-        <div class="setting-item-label">
-          {{ $t('numberOfChartsInSidebar') }}
-        </div>
-        <select
-          class="select select-sm min-w-24"
-          v-model="numberOfChartsInSidebar"
-        >
-          <option
-            v-for="opt in [1, 2, 3]"
-            :key="opt"
-            :value="opt"
-          >
-            {{ opt }}
-          </option>
-        </select>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { SETTINGS_MENU_KEY } from '@/constant'
-import {
-  autoConnectionCheck,
-  autoIPCheck,
-  hiddenSettingsItems,
-  numberOfChartsInSidebar,
-} from '@/store/settings'
+import { autoConnectionCheck, autoIPCheck, hiddenSettingsItems } from '@/store/settings'
 import { computed } from 'vue'
 
 // 检查是否有可见的子项
 const hasVisibleItems = computed(() => {
   return (
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.autoIPCheckWhenStart`] ||
-    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.autoConnectionCheckWhenStart`] ||
-    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.numberOfChartsInSidebar`]
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.autoConnectionCheckWhenStart`]
   )
 })
 </script>

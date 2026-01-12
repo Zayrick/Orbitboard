@@ -208,7 +208,6 @@ const en = {
   importFromUrl: 'Import from URL',
   sync: 'Sync',
   upgradeSuccess: 'Upgrade successful',
-  numberOfChartsInSidebar: 'Number of charts in sidebar',
   flushSmartWeights: 'Clear smart weights',
   IPInfoAPI: 'IP info API',
   IPInfoAPITip:

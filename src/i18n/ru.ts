@@ -211,7 +211,6 @@ const ru: LANG_MESSAGE = {
   importFromUrl: 'Импортировать из URL',
   sync: 'Синхронизировать',
   upgradeSuccess: 'Обновление успешно',
-  numberOfChartsInSidebar: 'Количество графиков в боковой панели',
   flushSmartWeights: 'Очистить Smart веса',
   IPInfoAPI: 'API информации о IP',
   IPInfoAPITip:

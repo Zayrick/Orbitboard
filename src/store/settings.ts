@@ -77,10 +77,6 @@ export const autoDisconnectIdleUDPTime = useStorage('config/auto-disconnect-idle
 // overview
 export const autoIPCheck = useStorage('config/auto-ip-check', true)
 export const autoConnectionCheck = useStorage('config/auto-connection-check', true)
-export const numberOfChartsInSidebar = useStorage<1 | 2 | 3>(
-  'config/number-of-charts-in-sidebar',
-  2,
-)
 export const overviewCardOrder = useStorage<{ card: OVERVIEW_CARD; visible: boolean }[]>(
   'config/overview-card-order',
   [

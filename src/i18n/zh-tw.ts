@@ -206,7 +206,6 @@ const zhTW: LANG_MESSAGE = {
   importFromUrl: '從 URL 匯入',
   sync: '同步',
   upgradeSuccess: '更新成功',
-  numberOfChartsInSidebar: '側邊欄圖表數量',
   flushSmartWeights: '清空Smart權重',
   IPInfoAPI: 'IP資訊API',
   IPInfoAPITip:

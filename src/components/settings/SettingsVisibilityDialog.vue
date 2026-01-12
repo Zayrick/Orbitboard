@@ -198,10 +198,6 @@ const allCategories: Category[] = [
         key: `${SETTINGS_MENU_KEY.overview}.autoConnectionCheckWhenStart`,
         label: 'autoConnectionCheckWhenStart',
       },
-      {
-        key: `${SETTINGS_MENU_KEY.overview}.numberOfChartsInSidebar`,
-        label: 'numberOfChartsInSidebar',
-      },
     ],
   },
   {
@@ -334,7 +330,6 @@ const applyMinimalPreset = () => {
     else if (
       key.includes('displayAllFeatures') ||
       key.includes('IPInfoAPI') ||
-      key.includes('numberOfChartsInSidebar') ||
       key.includes('proxyGroupIconSize') ||
       key.includes('proxyGroupIconMargin') ||
       key.includes('proxyPreviewType') ||
