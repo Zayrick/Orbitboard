@@ -297,4 +297,5 @@ export enum OVERVIEW_CARD {
   ProviderTrafficOverview = 'ProviderTrafficOverview',
   TopologyCharts = 'TopologyCharts',
   ConnectionHistory = 'ConnectionHistory',
+  RuleHitCountCard = 'RuleHitCountCard',
 }

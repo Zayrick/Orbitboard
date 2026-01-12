@@ -194,6 +194,7 @@ const ru: LANG_MESSAGE = {
   displayGlobalByMode: 'Отображать GLOBAL по режиму',
   displaySelectedNode: 'Отображать выбранный узел',
   displayLatencyNumber: 'Отображать задержку',
+  disconnectOnRuleDisable: 'Разрывать соединения при отключении правила',
   tipForFixed:
     'Текущая стратегическая группа закреплена за текущим узлом. Нажмите «Тест скорости», чтобы восстановить поведение {type}.',
   remoteAddress: 'удалённый адрес',
@@ -272,6 +273,9 @@ const ru: LANG_MESSAGE = {
   providerTrafficOverview: 'Обзор трафика провайдера',
   topologyCharts: 'Топологические графики',
   connectionHistory: 'История подключений',
+  ruleHitCountCard: 'Статистика попаданий/промахов правил',
+  ruleHitChart: 'Статистика попаданий',
+  ruleMissChart: 'Статистика промахов',
   latency: 'Задержка',
   proxyStyle: 'Стиль прокси',
   icon: 'Иконка',

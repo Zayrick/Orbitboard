@@ -191,6 +191,7 @@ const en = {
   displayGlobalByMode: 'Display GLOBAL by mode',
   displaySelectedNode: 'Show selected node',
   displayLatencyNumber: 'Show latency numbers',
+  disconnectOnRuleDisable: 'Disconnect connections when disabling rule',
   tipForFixed:
     'The current policy group is locked to the current node. Run a speed test to restore {type} behavior.',
   remoteAddress: 'Remote address',
@@ -269,6 +270,9 @@ const en = {
   providerTrafficOverview: 'Provider Traffic Overview',
   topologyCharts: 'Topology Charts',
   connectionHistory: 'Connection History',
+  ruleHitCountCard: 'Rule Hit/Miss Statistics',
+  ruleHitChart: 'Hit Statistics',
+  ruleMissChart: 'Miss Statistics',
   latency: 'Latency',
   proxyStyle: 'Proxy style',
   icon: 'Icon',
