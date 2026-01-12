@@ -1,11 +1,4 @@
 <template>
-  <!-- overview -->
-  <template
-    v-if="!splitOverviewPage && !hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.overviewCard`]"
-  >
-    <OverviewCard />
-    <div class="divider my-4" />
-  </template>
   <div
     v-if="hasVisibleItems"
     class="flex flex-col gap-2 p-4 text-sm"
@@ -14,19 +7,6 @@
       {{ $t('overviewSettings') }}
     </div>
     <div class="settings-grid">
-      <div
-        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.splitOverviewPage`]"
-        class="setting-item"
-      >
-        <div class="setting-item-label">
-          {{ $t('splitOverviewPage') }}
-        </div>
-        <input
-          class="toggle"
-          type="checkbox"
-          v-model="splitOverviewPage"
-        />
-      </div>
       <div
         v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.overview}.autoIPCheckWhenStart`]"
         class="setting-item"
@@ -84,15 +64,12 @@ import {
   autoIPCheck,
   hiddenSettingsItems,
   numberOfChartsInSidebar,
-  splitOverviewPage,
 } from '@/store/settings'
 import { computed } from 'vue'
-import OverviewCard from './OverviewCard.vue'
 
 // 检查是否有可见的子项
 const hasVisibleItems = computed(() => {
   return (
-    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.splitOverviewPage`] ||
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.autoIPCheckWhenStart`] ||
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.autoConnectionCheckWhenStart`] ||
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.overview}.numberOfChartsInSidebar`]

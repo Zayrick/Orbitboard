@@ -75,7 +75,6 @@ export const autoDisconnectIdleUDP = useStorage('config/auto-disconnect-idle-udp
 export const autoDisconnectIdleUDPTime = useStorage('config/auto-disconnect-idle-udp-time', 300)
 
 // overview
-export const splitOverviewPage = useStorage('config/split-overview-page', false)
 export const autoIPCheck = useStorage('config/auto-ip-check', true)
 export const autoConnectionCheck = useStorage('config/auto-connection-check', true)
 export const numberOfChartsInSidebar = useStorage<1 | 2 | 3>(
