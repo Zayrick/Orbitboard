@@ -92,6 +92,7 @@ const zh: LANG_MESSAGE = {
   auto: '自动',
   dots: '点',
   bar: '条',
+  inline: '内嵌',
   exportSettings: '导出设置',
   importSettings: '导入设置',
   connectionSettings: '连接设置',

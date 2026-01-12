@@ -4,64 +4,85 @@
     @contextmenu.prevent.stop="handlerLatencyTest"
   >
     <template v-slot:title>
-      <div class="flex gap-2">
-        <div
-          v-if="proxyGroup.icon"
-          class="flex shrink-0 items-center"
+      <div class="relative">
+        <Transition
+          enter-active-class="transition-opacity duration-200 ease-out"
+          enter-from-class="opacity-0"
+          enter-to-class="opacity-100"
+          leave-active-class="transition-opacity duration-150 ease-in"
+          leave-from-class="opacity-100"
+          leave-to-class="opacity-0"
         >
-          <ProxyIcon
-            :icon="proxyGroup.icon"
-            :size="proxyGroupIconSize"
-            :margin="proxyGroupIconMargin"
+          <ProxyInlineDots
+            v-if="showInlineDots"
+            :nodes="renderProxies"
+            :active="proxyGroup.now"
+            :group-name="proxyGroup.name"
           />
-        </div>
+        </Transition>
 
-        <div class="flex min-w-0 flex-1 flex-col gap-[2px]">
-          <div class="relative flex items-center gap-2">
-            <div class="flex min-w-0 flex-1 items-center gap-1">
-              <ProxyName
-                :name="name"
-                :icon-size="proxyGroupIconSize"
-                :icon-margin="proxyGroupIconMargin"
-                :show-icon="false"
-              />
-              <span class="text-base-content/60 shrink-0 text-xs"> ({{ proxiesCount }}) </span>
-              <button
-                v-if="manageHiddenGroup"
-                class="btn btn-circle btn-xs z-10 ml-1 shrink-0"
-                @click.stop="handlerGroupToggle"
-              >
-                <EyeIcon
-                  v-if="!hiddenGroup"
-                  class="h-3 w-3"
-                />
-                <EyeSlashIcon
-                  v-else
-                  class="h-3 w-3"
-                />
-              </button>
-            </div>
-            <LatencyTag
-              :class="twMerge('bg-base-200/50 hover:bg-base-200 z-10')"
-              :loading="isLatencyTesting"
-              :name="proxyGroup.now"
-              :group-name="proxyGroup.name"
-              @click.stop="handlerLatencyTest"
+        <div class="relative z-10 flex gap-2">
+          <div
+            v-if="proxyGroup.icon"
+            class="flex shrink-0 items-center"
+          >
+            <ProxyIcon
+              :icon="proxyGroup.icon"
+              :size="proxyGroupIconSize"
+              :margin="proxyGroupIconMargin"
             />
           </div>
 
-          <div class="text-base-content/80 flex items-center gap-2">
-            <div class="flex min-w-0 flex-1 items-center gap-1 truncate text-sm">
-              <ProxyGroupNow :name="name" />
+          <div class="flex min-w-0 flex-1 flex-col gap-[2px]">
+            <div class="relative flex items-center gap-2">
+              <div class="flex min-w-0 flex-1 items-center gap-1">
+                <ProxyName
+                  :name="name"
+                  :icon-size="proxyGroupIconSize"
+                  :icon-margin="proxyGroupIconMargin"
+                  :show-icon="false"
+                />
+                <span class="text-base-content/60 shrink-0 text-xs"> ({{ proxiesCount }}) </span>
+                <button
+                  v-if="manageHiddenGroup"
+                  class="btn btn-circle btn-xs z-10 ml-1 shrink-0"
+                  @click.stop="handlerGroupToggle"
+                >
+                  <EyeIcon
+                    v-if="!hiddenGroup"
+                    class="h-3 w-3"
+                  />
+                  <EyeSlashIcon
+                    v-else
+                    class="h-3 w-3"
+                  />
+                </button>
+              </div>
+              <LatencyTag
+                :class="twMerge('bg-base-200/50 hover:bg-base-200 z-10')"
+                :loading="isLatencyTesting"
+                :name="proxyGroup.now"
+                :group-name="proxyGroup.name"
+                @click.stop="handlerLatencyTest"
+              />
             </div>
-            <div class="min-w-12 shrink-0 text-right text-xs">
-              {{ prettyBytesHelper(downloadTotal) }}/s
+
+            <div class="text-base-content/80 flex items-center gap-2">
+              <div class="flex min-w-0 flex-1 items-center gap-1 truncate text-sm">
+                <ProxyGroupNow :name="name" />
+              </div>
+              <div class="min-w-12 shrink-0 text-right text-xs">
+                {{ prettyBytesHelper(downloadTotal) }}/s
+              </div>
             </div>
           </div>
         </div>
       </div>
     </template>
-    <template v-slot:preview>
+    <template
+      v-if="showPreview"
+      v-slot:preview
+    >
       <ProxyPreview
         :nodes="renderProxies"
         :now="proxyGroup.now"
@@ -83,6 +104,7 @@
 <script setup lang="ts">
 import { useBounceOnVisible } from '@/composables/bouncein'
 import { useRenderProxies } from '@/composables/renderProxies'
+import { PROXY_PREVIEW_TYPE } from '@/constant'
 import { isHiddenGroup } from '@/helper'
 import { prettyBytesHelper } from '@/helper/utils'
 import { activeConnections } from '@/store/connections'
@@ -93,10 +115,12 @@ import {
   proxyMap,
 } from '@/store/proxies'
 import {
+  collapseGroupMap,
   groupProxiesByProvider,
   manageHiddenGroup,
   proxyGroupIconMargin,
   proxyGroupIconSize,
+  proxyPreviewType,
 } from '@/store/settings'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import { twMerge } from 'tailwind-merge'
@@ -107,6 +131,7 @@ import ProxiesByProvider from './ProxiesByProvider.vue'
 import ProxiesContent from './ProxiesContent.vue'
 import ProxyGroupNow from './ProxyGroupNow.vue'
 import ProxyIcon from './ProxyIcon.vue'
+import ProxyInlineDots from './ProxyInlineDots.vue'
 import ProxyName from './ProxyName.vue'
 import ProxyPreview from './ProxyPreview.vue'
 
@@ -116,6 +141,11 @@ const props = defineProps<{
 const proxyGroup = computed(() => proxyMap.value[props.name])
 const allProxies = computed(() => proxyGroup.value.all ?? [])
 const { proxiesCount, renderProxies } = useRenderProxies(allProxies, props.name)
+const isExpanded = computed(() => !!collapseGroupMap.value[props.name])
+const showInlineDots = computed(
+  () => proxyPreviewType.value === PROXY_PREVIEW_TYPE.INLINE && !isExpanded.value,
+)
+const showPreview = computed(() => proxyPreviewType.value !== PROXY_PREVIEW_TYPE.INLINE)
 const isLatencyTesting = ref(false)
 const handlerLatencyTest = async () => {
   if (isLatencyTesting.value) return
@@ -123,8 +153,7 @@ const handlerLatencyTest = async () => {
   isLatencyTesting.value = true
   try {
     await proxyGroupLatencyTest(props.name)
-    isLatencyTesting.value = false
-  } catch {
+  } finally {
     isLatencyTesting.value = false
   }
 }

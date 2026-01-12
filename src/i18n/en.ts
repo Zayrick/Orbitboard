@@ -90,6 +90,7 @@ const en = {
   auto: 'Auto',
   dots: 'Dots',
   bar: 'Bar',
+  inline: 'Inline',
   exportSettings: 'Export settings',
   importSettings: 'Import settings',
   connectionSettings: 'Connection settings',

@@ -92,6 +92,7 @@ const zhTW: LANG_MESSAGE = {
   auto: '自動',
   dots: '點',
   bar: '條',
+  inline: '內嵌',
   exportSettings: '匯出設定',
   importSettings: '匯入設定',
   connectionSettings: '連接設定',

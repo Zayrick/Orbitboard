@@ -43,7 +43,10 @@
         <div>{{ $t('updated') }} {{ fromNow(proxyProvider.updatedAt) }}</div>
       </div>
     </template>
-    <template v-slot:preview>
+    <template
+      v-if="proxyPreviewType !== PROXY_PREVIEW_TYPE.INLINE"
+      v-slot:preview
+    >
       <ProxyPreview :nodes="renderProxies" />
     </template>
     <template v-slot:content>
@@ -59,8 +62,10 @@
 import { proxyProviderHealthCheckAPI, updateProxyProviderAPI } from '@/api'
 import { useBounceOnVisible } from '@/composables/bouncein'
 import { useRenderProxies } from '@/composables/renderProxies'
+import { PROXY_PREVIEW_TYPE } from '@/constant'
 import { fromNow, prettyBytesHelper } from '@/helper/utils'
 import { fetchProxies, proxyProviederList } from '@/store/proxies'
+import { proxyPreviewType } from '@/store/settings'
 import { ArrowPathIcon, BoltIcon } from '@heroicons/vue/24/outline'
 import dayjs from 'dayjs'
 import { toFinite } from 'lodash'
@@ -122,8 +127,7 @@ const healthCheckClickHandler = async () => {
   try {
     await proxyProviderHealthCheckAPI(props.name)
     await fetchProxies()
-    isHealthChecking.value = false
-  } catch {
+  } finally {
     isHealthChecking.value = false
   }
 }
@@ -135,8 +139,7 @@ const updateProviderClickHandler = async () => {
   try {
     await updateProxyProviderAPI(props.name)
     await fetchProxies()
-    isUpdating.value = false
-  } catch {
+  } finally {
     isUpdating.value = false
   }
 }

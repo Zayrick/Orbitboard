@@ -73,6 +73,7 @@ export enum PROXY_PREVIEW_TYPE {
   AUTO = 'auto',
   DOTS = 'dots',
   BAR = 'bar',
+  INLINE = 'inline',
 }
 
 export enum RULE_TAB_TYPE {

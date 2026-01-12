@@ -92,6 +92,7 @@ const ru: LANG_MESSAGE = {
   auto: 'Авто',
   dots: 'Точки',
   bar: 'Полоса',
+  inline: 'Встроенный',
   exportSettings: 'Экспорт настроек',
   importSettings: 'Импорт настроек',
   connectionSettings: 'Настройки подключения',
