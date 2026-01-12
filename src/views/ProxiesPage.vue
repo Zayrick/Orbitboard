@@ -6,6 +6,7 @@
     ref="proxiesRef"
     @scroll.passive="handleScroll"
   >
+    <h1 class="p-4 pt-8 pb-0 text-4xl font-bold">{{ t('proxies') }}</h1>
     <ProxiesCtrl />
     <template v-if="displayTwoColumns">
       <div class="grid grid-cols-2 gap-1 p-2 md:pr-1">
@@ -50,7 +51,9 @@ import { fetchProxies, proxiesTabShow } from '@/store/proxies'
 import { twoColumnProxyGroup } from '@/store/settings'
 import { useSessionStorage } from '@vueuse/core'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const { padding } = usePaddingForViews({
   offsetTop: 0,
   offsetBottom: 0,

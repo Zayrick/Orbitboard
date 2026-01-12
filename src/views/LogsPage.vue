@@ -5,6 +5,7 @@
       :size="isMiddleScreen ? 96 : 64"
     >
       <template v-slot:before>
+        <h1 class="p-4 pt-8 pb-0 text-4xl font-bold">{{ t('logs') }}</h1>
         <LogsCtrl />
       </template>
       <template v-slot="{ item }: { item: LogWithSeq }">
@@ -22,6 +23,9 @@ import { isMiddleScreen } from '@/helper/utils'
 import { logFilter, logFilterEnabled, logFilterRegex, logTypeFilter, logs } from '@/store/logs'
 import type { LogWithSeq } from '@/types'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const renderLogs = computed(() => {
   let renderLogs = logs.value

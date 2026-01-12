@@ -1,6 +1,7 @@
 <template>
   <div class="relative size-full overflow-x-hidden">
     <template v-if="!isVirtualScroller">
+      <h1 class="p-4 pt-8 pb-0 text-4xl font-bold">{{ t('rules') }}</h1>
       <RulesCtrl />
       <div
         class="flex flex-col gap-1 p-2"
@@ -30,6 +31,7 @@
       :size="64"
     >
       <template v-slot:before>
+        <h1 class="p-4 pt-8 pb-0 text-4xl font-bold">{{ t('rules') }}</h1>
         <RulesCtrl />
       </template>
       <template v-slot="{ item: rule }: { item: Rule }">
@@ -53,6 +55,9 @@ import { RULE_TAB_TYPE } from '@/constant'
 import { fetchRules, renderRules, renderRulesProvider, rules, rulesTabShow } from '@/store/rules'
 import type { Rule } from '@/types'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 fetchRules()
 

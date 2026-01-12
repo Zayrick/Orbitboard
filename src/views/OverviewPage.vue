@@ -3,6 +3,7 @@
     class="h-full overflow-x-hidden overflow-y-auto"
     :style="padding"
   >
+    <h1 class="p-4 pt-8 pb-0 text-4xl font-bold">{{ t('overview') }}</h1>
     <OverviewCtrl />
     <div class="flex flex-col gap-1 p-2">
       <component
@@ -26,7 +27,9 @@ import { usePaddingForViews } from '@/composables/paddingViews'
 import { overviewCardOrder } from '@/store/settings'
 import type { Component } from 'vue'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const { padding } = usePaddingForViews({
   offsetTop: 0,
   offsetBottom: 0,
