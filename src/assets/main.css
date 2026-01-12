@@ -356,6 +356,21 @@ div {
   @apply absolute right-2 left-2 z-30 rounded-3xl;
 }
 
+.dock-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.1rem;
+  height: 0.25rem;
+  border-radius: 999px;
+  opacity: 0;
+  background-color: currentColor;
+}
+
+/* Keep as a hook (optional). We intentionally don't recreate daisyUI's own underline here. */
+.dock-item-active {
+}
+
 .settings-title {
   @apply flex items-center gap-2 py-2 text-lg font-bold;
 }
