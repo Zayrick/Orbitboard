@@ -2,6 +2,7 @@ import type { LANG_MESSAGE } from './en'
 
 const ru: LANG_MESSAGE = {
   setup: 'Настройка',
+  home: 'Главная',
   overview: 'Обзор',
   proxies: 'Прокси',
   rules: 'Правила',

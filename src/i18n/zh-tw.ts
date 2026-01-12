@@ -2,6 +2,7 @@ import type { LANG_MESSAGE } from './en'
 
 const zhTW: LANG_MESSAGE = {
   setup: '配置',
+  home: '主頁',
   overview: '概覽',
   proxies: '代理',
   rules: '規則',

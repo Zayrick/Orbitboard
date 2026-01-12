@@ -1,5 +1,6 @@
 const en = {
   setup: 'Setup',
+  home: 'Home',
   overview: 'Overview',
   proxies: 'Proxies',
   rules: 'Rules',

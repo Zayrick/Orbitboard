@@ -183,7 +183,7 @@ watch(
 
 const selectBackend = (uuid: string) => {
   activeUuid.value = uuid
-  router.push({ name: ROUTE_NAME.proxies })
+  router.push({ name: ROUTE_NAME.home })
 }
 
 const editBackend = (backend: Backend) => {
@@ -235,7 +235,7 @@ const handleSubmit = async (form: Omit<Backend, 'uuid'>, quiet = false) => {
     }
 
     addBackend(form)
-    router.push({ name: ROUTE_NAME.proxies })
+    router.push({ name: ROUTE_NAME.home })
   } catch (e) {
     if (!quiet) {
       alert(e)
