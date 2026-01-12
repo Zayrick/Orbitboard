@@ -304,6 +304,13 @@ const en = {
   ruleLastHit: 'Last hit: {time}',
   ruleMissCount: 'Miss: {count} times',
   ruleLastMiss: 'Last miss: {time}',
+  appearance: 'Appearance',
+  background: 'Background',
+  mobileSettings: 'Mobile',
+  portSettings: 'Ports',
+  coreUpgrade: 'Core Upgrade',
+  dnsQuery: 'DNS Query',
+  updateAvailable: 'Update',
 }
 
 export type LANG_MESSAGE = typeof en

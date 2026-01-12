@@ -301,6 +301,13 @@ const zhTW: LANG_MESSAGE = {
   ruleLastHit: '最後命中: {time}',
   ruleMissCount: '未命中: {count} 次',
   ruleLastMiss: '最後未命中: {time}',
+  appearance: '外觀',
+  background: '背景',
+  mobileSettings: '行動裝置',
+  portSettings: '連接埠設定',
+  coreUpgrade: '核心升級',
+  dnsQuery: 'DNS 查詢',
+  updateAvailable: '有更新',
 }
 
 export default zhTW

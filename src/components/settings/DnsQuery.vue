@@ -1,18 +1,19 @@
 <template>
-  <div class="join w-96 max-sm:w-full">
+  <div class="join w-full">
     <TextInput
       v-model="form.name"
+      class="min-w-0 flex-1"
       placeholder="Domain Name"
       :clearable="true"
     />
     <TextInput
       v-model="form.type"
-      class="w-28"
+      class="w-20 shrink-0"
       placeholder="Type"
       :menus="['A', 'AAAA', 'HTTPS']"
     />
     <button
-      class="btn join-item btn-sm"
+      class="btn join-item btn-sm shrink-0"
       @click="query"
     >
       {{ $t('DNSQuery') }}

@@ -11,16 +11,21 @@
 
   <DialogWrapper
     v-model="showBackendSelectorDialog"
-    box-class="max-w-173"
-    no-padding
+    box-class="max-w-md"
   >
-    <BackendSettings class="w-full" />
+    <div class="flex flex-col gap-4">
+      <div class="flex items-center gap-2 text-lg font-semibold">
+        <ServerIcon class="h-5 w-5" />
+        {{ $t('selectBackend') }}
+      </div>
+      <BackendSwitch />
+    </div>
   </DialogWrapper>
 </template>
 
 <script setup lang="ts">
 import DialogWrapper from '@/components/common/DialogWrapper.vue'
-import BackendSettings from '@/components/settings/BackendSettings.vue'
+import BackendSwitch from '@/components/settings/BackendSwitch.vue'
 import { useTooltip } from '@/helper/tooltip'
 import { getLabelFromBackend } from '@/helper/utils'
 import { activeBackend } from '@/store/setup'

@@ -307,6 +307,13 @@ const ru: LANG_MESSAGE = {
   ruleLastHit: 'Последнее попадание: {time}',
   ruleMissCount: 'Промах: {count} раз',
   ruleLastMiss: 'Последний промах: {time}',
+  appearance: 'Внешний вид',
+  background: 'Фон',
+  mobileSettings: 'Мобильный',
+  portSettings: 'Порты',
+  coreUpgrade: 'Обновление ядра',
+  dnsQuery: 'DNS запрос',
+  updateAvailable: 'Обновление',
 }
 
 export default ru

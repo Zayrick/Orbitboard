@@ -301,6 +301,13 @@ const zh: LANG_MESSAGE = {
   ruleLastHit: '最后命中: {time}',
   ruleMissCount: '未命中: {count} 次',
   ruleLastMiss: '最后未命中: {time}',
+  appearance: '外观',
+  background: '背景',
+  mobileSettings: '移动端',
+  portSettings: '端口配置',
+  coreUpgrade: '核心升级',
+  dnsQuery: 'DNS 查询',
+  updateAvailable: '有更新',
 }
 
 export default zh

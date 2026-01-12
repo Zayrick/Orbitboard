@@ -30,17 +30,18 @@
             class="flex items-center gap-2"
           >
             <TextInput
-              class="w-32"
+              class="w-24 shrink-0 sm:w-32"
               v-model="iconReflect.name"
               :placeholder="$t('groupName')"
             />
             <ArrowRightCircleIcon class="h-4 w-4 shrink-0" />
             <TextInput
+              class="min-w-0 flex-1"
               v-model="iconReflect.icon"
               placeholder="Icon URL"
             />
             <button
-              class="btn btn-sm btn-circle"
+              class="btn btn-sm btn-circle shrink-0"
               @click="removeIconReflect(iconReflect.uuid)"
             >
               <TrashIcon class="h-4 w-4 shrink-0" />
@@ -52,7 +53,7 @@
   </div>
   <div class="flex items-center gap-2">
     <TextInput
-      class="w-32"
+      class="w-24 shrink-0 sm:w-32"
       v-model="newIconReflect.name"
       placeholder="Name"
       :menus="
@@ -62,12 +63,13 @@
     />
     <ArrowRightCircleIcon class="h-4 w-4 shrink-0" />
     <TextInput
+      class="min-w-0 flex-1"
       v-model="newIconReflect.icon"
       placeholder="Icon URL"
       @keydown.enter="addIconReflect"
     />
     <button
-      class="btn btn-sm btn-circle"
+      class="btn btn-sm btn-circle shrink-0"
       @click="addIconReflect"
     >
       <PlusIcon class="h-4 w-4 shrink-0" />

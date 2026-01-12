@@ -374,6 +374,20 @@ div {
 .settings-title {
   @apply flex items-center gap-2 py-2 text-lg font-bold;
 }
+.settings-cards-masonry {
+  /*
+   * Settings 页面使用瀑布流（CSS columns）。
+   * 通过 column-width 控制“列的最小宽度”，容器变窄时会自动减少列数。
+   */
+  column-width: 390px;
+  column-gap: 1rem;
+}
+
+.settings-cards-masonry > * {
+  /* 防止卡片在多列布局中被拆分，并提供垂直间距 */
+  break-inside: avoid;
+  margin-bottom: 1rem;
+}
 .settings-grid {
   @apply grid max-w-7xl grid-cols-1 gap-x-4 gap-y-1 lg:grid-cols-2 lg:gap-x-8 xl:gap-x-12 2xl:gap-x-16;
 }
