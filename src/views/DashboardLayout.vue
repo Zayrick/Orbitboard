@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-base-200/50 home-page flex size-full">
+  <div class="bg-base-200/50 dashboard-layout flex size-full">
     <SideBar v-if="!isMiddleScreen" />
     <RouterView v-slot="{ Component, route }">
       <div

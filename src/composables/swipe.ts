@@ -67,7 +67,7 @@ export const useSwipeRouter = () => {
     const routeName = route.name as ROUTE_NAME
 
     if (routeName === ROUTE_NAME.setup) {
-      return router.push({ name: ROUTE_NAME.home })
+      return router.push({ name: ROUTE_NAME.overview })
     }
 
     return swipeList.value[(getNextIndexInSwipeList() + 1) % swipeList.value.length]?.[1]?.()
@@ -76,7 +76,7 @@ export const useSwipeRouter = () => {
     const routeName = route.name as ROUTE_NAME
 
     if (routeName === ROUTE_NAME.setup) {
-      return router.push({ name: ROUTE_NAME.home })
+      return router.push({ name: ROUTE_NAME.overview })
     }
 
     return swipeList.value[

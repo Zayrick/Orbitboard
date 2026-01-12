@@ -5,7 +5,6 @@ const zhTW: LANG_MESSAGE = {
   category_general: '通用',
   category_network: '網路',
   category_settings: '系統',
-  home: '主頁',
   overview: '概覽',
   proxies: '代理',
   rules: '規則',

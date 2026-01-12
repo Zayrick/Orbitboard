@@ -3,7 +3,6 @@ const en = {
   category_general: 'General',
   category_network: 'Network',
   category_settings: 'Settings',
-  home: 'Home',
   overview: 'Overview',
   proxies: 'Proxies',
   rules: 'Rules',

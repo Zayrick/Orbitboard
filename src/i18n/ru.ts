@@ -5,7 +5,6 @@ const ru: LANG_MESSAGE = {
   category_general: 'Общее',
   category_network: 'Сеть',
   category_settings: 'Система',
-  home: 'Главная',
   overview: 'Обзор',
   proxies: 'Прокси',
   rules: 'Правила',

@@ -4,8 +4,7 @@ import { i18n } from '@/i18n'
 import { language } from '@/store/settings'
 import { activeBackend } from '@/store/setup'
 import ConnectionsPage from '@/views/ConnectionsPage.vue'
-import HomePage from '@/views/HomePage.vue'
-import HomeTabPage from '@/views/HomeTabPage.vue'
+import DashboardLayout from '@/views/DashboardLayout.vue'
 import LogsPage from '@/views/LogsPage.vue'
 import OverviewPage from '@/views/OverviewPage.vue'
 import ProxiesPage from '@/views/ProxiesPage.vue'
@@ -17,11 +16,6 @@ import { watch } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const childrenRouter = [
-  {
-    path: 'home',
-    name: ROUTE_NAME.home,
-    component: HomeTabPage,
-  },
   {
     path: 'overview',
     name: ROUTE_NAME.overview,
@@ -59,8 +53,8 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: ROUTE_NAME.home,
-      component: HomePage,
+      redirect: ROUTE_NAME.overview,
+      component: DashboardLayout,
       children: childrenRouter,
     },
     {
@@ -70,7 +64,7 @@ const router = createRouter({
     },
     {
       path: '/:catchAll(.*)',
-      redirect: ROUTE_NAME.home,
+      redirect: ROUTE_NAME.overview,
     },
   ],
 })

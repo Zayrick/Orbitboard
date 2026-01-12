@@ -121,7 +121,7 @@ const handleMouseLeave = (e: MouseEvent) => {
 }
 
 const categorizedRoutes = [
-  { title: 'category_general', routes: [ROUTE_NAME.home, ROUTE_NAME.overview] },
+  { title: 'category_general', routes: [ROUTE_NAME.overview] },
   {
     title: 'category_network',
     routes: [ROUTE_NAME.proxies, ROUTE_NAME.rules, ROUTE_NAME.connections],

@@ -5,7 +5,6 @@ const zh: LANG_MESSAGE = {
   category_general: '通用',
   category_network: '网络',
   category_settings: '系统',
-  home: '主页',
   overview: '概览',
   proxies: '代理',
   rules: '规则',
