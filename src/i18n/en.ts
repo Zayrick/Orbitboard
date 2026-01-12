@@ -1,5 +1,6 @@
 const en = {
   setup: 'Setup',
+  more: 'More',
   category_general: 'General',
   category_network: 'Network',
   category_settings: 'Settings',

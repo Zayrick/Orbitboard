@@ -2,6 +2,7 @@ import type { LANG_MESSAGE } from './en'
 
 const ru: LANG_MESSAGE = {
   setup: 'Настройка',
+  more: 'Ещё',
   category_general: 'Общее',
   category_network: 'Сеть',
   category_settings: 'Система',

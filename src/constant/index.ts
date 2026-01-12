@@ -3,6 +3,7 @@ import {
   Cog6ToothIcon,
   CubeTransparentIcon,
   DocumentTextIcon,
+  EllipsisHorizontalIcon,
   GlobeAltIcon,
   SwatchIcon,
 } from '@heroicons/vue/24/outline'
@@ -138,6 +139,22 @@ export const ROUTE_ICON_MAP = {
   [ROUTE_NAME.settings]: Cog6ToothIcon,
   [ROUTE_NAME.setup]: CubeTransparentIcon,
 }
+
+export const MOBILE_MORE_ICON = EllipsisHorizontalIcon
+
+// 移动端主导航项（底部导航栏直接显示）
+export const MOBILE_MAIN_ROUTES = [
+  ROUTE_NAME.overview,
+  ROUTE_NAME.proxies,
+  ROUTE_NAME.settings,
+] as const
+
+// 移动端子菜单项（合并到"更多"中）
+export const MOBILE_MORE_ROUTES = [
+  ROUTE_NAME.connections,
+  ROUTE_NAME.logs,
+  ROUTE_NAME.rules,
+] as const
 
 export enum TABLE_SIZE {
   SMALL = 'small',

@@ -2,6 +2,7 @@ import type { LANG_MESSAGE } from './en'
 
 const zh: LANG_MESSAGE = {
   setup: '配置',
+  more: '更多',
   category_general: '通用',
   category_network: '网络',
   category_settings: '系统',

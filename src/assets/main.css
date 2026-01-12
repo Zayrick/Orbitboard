@@ -352,23 +352,70 @@ div {
   @apply md:bg-base-100/20 fixed top-0 right-0 left-0 z-30 shadow-sm backdrop-blur-lg md:sticky;
 }
 
-.dock {
-  @apply absolute right-2 left-2 z-30 rounded-3xl;
+/* 移动端底部导航栏容器 */
+.dock-container {
+  @apply absolute right-2 left-2 z-30 flex items-center gap-2;
 }
 
-.dock-indicator {
+/* 主导航栏区域 - 左右半圆 */
+.dock-main {
+  @apply flex-1 overflow-hidden;
+  border-radius: 9999px; /* 完全圆角形成半圆端点 */
+}
+
+/* 更多按钮 - 独立圆形 */
+.dock-more-btn {
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dock-more-btn.dock-more-active {
+  @apply bg-primary/20 text-primary;
+}
+
+.dock-more-btn.dock-more-expanded {
+  @apply bg-base-300/60 text-base-content;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 导航项样式 */
+.dock-nav-item {
+  transition: color 0.2s ease;
+}
+
+.dock-nav-item.dock-item-active {
+  @apply text-primary;
+}
+
+/* 更多菜单内的项目 */
+.dock-more-menu-item {
+  transition: background-color 0.15s ease;
+}
+
+.dock-more-menu-item:active {
+  @apply bg-base-200/60;
+  transform: scale(0.95);
+}
+
+/* 背景滑动指示器 */
+.dock-bg-indicator {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -0.1rem;
-  height: 0.25rem;
-  border-radius: 999px;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  left: 0.25rem;
+  width: 0;
+  border-radius: 9999px;
   opacity: 0;
-  background-color: currentColor;
+  background-color: rgba(128, 128, 128, 0.15);
+  pointer-events: none;
+  z-index: 0;
+  transition: background-color 0.2s ease;
 }
 
-/* Keep as a hook (optional). We intentionally don't recreate daisyUI's own underline here. */
-.dock-item-active {
+/* 展开状态下的背景指示器变为带颜色 */
+.dock-expanded .dock-bg-indicator {
+  background-color: oklch(var(--p) / 0.15);
 }
 
 .settings-title {
