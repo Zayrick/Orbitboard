@@ -192,6 +192,7 @@ const ru: LANG_MESSAGE = {
   displayGlobalByMode: 'Отображать GLOBAL по режиму',
   displaySelectedNode: 'Отображать выбранный узел',
   displayLatencyNumber: 'Отображать задержку',
+  disconnectOnRuleDisable: 'Разрывать соединения при отключении правила',
   tipForFixed:
     'Текущая стратегическая группа закреплена за текущим узлом. Нажмите «Тест скорости», чтобы восстановить поведение {type}.',
   remoteAddress: 'удалённый адрес',

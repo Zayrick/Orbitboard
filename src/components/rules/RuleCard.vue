@@ -111,11 +111,17 @@
 </template>
 
 <script setup lang="ts">
-import { toggleRuleDisabledAPI, toggleRuleDisabledSingBoxAPI, updateRuleProviderAPI } from '@/api'
+import {
+  disconnectByIdAPI,
+  toggleRuleDisabledAPI,
+  toggleRuleDisabledSingBoxAPI,
+  updateRuleProviderAPI,
+} from '@/api'
 import { useBounceOnVisible } from '@/composables/bouncein'
 import { NOT_CONNECTED } from '@/constant'
 import { getColorForLatency } from '@/helper'
 import { useTooltip } from '@/helper/tooltip'
+import { activeConnections } from '@/store/connections'
 import {
   getLatencyByName,
   getNowProxyNodeName,
@@ -124,7 +130,11 @@ import {
   proxyMap,
 } from '@/store/proxies'
 import { fetchRules, ruleProviderList } from '@/store/rules'
-import { displayLatencyInRule, displayNowNodeInRule } from '@/store/settings'
+import {
+  disconnectOnRuleDisable,
+  displayLatencyInRule,
+  displayNowNodeInRule,
+} from '@/store/settings'
 import type { Rule } from '@/types'
 import {
   ArrowPathIcon,
@@ -203,11 +213,26 @@ const toggleRuleDisabledHandler = async () => {
 
   try {
     isTogglingDisabled.value = true
+    const willBeDisabled = !isDisabled.value
+
     if (props.rule.uuid) {
       await toggleRuleDisabledSingBoxAPI(props.rule.uuid)
     } else {
-      await toggleRuleDisabledAPI({ [props.rule.index]: !isDisabled.value })
+      await toggleRuleDisabledAPI({ [props.rule.index]: willBeDisabled })
     }
+
+    if (willBeDisabled && disconnectOnRuleDisable.value) {
+      const matchingConnections = activeConnections.value.filter((conn) => {
+        const ruleTypeMatches = conn.rule === props.rule.type
+        const rulePayloadMatches = (conn.rulePayload || '') === (props.rule.payload || '')
+        return ruleTypeMatches && rulePayloadMatches
+      })
+
+      if (matchingConnections.length > 0) {
+        matchingConnections.forEach((conn) => disconnectByIdAPI(conn.id))
+      }
+    }
+
     await fetchRules()
   } finally {
     isTogglingDisabled.value = false

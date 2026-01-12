@@ -188,6 +188,7 @@ const zh: LANG_MESSAGE = {
   displayGlobalByMode: '根据模式显示 GLOBAL',
   displaySelectedNode: '显示选中节点',
   displayLatencyNumber: '显示延迟数字',
+  disconnectOnRuleDisable: '禁用规则时打断连接',
   tipForFixed: '当前策略组被固定在了当前节点，点击测速来恢复{type}行为',
   remoteAddress: '远端地址',
   themeName: '主题名称',
