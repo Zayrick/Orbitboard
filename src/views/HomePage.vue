@@ -120,8 +120,7 @@ const setDockItemRef = (name: string, el: Element | ComponentPublicInstance | nu
 // Dock Indicator Animation
 // ─────────────────────────────────────────────────────────────────────────────
 const INDICATOR_WIDTH = 40
-const EASE_SPRING = [0.22, 0.9, 0.2, 1] as const
-const EASE_SMOOTH = [0.25, 0.1, 0.25, 1] as const
+const EASE_OUT_EXPO = [0.25, 1, 0.5, 1] as const
 const indicatorState = { left: 0, right: 0 }
 
 const getIndicatorPosition = () => {
@@ -154,7 +153,7 @@ const animateDockIndicator = async () => {
     return animateDock(
       '.dock-indicator',
       { left: `${newLeft}px`, right: `${newRight}px`, opacity: 1 },
-      { duration: 0.22, ease: EASE_SPRING },
+      { duration: 0.3, ease: EASE_OUT_EXPO },
     )
   }
 
@@ -167,13 +166,13 @@ const animateDockIndicator = async () => {
     animateDock(
       '.dock-indicator',
       { [leadProp]: `${leadVal}px`, opacity: 1 },
-      { duration: 0.18, ease: EASE_SPRING },
+      { duration: 0.18, ease: EASE_OUT_EXPO },
     ),
     new Promise<void>((r) => setTimeout(r, 15)).then(() =>
       animateDock(
         '.dock-indicator',
         { [trailProp]: `${trailVal}px` },
-        { duration: 0.22, ease: EASE_SMOOTH },
+        { duration: 0.3, ease: EASE_OUT_EXPO },
       ),
     ),
   ])
