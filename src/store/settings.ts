@@ -99,31 +99,50 @@ export const numberOfChartsInSidebar = useStorage<1 | 2 | 3>(
   'config/number-of-charts-in-sidebar',
   2,
 )
+const defaultOverviewCardOrder: { card: OVERVIEW_CARD; visible: boolean }[] = [
+  {
+    card: OVERVIEW_CARD.ChartsCard,
+    visible: true,
+  },
+  {
+    card: OVERVIEW_CARD.NetworkCard,
+    visible: true,
+  },
+  {
+    card: OVERVIEW_CARD.ProviderTrafficOverview,
+    visible: true,
+  },
+  {
+    card: OVERVIEW_CARD.TopologyCharts,
+    visible: true,
+  },
+  {
+    card: OVERVIEW_CARD.ConnectionHistory,
+    visible: true,
+  },
+  {
+    card: OVERVIEW_CARD.RuleHitCountCard,
+    visible: true,
+  },
+]
+
 export const overviewCardOrder = useStorage<{ card: OVERVIEW_CARD; visible: boolean }[]>(
   'config/overview-card-order',
-  [
-    {
-      card: OVERVIEW_CARD.ChartsCard,
-      visible: true,
-    },
-    {
-      card: OVERVIEW_CARD.NetworkCard,
-      visible: true,
-    },
-    {
-      card: OVERVIEW_CARD.ProviderTrafficOverview,
-      visible: true,
-    },
-    {
-      card: OVERVIEW_CARD.TopologyCharts,
-      visible: true,
-    },
-    {
-      card: OVERVIEW_CARD.ConnectionHistory,
-      visible: true,
-    },
-  ],
+  defaultOverviewCardOrder,
 )
+
+// 确保所有卡片都在配置中，缺失的卡片添加到末尾
+const allCardTypes = Object.values(OVERVIEW_CARD)
+const existingCardTypes = new Set(overviewCardOrder.value.map((item) => item.card))
+const missingCards = allCardTypes.filter((card) => !existingCardTypes.has(card))
+
+if (missingCards.length > 0) {
+  const newCards = missingCards.map((card) => ({
+    card,
+    visible: true,
+  }))
+  overviewCardOrder.value = [...overviewCardOrder.value, ...newCards]
+}
 
 // proxies
 export const collapseGroupMap = useStorage<Record<string, boolean>>('config/collapse-group-map', {})

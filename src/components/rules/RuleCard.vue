@@ -253,7 +253,6 @@ const showRuleHitInfoTip = (e: Event) => {
   showTip(e, mountEl, {
     delay: [500, 0],
     trigger: 'mouseenter',
-    touch: false,
   })
 }
 
